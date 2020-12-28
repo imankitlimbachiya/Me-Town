@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:background="@color/white"
+    tools:context=".UI.MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+            <ImageView
+                android:layout_width="117dp"
+                android:layout_height="113dp"
+                android:src="@drawable/app_logo"
+                android:layout_marginTop="130dp"
+                android:layout_gravity="center"
+                tools:ignore="ContentDescription" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_margin="32dp"
+                android:background="@color/skyPink"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgFacebook"
+                    android:layout_width="35dp"
+                    android:layout_height="34dp"
+                    android:src="@drawable/facebook"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="12dp"
+                    tools:ignore="RtlHardcoded" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgGoogle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/google"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgTalk"
+                    android:layout_width="35dp"
+                    android:layout_height="34dp"
+                    android:src="@drawable/talk"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgLine"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:src="@drawable/line"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="12dp"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="or"
+                android:textSize="27sp"
+                android:textColor="@color/skyPink"
+                android:fontFamily="@font/louis_george_cafe"
+                tools:ignore="HardcodedText"
+                android:layout_gravity="center"
+                android:layout_marginTop="18dp"/>
+
+            <Button
+                android:id="@+id/btnSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:text="Sign up"
+                android:textAllCaps="false"
+                android:textSize="19sp"
+                android:textColor="@color/white"
+                android:background="@drawable/gradient_ltr"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                tools:ignore="HardcodedText"
+                android:layout_gravity="center"
+                android:layout_marginLeft="59dp"
+                android:layout_marginRight="59dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_margin="32dp"
+                android:background="@color/skyPink"/>
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="log in"
+                android:textAllCaps="false"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_bg"
+                android:backgroundTint="@color/veryLightSkyPink"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                tools:ignore="HardcodedText,UnusedAttribute"
+                android:layout_gravity="center"
+                android:layout_marginLeft="49dp"
+                android:layout_marginRight="49dp"
+                android:layout_marginBottom="18dp"/>
+
+            <TextView
+                android:id="@+id/txtLookAround"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="look around"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                tools:ignore="HardcodedText"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorAccent"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
+
+</RelativeLayout>

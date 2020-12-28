@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:background="@color/white"
+    tools:context=".UI.SearchAroundYourLocationActivity">
+
+    <RelativeLayout
+        android:id="@+id/TitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="UselessLeaf">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/left_arrow"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/edt_search_bg"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imgBack"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="12dp"
+            tools:ignore="RtlHardcoded">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="Search around your location"
+                android:textSize="17sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/louis_george_cafe"
+                android:background="@android:color/transparent"
+                android:paddingLeft="20dp"
+                android:layout_marginRight="43dp"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                tools:ignore="Autofill,HardcodedText,RtlHardcoded,RtlSymmetry,TextFields"/>
+
+            <ImageView
+                android:id="@+id/imgSearch"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/search_edt"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                tools:ignore="ContentDescription,RtlHardcoded"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/TabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/TitleLayout"
+        android:orientation="horizontal"
+        tools:ignore="DisableBaselineAlignment">
+
+        <LinearLayout
+            android:id="@+id/SecondHandLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtSecondHand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/alte_haas_grotesk_bold"
+                android:text="Second hand"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <View
+                android:id="@+id/SecondHandView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8.5dp"
+                android:background="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ServiceNearbyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtServiceNearby"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/alte_haas_grotesk_bold"
+                android:text="Services nearby"
+                android:textColor="@color/grey"
+                android:textSize="13sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <View
+                android:id="@+id/ServiceNearbyView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8.5dp"
+                android:background="@color/grey" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/UserLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/alte_haas_grotesk_bold"
+                android:text="User"
+                android:textColor="@color/grey"
+                android:textSize="13sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <View
+                android:id="@+id/UserView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8.5dp"
+                android:background="@color/grey" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/TabLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+            <LinearLayout
+                android:id="@+id/SecondHandResponseLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/alte_haas_grotesk_bold"
+                    android:text="Categories"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/CategoryView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/SecondHandSearchItemView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="40dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="45dp"
+                    android:fontFamily="@font/alte_haas_grotesk_bold"
+                    android:text="'User Name', have you seen these?"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/SecondHandNewSearchItemView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="15dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ServiceNearbyResponseLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/alte_haas_grotesk_bold"
+                    android:text="Categories"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ServiceNearbyCategoryView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="20dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/UserResponseLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/alte_haas_grotesk_bold"
+                    android:text="Looking for a neighbour?"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginRight="22dp"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="- Search by nickname.\n- Or search by User ID (the number following the\n   hashtag # in the profile page) e.g. MeTown #"
+                    android:textColor="@color/veryDarkGrey"
+                    android:textSize="13sp"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorAccent"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
+
+</RelativeLayout>

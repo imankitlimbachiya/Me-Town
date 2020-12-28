@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/round_medium_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/UnSelectBarangayLayout"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/edt_search_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/louis_george_cafe"
+            android:text="Choose a phrase"
+            android:textColor="@color/grey"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/PhraseView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/round_normal_corner_bg">
+
+        <EditText
+            android:id="@+id/edtEnterPhrase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:fontFamily="@font/louis_george_cafe"
+            android:hint="Enter a phrase"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingLeft="15dp"
+            android:paddingRight="45dp"
+            android:singleLine="true"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtAdd"
+            android:layout_width="58dp"
+            android:layout_height="34dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/round_after_medium_bg"
+            android:backgroundTint="@color/darkSkyPink"
+            android:fontFamily="@font/segoe_ui"
+            android:gravity="center"
+            android:text="Add"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

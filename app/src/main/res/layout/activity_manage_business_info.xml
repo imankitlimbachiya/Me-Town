@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusableInTouchMode="true"
+    tools:context=".UI.ManageBusinessInfoActivity">
+
+    <RelativeLayout
+        android:id="@+id/TitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="UselessLeaf">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/left_arrow"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imgBack"
+            android:fontFamily="@font/louis_george_cafe"
+            android:text="Manage business info"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/TitleLayout"
+        android:background="@color/grey" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/louis_george_cafe"
+                android:text="'Name of store'"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="25dp"
+                    android:fontFamily="@font/alte_haas_grotesk_regular"
+                    android:text="simple address"
+                    android:textColor="@color/grey"
+                    android:textSize="10sp"
+                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="25dp"
+                    android:fontFamily="@font/alte_haas_grotesk_regular"
+                    android:text="'#' reviews"
+                    android:textColor="@color/grey"
+                    android:textSize="10sp"
+                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/GeneralInfoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginTop="28dp">
+
+                <TextView
+                    android:id="@+id/txtGeneralInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="General Info"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_below="@id/txtGeneralInfo"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Business name, type, address, tel, picture, introduction"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <RelativeLayout
+                android:id="@+id/AdditionalInfoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="78dp">
+
+                <TextView
+                    android:id="@+id/txtAdditionalInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Additional Info"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_below="@id/txtAdditionalInfo"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Operation time, benefit, webpage, permits"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <RelativeLayout
+                android:id="@+id/PriceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp">
+
+                <TextView
+                    android:id="@+id/txtPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Price"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_below="@id/txtPrice"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Price for your service or item"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <RelativeLayout
+                android:id="@+id/ServiceKindLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp">
+
+                <TextView
+                    android:id="@+id/txtServiceKind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Service kind"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_below="@id/txtServiceKind"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Kind of service you provide"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <RelativeLayout
+                android:id="@+id/NotificationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp">
+
+                <TextView
+                    android:id="@+id/txtNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Notification"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_below="@id/txtNotification"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Send notification to your neighbour"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="74dp">
+
+                <TextView
+                    android:id="@+id/txtDeleteMerchant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Delete Merchant"
+                    android:textColor="@color/redPink"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorAccent"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
+
+</RelativeLayout>

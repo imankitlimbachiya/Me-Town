@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_normal_corner_grey_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/round_top_normal_grey_bg"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/louis_george_cafe"
+            android:text="Set Time"
+            android:textColor="@color/grey"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <!--<View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"
+            android:layout_marginLeft="1dp"
+            tools:ignore="RtlHardcoded" />-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/alte_haas_grotesk_bold"
+            android:gravity="center"
+            android:text="Start Time"
+            android:textColor="@color/grey"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:fontFamily="@font/louis_george_cafe"
+            android:background="@color/transparent"
+            android:hint="Enter time"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:inputType="time"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/grey"
+            android:textSize="18sp"
+            tools:ignore="Autofill,HardcodedText,TextFields" />
+
+        <!--<View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"
+            android:layout_marginRight="1dp"
+            tools:ignore="RtlHardcoded" />-->
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <!--<View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"
+            android:layout_marginLeft="1dp"
+            tools:ignore="RtlHardcoded" />-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/alte_haas_grotesk_bold"
+            android:gravity="center"
+            android:text="End Time"
+            android:textColor="@color/grey"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:fontFamily="@font/louis_george_cafe"
+            android:background="@color/transparent"
+            android:hint="Enter time"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:inputType="time"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/grey"
+            android:textSize="18sp"
+            tools:ignore="Autofill,HardcodedText,TextFields" />
+
+        <!--<View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"
+            android:layout_marginRight="1dp"
+            tools:ignore="RtlHardcoded" />-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:background="@drawable/round_bottom_left_normal_bg"
+            android:backgroundTint="#FFD98E"
+            android:gravity="center"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText,UnusedAttribute" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:background="@drawable/round_bottom_right_normal_bg"
+            android:backgroundTint="@color/veryLightSkyPink"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:gravity="center"
+            android:text="Done"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText,UnusedAttribute" />
+
+    </LinearLayout>
+
+</LinearLayout>

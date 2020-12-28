@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusableInTouchMode="true"
+    tools:context=".UI.PhoneVerifyActivity">
+
+    <RelativeLayout
+        android:id="@+id/TitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="UselessLeaf">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="12dp"
+            android:src="@drawable/left_arrow"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imgBack"
+            android:fontFamily="@font/louis_george_cafe"
+            android:text="Verify phone number"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/TitleLayout"
+        android:background="@color/grey" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/imgLayout"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/border_bg" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Sign up using your mobile number.\nYour number is securely stored and\nnot shared with anyone else"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    tools:ignore="HardcodedText,ObsoleteLayoutParam,RtlHardcoded" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edtEnterYourEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/edt_bg"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:hint="Enter your email"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+                android:singleLine="true"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/lightGrey"
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText" />
+
+            <EditText
+                android:id="@+id/edtEnterYourMobileNumber"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="22dp"
+                android:background="@drawable/edt_bg"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:hint="Enter your mobile number"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+                android:singleLine="true"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/lightGrey"
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText" />
+
+            <Button
+                android:id="@+id/btnSendCode"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/btn_bg"
+                android:backgroundTint="@color/veryLightSkyPink"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:text="Send Code"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText,UnusedAttribute" />
+
+            <EditText
+                android:id="@+id/edtEnterCode"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/edt_bg"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:hint="Enter code"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+                android:singleLine="true"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/lightGrey"
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText" />
+
+            <TextView
+                android:id="@+id/txtPrivacyPolicy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="60dp"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:text="Terms of use and Privacy Policy"
+                android:textColor="@color/lightGrey"
+                android:textSize="12sp"
+                tools:ignore="HardcodedText,ObsoleteLayoutParam,RtlHardcoded" />
+
+            <Button
+                android:id="@+id/btnAgreeToGetStarted"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_bg"
+                android:backgroundTint="@color/veryLightSkyPink"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:text="Agree to get started"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText,UnusedAttribute" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorAccent"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
+
+</RelativeLayout>

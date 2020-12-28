@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="84dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/round_normal_bg">
+
+    <ImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/circle_outer_border_bg"
+        tools:ignore="ContentDescription,RtlHardcoded" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_toRightOf="@id/imgProfile"
+        tools:ignore="RtlHardcoded">
+
+        <LinearLayout
+            android:id="@+id/TopLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alte_haas_grotesk_bold"
+                android:singleLine="true"
+                android:text="'Nickname'"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="@font/louis_george_cafe_bold"
+                android:singleLine="true"
+                android:text="'Address'"
+                android:textColor="@color/grey"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/louis_george_cafe_bold"
+                android:singleLine="true"
+                android:text="'Date'"
+                android:textColor="@color/grey"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TopLayout"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/louis_george_cafe"
+            android:singleLine="true"
+            android:text="'The comments goes here'"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/OptionLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        tools:ignore="RtlHardcoded">
+
+        <ImageView
+            android:id="@+id/imgOption"
+            android:layout_width="6dp"
+            android:layout_height="24dp"
+            android:src="@drawable/option"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/louis_george_cafe"
+        android:singleLine="true"
+        android:text="Reply"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+</RelativeLayout>

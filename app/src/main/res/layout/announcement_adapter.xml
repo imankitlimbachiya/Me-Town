@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="2dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/txtTimeAgo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:fontFamily="@font/louis_george_cafe"
+        android:text="0 Day Ago"
+        android:textColor="@color/grey"
+        android:textSize="11sp"
+        tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtTimeAgo"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/alte_haas_grotesk_regular"
+        android:text="Notification comes here"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey" />
+
+</RelativeLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/Negotiate"
+        android:icon="@drawable/negotiate"
+        android:title="Negotiate"
+        tools:ignore="HardcodedText" />
+
+    <item
+        android:id="@+id/FollowUser"
+        android:icon="@drawable/followed_user_tab"
+        android:title="Follow user"
+        tools:ignore="HardcodedText" />
+
+    <item
+        android:id="@+id/Favorite"
+        android:icon="@drawable/favourite_tab"
+        android:title="Favorite"
+        tools:ignore="HardcodedText" />
+
+    <item
+        android:id="@+id/Chat"
+        android:icon="@drawable/comment"
+        android:title="Chat"
+        tools:ignore="HardcodedText" />
+
+</menu>

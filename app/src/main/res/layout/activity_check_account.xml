@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:background="@color/white"
+    tools:context=".UI.CheckAccountActivity">
+
+    <RelativeLayout
+        android:id="@+id/TitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="UselessLeaf">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/left_arrow"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check account"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/louis_george_cafe"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imgBack"
+            tools:ignore="HardcodedText,RtlHardcoded"/>
+
+    </RelativeLayout>
+    
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/TitleLayout"
+        android:background="@color/grey"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:background="@drawable/profile_default"
+                android:layout_marginTop="39.5dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="'mobile number'"
+                android:textSize="16sp"
+                android:textColor="@color/darkSkyPink"
+                android:fontFamily="@font/alte_haas_grotesk_bold"
+                tools:ignore="HardcodedText,RtlHardcoded"
+                android:layout_gravity="center"
+                android:layout_marginTop="19dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You already have an account registered\n with this number."
+                android:textSize="15sp"
+                android:textColor="@color/darkGrey"
+                android:fontFamily="@font/louis_george_cafe"
+                tools:ignore="HardcodedText,RtlHardcoded"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="19dp"/>
+
+            <Button
+                android:id="@+id/btnAccountOwner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="I am the owner of this account"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textColor="@color/lightRedPink"
+                android:background="@drawable/btn_gradient_bg"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                tools:ignore="HardcodedText"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:id="@+id/txtCreateNewAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="create new account"
+                android:textSize="16sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                tools:ignore="HardcodedText,RtlHardcoded"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="20dp"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorAccent"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
+
+</RelativeLayout>

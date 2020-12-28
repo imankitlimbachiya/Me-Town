@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="132dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/round_before_full_corner_dark_bg"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/txtDateAndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/alte_haas_grotesk_bold"
+        android:text="Aug. 10. 12:20pm"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/txtDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/louis_george_cafe"
+        android:text="Sat"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtDateAndTime"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/louis_george_cafe"
+        android:text="'Address'"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/txtAddress"
+        android:background="@color/veryDarkSkyPink" />
+
+    <TextView
+        android:id="@+id/txtDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/louis_george_cafe"
+        android:text="Description"
+        android:textColor="@color/grey"
+        android:textSize="13sp"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/txtDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:fontFamily="@font/alte_haas_grotesk_regular"
+        android:text="Done"
+        android:textColor="@color/yellow"
+        android:textSize="14sp"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+</RelativeLayout>

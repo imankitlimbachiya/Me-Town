@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginBottom="2dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtCategoryName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:fontFamily="@font/alte_haas_grotesk_regular"
+        android:singleLine="true"
+        android:text="'category'"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        tools:ignore="HardcodedText" />
+
+    <RelativeLayout
+        android:id="@+id/MyPostLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/txtCategoryName"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="14dp"
+        tools:ignore="RtlHardcoded,UselessLeaf">
+
+        <ImageView
+            android:id="@+id/imgMyPost"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="2dp"
+            android:background="@drawable/circle_outer_border_bg"
+            tools:ignore="ContentDescription,RtlHardcoded,UselessLeaf" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@id/imgMyPost"
+            android:fontFamily="@font/louis_george_cafe"
+            android:singleLine="true"
+            android:text="'details'"
+            android:textColor="@color/grey"
+            android:textSize="11sp"
+            tools:ignore="HardcodedText,SmallSp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="2dp"
+            android:layout_toRightOf="@id/imgMyPost"
+            android:fontFamily="@font/louis_george_cafe"
+            android:singleLine="true"
+            android:text="0 Day Ago"
+            android:textColor="@color/grey"
+            android:textSize="11sp"
+            tools:ignore="HardcodedText,SmallSp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="24dp"
+        android:background="@color/grey" />
+
+</RelativeLayout>

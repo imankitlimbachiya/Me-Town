@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+// apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
+
+    defaultConfig {
+        applicationId "com.app.metown"
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // Google Material SDK
+    implementation "com.google.android.material:material:1.2.1"
+    implementation 'org.jetbrains:annotations-java5:15.0'
+
+    // Volley Request SDK
+    implementation 'com.android.volley:volley:1.1.1'
+
+    // CircleImageView SDK
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // EasyPopup SDK
+    implementation 'com.github.zyyoona7:EasyPopup:1.1.2'
+
+    // Google Map SDK
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
+    //Google Location SDK
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+
+    // Firebase SDK
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
+
+    // Facebook SDK
+    implementation 'com.facebook.android:facebook-login:5.15.3'
+
+    // Google Login SDK
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    // Glide SDK
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+}

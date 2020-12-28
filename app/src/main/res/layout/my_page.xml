@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        tools:ignore="UselessParent">
+
+        <RelativeLayout
+            android:id="@+id/TitleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            tools:ignore="UselessLeaf">
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:padding="12dp"
+                android:src="@drawable/left_arrow"
+                tools:ignore="ContentDescription,RtlHardcoded" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/imgBack"
+                android:fontFamily="@font/louis_george_cafe"
+                android:text="MeTown"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/TitleLayout"
+            android:background="@color/grey" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view">
+
+            <LinearLayout
+                android:id="@+id/ResponseLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:ignore="UselessLeaf">
+
+                <RelativeLayout
+                    android:layout_width="58dp"
+                    android:layout_height="58dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/profile_default" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:src="@drawable/camera"
+                        tools:ignore="RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/louis_george_cafe_bold"
+                    android:text="nickname"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <TextView
+                    android:id="@+id/txtSeeProfile"
+                    android:layout_width="70dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/round_normal_corner_dark_bg"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:gravity="center"
+                    android:text="See Profile"
+                    android:textColor="@color/darkGrey"
+                    android:textSize="10sp"
+                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/lightWhite" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="28dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Credit plant"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+                <RelativeLayout
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="28dp">
+
+                    <TextView
+                        android:id="@+id/txtScaleNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:fontFamily="@font/alte_haas_grotesk_regular"
+                        android:text="53cm"
+                        android:textColor="@color/black"
+                        android:textSize="9sp"
+                        tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+                    <ImageView
+                        android:layout_width="230dp"
+                        android:layout_height="10dp"
+                        android:layout_marginLeft="-4dp"
+                        android:layout_marginTop="36dp"
+                        android:layout_toRightOf="@id/imgScaleIndicator"
+                        android:src="@drawable/scale"
+                        tools:ignore="ContentDescription,RtlHardcoded" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgScaleIndicator"
+                        android:layout_width="53dp"
+                        android:layout_height="53dp"
+                        android:src="@drawable/scale_indicator" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/lightWhite" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="114dp"
+                    android:orientation="horizontal"
+                    tools:ignore="DisableBaselineAlignment">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/MySaleLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgMySale"
+                                android:layout_width="43dp"
+                                android:layout_height="43dp"
+                                android:src="@drawable/my_sale" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/alte_haas_grotesk_regular"
+                                android:text="My sales"
+                                android:textColor="@color/black"
+                                android:textSize="8sp"
+                                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/MyPurchaseLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:layout_width="43dp"
+                                android:layout_height="43dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/my_purchase" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/alte_haas_grotesk_regular"
+                                android:text="My Purchases"
+                                android:textColor="@color/black"
+                                android:textSize="8sp"
+                                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/FavouriteLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:layout_width="43dp"
+                                android:layout_height="43dp"
+                                android:src="@drawable/favourite" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/alte_haas_grotesk_regular"
+                                android:text="Favourites"
+                                android:textColor="@color/black"
+                                android:textSize="8sp"
+                                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/lightWhite" />
+
+                <RelativeLayout
+                    android:id="@+id/MerchantMenuLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgMerchantMenu"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/merchant_menu"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgMerchantMenu"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Merchant menu"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/SetRangeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgRangeLocation"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/range_location"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgRangeLocation"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Set range"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/VerifyLocationLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgVerifyLocation"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/verify_location"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgVerifyLocation"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Verify location"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/KeywordAlertLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgKeywordAlert"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/keyword_alert"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgKeywordAlert"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Keyword alerts"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/FollowedUserLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgFollowedUser"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/followed_user"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgFollowedUser"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Followed users"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/lightWhite" />
+
+                <RelativeLayout
+                    android:id="@+id/MyCommunityPostCommentLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgMyCommunityPostComment"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/my_community_post_comment"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgMyCommunityPostComment"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="My community posts &amp; comments"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/FollowedCommunityKeywordLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgFollowedCommunityKeyword"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/followed_community_keyword"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgFollowedCommunityKeyword"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Followed community keywords"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/lightWhite" />
+
+                <RelativeLayout
+                    android:id="@+id/InviteFriendLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgInviteFriend"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/invite_friend"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgInviteFriend"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Invite friends"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgShare"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/share"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgShare"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Share MeTown"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/AnnouncementLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgAnnouncement"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/announcement"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgAnnouncement"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Announcement"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/HelpCenterLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp">
+
+                    <ImageView
+                        android:id="@+id/imgHelpCenter"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/help_center"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgHelpCenter"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Help center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/SettingLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="15dp">
+
+                    <ImageView
+                        android:id="@+id/imgSetting"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/setting"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="18dp"
+                        android:layout_toRightOf="@id/imgSetting"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="Settings"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorAccent"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone"
+            tools:ignore="UnusedAttribute" />
+
+    </RelativeLayout>
+
+</FrameLayout>

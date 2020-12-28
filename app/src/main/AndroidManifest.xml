@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.app.metown">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name=".VolleySupport.AppController"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".UI.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".UI.HomeActivity" />
+        <activity android:name=".UI.HomeSecondActivity" />
+        <activity android:name=".UI.MainActivity" />
+        <activity android:name=".UI.PhoneVerifyActivity" />
+        <activity android:name=".UI.CheckAccountActivity" />
+        <activity android:name=".UI.InvitationCodeActivity" />
+        <activity android:name=".UI.NickNameActivity" />
+        <activity android:name=".UI.SetLocationActivity" />
+        <activity android:name=".UI.FilterActivity" />
+        <activity android:name=".UI.NotificationActivity" />
+        <activity android:name=".UI.KeywordAlertActivity" />
+        <activity android:name=".UI.SearchAroundYourLocationActivity" />
+        <activity android:name=".UI.StoreAndServiceNearYouActivity" />
+        <activity android:name=".UI.StoreAndServiceSearchActivity" />
+        <activity android:name=".UI.RegisterMyBusinessActivity" />
+        <activity android:name=".UI.MySaleActivity" />
+        <activity android:name=".UI.SelectBuyerActivity" />
+        <activity android:name=".UI.ReviewByMeActivity" />
+        <activity android:name=".UI.LeaveReviewActivity" />
+        <activity android:name=".UI.PostForSaleActivity" />
+        <activity android:name=".UI.PostForStoreAndServiceActivity" />
+        <activity android:name=".UI.PostInMyCommunityActivity" />
+        <activity android:name=".UI.PostHiringHelperActivity" />
+        <activity android:name=".UI.ComplimentActivity" />
+        <activity android:name=".UI.DisappointmentActivity" />
+        <activity android:name=".UI.MyPurchaseActivity" />
+        <activity android:name=".UI.ReviewActivity" />
+        <activity android:name=".UI.ReceivedCouponActivity" />
+        <activity android:name=".UI.OrganiseMeetUpActivity" />
+        <activity android:name=".UI.ReservationScheduleActivity" />
+        <activity android:name=".UI.ReportActivity" />
+        <activity android:name=".UI.ReportOtherReasonActivity" />
+        <activity android:name=".UI.PostForSaleCalculationActivity" />
+        <activity android:name=".UI.HiringHelperActivity" />
+        <activity android:name=".UI.CheckSiteMapActivity" />
+        <activity android:name=".UI.MyCommunityActivity" />
+        <activity android:name=".UI.TopicListActivity" />
+        <activity android:name=".UI.AddTopicActivity" />
+        <activity android:name=".UI.BoostPostActivity" />
+        <activity android:name=".UI.ReviewAllActivity" />
+        <activity android:name=".UI.WriteReviewReplyActivity" />
+        <activity android:name=".UI.AchievementActivity" />
+        <activity android:name=".UI.ChatCommercialActivity" />
+        <activity android:name=".UI.LocationActivity" />
+        <activity android:name=".UI.ReviewFromBuyerAndSellerActivity" />
+        <activity android:name=".UI.FavouriteActivity" />
+        <activity android:name=".UI.AnnouncementActivity" />
+        <activity android:name=".UI.SettingActivity" />
+        <activity android:name=".UI.OtherSettingActivity" />
+        <activity android:name=".UI.ChangePhoneNumberActivity" />
+        <activity android:name=".UI.ChangeTownPostActivity" />
+        <activity android:name=".UI.InquireInformationActivity" />
+        <activity android:name=".UI.InquireActivity" />
+        <activity android:name=".UI.InviteFriendActivity" />
+        <activity android:name=".UI.CouponBoxActivity" />
+        <activity android:name=".UI.CouponActivity" />
+        <activity android:name=".UI.FAQActivity" />
+        <activity android:name=".UI.FAQDetailActivity" />
+        <activity android:name=".UI.ProfileActivity" />
+        <activity android:name=".UI.ProfileEditActivity" />
+        <activity android:name=".UI.RegisterMerchantActivity" />
+        <activity
+            android:name=".UI.RegisterMerchantMenuActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".UI.MerchantMenuActivity" />
+        <activity android:name=".UI.FollowerActivity" />
+        <activity android:name=".UI.HelpCenterActivity" />
+        <activity android:name=".UI.FeedbackActivity" />
+        <activity
+            android:name=".UI.AdditionalInfoActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".UI.SelectAdvertisingPostActivity" />
+        <activity android:name=".UI.SelectAdvertisingPostDetailActivity" />
+        <activity android:name=".UI.ManageBusinessInfoActivity" />
+        <activity android:name=".UI.PriceActivity" />
+        <activity android:name=".UI.AddPriceActivity" />
+        <activity android:name=".UI.EditPriceActivity" />
+        <activity android:name=".UI.AdvertisementActivity" />
+        <activity android:name=".UI.SelectAdvertisingCategoryActivity" />
+        <activity android:name=".UI.ServiceKindActivity" />
+        <activity android:name=".UI.MyServiceTagActivity" />
+        <activity android:name=".UI.AddNewCategoryActivity" />
+        <activity android:name=".UI.NotificationNewsActivity" />
+        <activity android:name=".UI.PaymentActivity" />
+        <activity android:name=".UI.BusinessInfoActivity" />
+        <activity android:name=".UI.EmailVerifyActivity" />
+        <activity android:name=".UI.UserItemReferenceActivity" />
+        <activity android:name=".UI.SetRangeActivity" />
+        <activity android:name=".UI.LocationVerifyActivity" />
+        <activity android:name=".UI.ProfileOfStoreActivity" />
+
+        <!--The API key for Google Maps-based APIs is defined as a string resource.
+        (See the file "res/values/google_maps_api.xml").
+        Note that the API key is linked to the encryption key used to sign the APK.
+        You need a different API key for each encryption key, including the release key that is used
+        to sign the APK for publishing.You can define the keys for the debug and release targets in src/debug/ and src/release/.-->
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <!--<meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/app_logo_without_name" />
+
+        <service android:name=".notification.MyFireBaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>-->
+
+    </application>
+
+</manifest>

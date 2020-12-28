@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusableInTouchMode="true"
+    tools:context=".UI.PostForSaleCalculationActivity">
+
+    <RelativeLayout
+        android:id="@+id/TitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="UselessLeaf">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/left_arrow"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imgBack"
+            android:fontFamily="@font/louis_george_cafe"
+            android:text="Post For Sale"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/txtSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:fontFamily="@font/alte_haas_grotesk_bold"
+            android:text="Submit"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/TitleLayout"
+        android:background="@color/grey" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view"
+        android:layout_above="@id/BottomLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+            <TextView
+                android:id="@+id/txtEnterAmount"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="60dp"
+                android:background="@color/transparent"
+                android:fontFamily="@font/louis_george_cafe"
+                android:hint="Enter amount"
+                android:singleLine="true"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:textSize="15sp"
+                tools:ignore="Autofill,HardcodedText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:background="@color/transparent"
+                android:fontFamily="@font/louis_george_cafe"
+                android:singleLine="true"
+                android:text="'suggesting price'"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                tools:ignore="Autofill,HardcodedText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="35dp"
+                android:background="@color/transparent"
+                android:fontFamily="@font/louis_george_cafe"
+                android:singleLine="true"
+                android:text="Original price '# price'"
+                android:textColor="@color/grey"
+                android:textSize="15sp"
+                tools:ignore="Autofill,HardcodedText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="60dp"
+                android:background="@color/transparent"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:gravity="center"
+                android:text="You can make only one offer for each post\nso suggest a best price!"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:ignore="Autofill,HardcodedText" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="45dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:id="@+id/txtReadBeforeMakingOffer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Read before making an offer"
+                    android:textSize="12sp"
+                    android:textColor="@color/grey"
+                    android:fontFamily="@font/louis_george_cafe"
+                    tools:ignore="HardcodedText"/>
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/right_arrow_grey"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/BottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        tools:ignore="DisableBaselineAlignment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            tools:ignore="InefficientWeight,UselessLeaf">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                tools:ignore="InefficientWeight,NestedWeights,UselessLeaf">
+
+                <Button
+                    android:id="@+id/btnSeven"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="7"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+                <Button
+                    android:id="@+id/btnEight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="8"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+                <Button
+                    android:id="@+id/btnNine"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="9"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                tools:ignore="InefficientWeight,UselessLeaf">
+
+                <Button
+                    android:id="@+id/btnFour"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="4"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+                <Button
+                    android:id="@+id/btnFive"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="5"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+                <Button
+                    android:id="@+id/btnSix"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="6"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                tools:ignore="InefficientWeight,UselessLeaf">
+
+                <Button
+                    android:id="@+id/btnOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="1"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+                <Button
+                    android:id="@+id/btnTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="2"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+                <Button
+                    android:id="@+id/btnThree"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="3"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                tools:ignore="InefficientWeight,UselessLeaf">
+
+                <Button
+                    android:id="@+id/btnDot"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="●"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+                <Button
+                    android:id="@+id/btnZero"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="0"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+                <Button
+                    android:id="@+id/btnDoubleZero"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_dark_bg"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="00"
+                    android:textColor="#E7E8E9"
+                    android:textSize="17sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="90dp"
+            android:layout_height="220dp"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+            <Button
+                android:id="@+id/btnBS"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_dark_bg"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="BS"
+                android:textColor="#E7E8E9"
+                android:textSize="17sp"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btnCLR"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_dark_bg"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="CLR"
+                android:textColor="#E7E8E9"
+                android:textSize="17sp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorAccent"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
+
+</RelativeLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="84dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        tools:ignore="DisableBaselineAlignment,UselessParent">
+
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="14dp"
+            tools:ignore="RtlHardcoded,UselessLeaf"
+            android:background="@drawable/circle_outer_border_bg"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            tools:ignore="InefficientWeight,RtlHardcoded,UselessLeaf">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="'username'"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:fontFamily="@font/alte_haas_grotesk_bold"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="'Address'"
+                    android:textSize="10sp"
+                    android:textColor="@color/grey"
+                    android:singleLine="true"
+                    android:fontFamily="@font/louis_george_cafe_bold"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="'Date'"
+                    android:textSize="10sp"
+                    android:textColor="@color/grey"
+                    android:singleLine="true"
+                    android:fontFamily="@font/louis_george_cafe"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Can we meet in starbucks a.."
+                android:textSize="17sp"
+                android:textColor="@color/veryDarkGrey"
+                android:singleLine="true"
+                android:fontFamily="@font/louis_george_cafe"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="14dp"
+            tools:ignore="RtlHardcoded,UselessLeaf"
+            android:background="@drawable/round_normal_corner_dark_bg"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

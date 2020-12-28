@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/txtJobKeyword"
+        android:layout_width="78dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:fontFamily="@font/alte_haas_grotesk_bold"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="Car driver"
+        android:textColor="@color/darkGrey"
+        android:textSize="15sp"
+        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+
+    <TextView
+        android:id="@+id/txtSelect"
+        android:layout_width="78dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/round_very_medium_bg"
+        android:backgroundTint="@color/orange"
+        android:fontFamily="@font/alte_haas_grotesk_bold"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="Select"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+
+</RelativeLayout>

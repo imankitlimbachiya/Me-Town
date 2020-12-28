@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        tools:ignore="UselessParent">
+
+        <RelativeLayout
+            android:id="@+id/TitleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            tools:ignore="UselessLeaf">
+
+            <TextView
+                android:id="@+id/txtLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="22dp"
+                android:fontFamily="@font/alte_haas_grotesk_bold"
+                android:text="Location"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/txtLocation"
+                android:src="@drawable/down_arrow"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:padding="12dp"
+                tools:ignore="ContentDescription,RtlHardcoded"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                tools:ignore="RtlHardcoded">
+
+                <ImageView
+                    android:id="@+id/imgSearch"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_marginRight="22dp"
+                    android:src="@drawable/search"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+
+                <ImageView
+                    android:id="@+id/imgFilter"
+                    android:layout_width="22dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/filter"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+
+                <ImageView
+                    android:id="@+id/imgAlert"
+                    android:layout_width="19dp"
+                    android:layout_height="21dp"
+                    android:src="@drawable/alert"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/TabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/TitleLayout"
+            android:orientation="horizontal"
+            tools:ignore="DisableBaselineAlignment">
+
+            <LinearLayout
+                android:id="@+id/SecondHandLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtSecondHand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/alte_haas_grotesk_bold"
+                    android:text="Second hand"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <View
+                    android:id="@+id/SecondHandView"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8.5dp"
+                    android:background="@color/black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/CommunityLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtCommunity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/alte_haas_grotesk_bold"
+                    android:text="Community"
+                    android:textColor="@color/grey"
+                    android:textSize="13sp"
+                    tools:ignore="HardcodedText,RtlHardcoded" />
+
+                <View
+                    android:id="@+id/CommunityView"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8.5dp"
+                    android:background="@color/grey" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/TabLayout">
+
+            <LinearLayout
+                android:id="@+id/ResponseLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:ignore="UselessLeaf">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/SecondHandItemView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/CommunityTabView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="175dp"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginBottom="17dp"
+                        android:background="@drawable/round_medium_corner_bg">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="28dp"
+                            android:layout_marginRight="28dp"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginBottom="15dp"
+                            android:fontFamily="@font/louis_george_cafe"
+                            android:text="We are prepaing to\nopen for this 'location'"
+                            android:textColor="@color/skyPink"
+                            android:textSize="20sp"
+                            tools:ignore="HardcodedText,RtlHardcoded" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="28dp"
+                            android:layout_marginRight="28dp"
+                            android:fontFamily="@font/louis_george_cafe"
+                            android:text="community is a place where\nI can communicate with my\nneighbors around my neighborhood"
+                            android:textColor="@color/veryDarkGrey"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText,RtlHardcoded" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtWonderCommunity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="28dp"
+                        android:layout_marginRight="28dp"
+                        android:fontFamily="@font/alte_haas_grotesk_regular"
+                        android:text="Are you still wondering about community?"
+                        android:textColor="@color/yellow"
+                        android:textSize="12sp"
+                        android:gravity="right"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lightGrey"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"/>
+
+                    <Button
+                        android:id="@+id/btnApply"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="Apply"
+                        android:textAllCaps="false"
+                        android:textSize="18sp"
+                        android:textColor="@color/lightRedPink"
+                        android:background="@drawable/btn_gradient_bg"
+                        android:fontFamily="@font/alte_haas_grotesk_regular"
+                        tools:ignore="HardcodedText"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginBottom="22dp"
+                        android:fontFamily="@font/alte_haas_grotesk_regular"
+                        android:text="Apply to open the community for my location!"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="'number of people' neighbours are\nlooking forward to open the community!\nDon't hesitate to apply together\nwith them!"
+                        android:textColor="@color/veryDarkGrey"
+                        android:textSize="16sp"
+                        tools:ignore="HardcodedText,RtlHardcoded" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:background="@color/lightWhite"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/CommunityPostView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/colorAccent"
+            android:visibility="gone"
+            tools:ignore="UnusedAttribute" />
+
+    </RelativeLayout>
+
+</FrameLayout>

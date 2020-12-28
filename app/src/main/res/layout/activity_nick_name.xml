@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:background="@color/white"
+    tools:context=".UI.NickNameActivity">
+
+    <RelativeLayout
+        android:id="@+id/TitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="UselessLeaf">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/left_arrow"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/louis_george_cafe"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imgBack"
+            tools:ignore="HardcodedText,RtlHardcoded"/>
+
+    </RelativeLayout>
+    
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/TitleLayout"
+        android:background="@color/grey"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view"
+        android:layout_above="@id/btnDone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+            <RelativeLayout
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="39.5dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/profile_default"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:background="@drawable/camera"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    tools:ignore="RtlHardcoded" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="37dp"
+                android:layout_marginRight="37dp"
+                android:layout_marginTop="39.5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nick Name"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/louis_george_cafe"
+                    tools:ignore="HardcodedText,RtlHardcoded"/>
+                
+                <EditText
+                    android:id="@+id/edtNickName"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:layout_marginTop="5dp"
+                    android:inputType="text"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColorHint="@color/black"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    tools:ignore="Autofill,LabelFor" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="MeTown is trust based community application.\nPlease provide us your\nNickname and profile pictures."
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/louis_george_cafe"
+                tools:ignore="HardcodedText,RtlHardcoded"
+                android:layout_marginLeft="27dp"
+                android:layout_marginRight="27dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Done"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textColor="@color/lightRedPink"
+        android:background="@drawable/btn_gradient_bg"
+        android:fontFamily="@font/alte_haas_grotesk_regular"
+        tools:ignore="HardcodedText"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:layout_alignParentBottom="true"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorAccent"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
+
+</RelativeLayout>

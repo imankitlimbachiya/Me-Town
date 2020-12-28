@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginTop="20dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:ignore="DisableBaselineAlignment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/round_normal_corner_bg"
+            tools:ignore="RtlHardcoded" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            tools:ignore="InefficientWeight,RtlHardcoded,RtlSymmetry">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:singleLine="true"
+                android:text="store name"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/louis_george_cafe"
+                android:singleLine="true"
+                android:text="address / time posted"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/louis_george_cafe"
+                android:singleLine="true"
+                android:text="Item price range"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                tools:ignore="RtlSymmetry">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="7dp"
+                    tools:ignore="RtlSymmetry,UseCompoundDrawables">
+
+                    <ImageView
+                        android:id="@+id/imgComment"
+                        android:layout_width="15dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/review"
+                        tools:ignore="ContentDescription,RtlHardcoded" />
+
+                    <TextView
+                        android:id="@+id/txtReviewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:singleLine="true"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        android:layout_marginLeft="5dp"
+                        tools:ignore="HardcodedText,SmallSp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="7dp"
+                    tools:ignore="RtlSymmetry,UseCompoundDrawables">
+
+                    <ImageView
+                        android:id="@+id/imgLike"
+                        android:layout_width="15dp"
+                        android:layout_height="13dp"
+                        android:src="@drawable/like"
+                        tools:ignore="ContentDescription,RtlHardcoded" />
+
+                    <TextView
+                        android:id="@+id/txtLikeCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:singleLine="true"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        android:layout_marginLeft="4dp"
+                        tools:ignore="HardcodedText,SmallSp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btnCommercial"
+                android:layout_width="80dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/btn_gradient_bg"
+                android:fontFamily="@font/segoe_ui"
+                android:text="Commercial"
+                android:textAllCaps="false"
+                android:textColor="@color/lightRedPink"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_marginTop="19dp"/>
+
+</LinearLayout>

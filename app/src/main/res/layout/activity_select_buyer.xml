@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:background="@color/white"
+    tools:context=".UI.SelectBuyerActivity">
+
+    <RelativeLayout
+        android:id="@+id/TitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="UselessLeaf">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/left_arrow"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Buyer"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/louis_george_cafe"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imgBack"
+            tools:ignore="HardcodedText,RtlHardcoded"/>
+
+    </RelativeLayout>
+    
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/TitleLayout"
+        android:background="@color/grey"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <RelativeLayout
+                    android:id="@+id/Layout"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/round_normal_corner_bg"
+                    tools:ignore="RtlHardcoded" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_toRightOf="@id/Layout"
+                    tools:ignore="RtlHardcoded">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Post"
+                        android:textSize="12sp"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/louis_george_cafe"
+                        tools:ignore="HardcodedText"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="Item name"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/louis_george_cafe"
+                        tools:ignore="HardcodedText"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/Profile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/profile_default"
+                    tools:ignore="RtlHardcoded" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_toRightOf="@id/Profile"
+                    tools:ignore="RtlHardcoded">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="'nick name'"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/louis_george_cafe"
+                        tools:ignore="HardcodedText"/>
+
+                    <LinearLayout
+                        android:id="@+id/ReviewCompletedLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Review Completed"
+                            android:textSize="12sp"
+                            android:textColor="@color/grey"
+                            android:fontFamily="@font/louis_george_cafe"
+                            tools:ignore="HardcodedText"/>
+
+                        <ImageView
+                            android:layout_width="6dp"
+                            android:layout_height="12dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="2dp"
+                            android:src="@drawable/right_arrow_grey"
+                            tools:ignore="ContentDescription,RtlHardcoded" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"/>
+
+            <RelativeLayout
+                android:id="@+id/LeaveReviewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/profile_default"
+                    tools:ignore="RtlHardcoded" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_toRightOf="@id/profile"
+                    tools:ignore="RtlHardcoded">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="'nick name'"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/louis_george_cafe"
+                        tools:ignore="HardcodedText"/>
+
+                    <ImageView
+                        android:layout_width="6dp"
+                        android:layout_height="12dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/right_arrow_grey"
+                        tools:ignore="ContentDescription,RtlHardcoded" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"/>
+
+            <Button
+                android:id="@+id/btnFindBuyerFromRecentChat"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:text="Find buyer from recent chats"
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                android:textColor="@color/lightWhite"
+                android:background="@drawable/gradient_ltr"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:layout_margin="35dp"
+                tools:ignore="HardcodedText"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnMaybeLater"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:text="Maybe later"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        android:textColor="@color/lightWhite"
+        android:background="@drawable/round_top_medium_gradient_ltr"
+        android:fontFamily="@font/alte_haas_grotesk_regular"
+        android:layout_alignParentBottom="true"
+        tools:ignore="HardcodedText"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorAccent"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute" />
+
+</RelativeLayout>
