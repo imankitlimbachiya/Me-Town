@@ -64,8 +64,7 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
     SupportMapFragment supportMapFragment;
     int PERMISSION_ID = 44;
     FusedLocationProviderClient mFusedLocationClient;
-    String lat = "0", lng = "0";
-    String LocationName="Location 2",Range="100";
+    String lat = "0", lng = "0", LocationName = "Location 2", Range = "100";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,15 +91,12 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
 
         imgBack.setOnClickListener(this);
         btnAdd.setOnClickListener(this);
-        mFusedLocationClient
-                = LocationServices
-                .getFusedLocationProviderClient(this);
-        getLastLocation();
 
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        getLastLocation();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
-
     }
 
     @Override
@@ -108,18 +104,14 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         mMap.getUiSettings().setMapToolbarEnabled(false);
-
     }
-
 
     @SuppressLint("MissingPermission")
     private void getLastLocation() {
         // check if permissions are given
         if (checkPermissions()) {
-
             // check if location is enabled
             if (isLocationEnabled()) {
-
                 // getting last
                 // location from
                 // FusedLocationClient
@@ -134,14 +126,11 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
                         } else {
                             lat = String.valueOf(location.getLatitude());
                             lng = String.valueOf(location.getLongitude());
-                            Log.e("lat",lat+','+lng);
-
                         }
                     }
                 });
             } else {
                 Toast.makeText(this, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
-
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
@@ -152,9 +141,7 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
-    private LocationCallback
-            mLocationCallback
-            = new LocationCallback() {
+    private LocationCallback mLocationCallback = new LocationCallback() {
 
         @Override
         public void onLocationResult(
@@ -162,9 +149,6 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
             Location mLastLocation = locationResult.getLastLocation();
             lat = String.valueOf(mLastLocation.getLatitude());
             lng = String.valueOf(mLastLocation.getLongitude());
-
-            Log.e("lat",lat+','+lng);
-
         }
     };
 
@@ -182,23 +166,11 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
         // setting LocationRequest
         // on FusedLocationClient
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
 
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-
-        // If we want background location
-        // on Android 10.0 and higher,
-        // use:
-        /* ActivityCompat
-                .checkSelfPermission(
-                    this,
-                    Manifest.permission
-                        .ACCESS_BACKGROUND_LOCATION)
-            == PackageManager.PERMISSION_GRANTED
-        */
     }
 
     private void requestPermissions() {
@@ -207,10 +179,8 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
 
     private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
-
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -221,8 +191,6 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
                 break;
             case R.id.btnAdd:
                 SetLocationApi();
-                Intent intent = new Intent(mContext, LocationVerifyActivity.class);
-                startActivity(intent);
                 break;
         }
     }
@@ -235,31 +203,26 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
                     @Override
                     public void onResponse(final String response) {
                         try {
-                              progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().SAVE_LOCATION + response);
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
-
-                                Log.e("RESPONSE", "" + APIConstant.getInstance().GET_SALE_LIST + response);
-                                Toast.makeText(SetRangeActivity.this, "Location Saved", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Location Saved", Toast.LENGTH_LONG).show();
                                 finish();
-                            }else{
+                            } else {
                                 String msg = JsonMain.getString("msg");
-
                                 Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
-                                Log.e("msg", " " + msg);
                             }
-
-
                         } catch (Exception e) {
-                        progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
-                         progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 }) {
 
@@ -276,19 +239,11 @@ public class SetRangeActivity extends AppCompatActivity implements OnMapReadyCal
                 return params;
             }
 
-            /*protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("mobile", MobileNumber);
-                params.put("type", Type);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().CHANGE_MOBILE + params);
-                return params;
-            }*/
-
             @Override
             public byte[] getBody() throws AuthFailureError {
                 String params = "{\"location_name\":\"" + LocationName + "\",\"lats\":\"" + lat +
                         "\",\"longs\":\"" + lng + "\",\"user_range\":\"" + Range + "\"}";
-                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_SALE_LIST + params);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().SAVE_LOCATION + params);
                 return params.getBytes();
             }
         };

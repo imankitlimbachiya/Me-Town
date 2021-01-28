@@ -11,8 +11,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -21,8 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Price"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/txtEdit"
@@ -45,8 +42,7 @@
             android:fontFamily="@font/alte_haas_grotesk_bold"
             android:text="Edit"
             android:textColor="@color/black"
-            android:textSize="13sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="13sp" />
 
     </RelativeLayout>
 
@@ -65,61 +61,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                tools:ignore="UselessParent">
-
-                <TextView
-                    android:id="@+id/txtMain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/round_normal_bg"
-                    android:backgroundTint="@color/orange"
-                    android:fontFamily="@font/alte_haas_grotesk_bold"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="2dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="2dp"
-                    android:text="Main"
-                    android:textColor="@color/lightWhite"
-                    android:textSize="10sp"
-                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp,UnusedAttribute" />
-
-                <TextView
-                    android:id="@+id/txtItemName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_toRightOf="@id/txtMain"
-                    android:fontFamily="@font/alte_haas_grotesk_regular"
-                    android:text="'Item name'"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
-
-                <ImageView
-                    android:id="@+id/imgDelete"
-                    android:layout_width="22dp"
-                    android:layout_height="28dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="25dp"
-                    android:src="@drawable/delete"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
-
-            </RelativeLayout>
+            android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/grey">
+                android:textColorHint="@color/grey"
+                android:layout_marginTop="20dp">
 
                 <EditText
                     android:id="@+id/edtPriceHere"
@@ -139,8 +87,7 @@
                     android:singleLine="true"
                     android:textColor="@color/grey"
                     android:textColorHint="@color/grey"
-                    android:textSize="15sp"
-                    tools:ignore="Autofill,HardcodedText" />
+                    android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,18 +95,22 @@
                 android:id="@+id/btnAddPrice"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:text="Add price"
-                android:textAllCaps="false"
-                android:textSize="19sp"
-                android:textColor="@color/white"
-                android:background="@drawable/gradient_ltr"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                tools:ignore="HardcodedText"
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/gradient_ltr"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:text="Add price"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="19sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/PriceView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -173,7 +124,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

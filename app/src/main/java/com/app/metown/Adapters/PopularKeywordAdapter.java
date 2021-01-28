@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 import com.app.metown.UI.StoreAndServiceSearchActivity;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class PopularKeywordAdapter extends RecyclerView.Adapter<PopularKeywordAdapter.MyViewHolder> {
 
     Context mContext;
-    ArrayList<CategoryMainModel> arrayList;
+    ArrayList<StaticCategoryModel> arrayList;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -32,7 +32,7 @@ public class PopularKeywordAdapter extends RecyclerView.Adapter<PopularKeywordAd
         }
     }
 
-    public PopularKeywordAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+    public PopularKeywordAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
     }
@@ -47,7 +47,7 @@ public class PopularKeywordAdapter extends RecyclerView.Adapter<PopularKeywordAd
 
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        CategoryMainModel categoryMainModel = arrayList.get(position);
+        StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
         // holder.btnSelect.setText("  " + categoryModel.getCategoryName());
 

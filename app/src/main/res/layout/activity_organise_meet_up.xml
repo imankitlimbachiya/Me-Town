@@ -11,18 +11,16 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/left_arrow"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            tools:ignore="ContentDescription,RtlHardcoded"/>
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Organise a Meet up"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/txtDone"
@@ -45,8 +42,7 @@
             android:fontFamily="@font/alte_haas_grotesk_bold"
             android:text="Done"
             android:textColor="@color/black"
-            android:textSize="13sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="13sp" />
 
     </RelativeLayout>
 
@@ -65,8 +61,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -81,10 +76,9 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Appointment time"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/txtDateAndTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -94,8 +88,24 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="'date and time'"
                     android:textColor="@color/grey"
-                    android:textSize="16sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="16sp" />-->
+
+                <EditText
+                    android:id="@+id/edtDateAndTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/txtAppointmentTime"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:hint="'date and time'"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
 
@@ -117,32 +127,36 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Alarm"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
                 <Switch
+                    android:id="@+id/AlarmSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="15dp"
-                    android:thumbTint="#9464B2"
+                    android:layout_marginRight="10dp"
                     android:checked="false"
                     android:theme="@style/SCBSwitch"
-                    tools:ignore="RtlHardcoded,UnusedAttribute,UseSwitchCompatOrMaterialXml" />
+                    android:thumbTint="#9464B2" />
 
-                <TextView
-                    android:id="@+id/txtMinuteBefore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <EditText
+                    android:id="@+id/edtMinuteBefore"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
                     android:layout_below="@id/txtAlarm"
+                    android:layout_toLeftOf="@id/AlarmSwitch"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/transparent"
                     android:fontFamily="@font/louis_george_cafe"
-                    android:text="'#' minutes before"
-                    android:textColor="@color/grey"
-                    android:textSize="16sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:hint="'#' minutes before"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
 
@@ -164,8 +178,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Even you set a alert, other user's alert will not change."
                     android:textColor="@color/grey"
-                    android:textSize="13sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/txtMeetUpAddress"
@@ -173,12 +186,28 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/txtSetAlert"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="35dp"
+                    android:layout_marginTop="30dp"
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Meet up address"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtMeetUpAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/txtMeetUpAddress"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:hint=""
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
 
@@ -200,8 +229,24 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Name"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/txtName"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:hint=""
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
 
@@ -223,8 +268,24 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Contact"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/txtContact"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:hint=""
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
 
@@ -246,15 +307,26 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Details"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/txtDetails"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:hint=""
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
-
-            <!--<View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey" />-->
 
         </LinearLayout>
 
@@ -268,7 +340,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

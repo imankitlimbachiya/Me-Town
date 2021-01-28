@@ -1,10 +1,10 @@
 package com.app.metown.Models;
 
-public class CategoryMainModel {
+public class StaticCategoryModel {
 
     String CategoryID, CategoryName;
 
-    public CategoryMainModel(String CategoryID, String CategoryName) {
+    public StaticCategoryModel(String CategoryID, String CategoryName) {
         this.CategoryID = CategoryID;
         this.CategoryName = CategoryName;
     }

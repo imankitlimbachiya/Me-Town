@@ -11,28 +11,28 @@
 
     <TextView
         android:id="@+id/txtDateAndTime"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="14dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/txtDay"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/alte_haas_grotesk_bold"
-        android:text="Aug. 10. 12:20pm"
+        android:text=""
         android:textColor="@color/black"
-        android:textSize="17sp"
-        tools:ignore="HardcodedText,RtlHardcoded" />
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/txtDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         android:fontFamily="@font/louis_george_cafe"
-        android:text="Sat"
+        android:text=""
         android:textColor="@color/black"
-        android:textSize="13sp"
-        tools:ignore="HardcodedText,RtlHardcoded" />
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/txtAddress"
@@ -42,17 +42,16 @@
         android:layout_marginLeft="14dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/louis_george_cafe"
-        android:text="'Address'"
+        android:text=""
         android:textColor="@color/black"
-        android:textSize="13sp"
-        tools:ignore="HardcodedText,RtlHardcoded" />
+        android:textSize="13sp" />
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
         android:layout_below="@id/txtAddress"
+        android:layout_marginTop="8dp"
         android:background="@color/veryDarkSkyPink" />
 
     <TextView
@@ -63,22 +62,20 @@
         android:layout_marginLeft="14dp"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/louis_george_cafe"
-        android:text="Description"
+        android:text=""
         android:textColor="@color/grey"
-        android:textSize="13sp"
-        tools:ignore="HardcodedText,RtlHardcoded" />
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/txtDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:fontFamily="@font/alte_haas_grotesk_regular"
         android:text="Done"
         android:textColor="@color/yellow"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded" />
+        android:textSize="14sp" />
 
 </RelativeLayout>

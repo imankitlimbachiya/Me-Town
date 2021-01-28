@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Adapters.ReportAdapter;
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     ProgressBar progressBar;
     RecyclerView ReportView;
     ImageView imgBack;
-    ArrayList<CategoryMainModel> reportList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> reportList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +69,8 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     public void AddReportItems() {
         reportList.clear();
         for (int i = 1; i <= 5; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Notification comes here");
-            reportList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Notification comes here");
+            reportList.add(staticCategoryModel);
         }
 
         if (reportList.size() > 0) {

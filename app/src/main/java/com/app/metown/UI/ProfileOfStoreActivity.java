@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Adapters.ServiceNearbyCategoryAdapter;
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.Models.ItemMainModel;
 import com.app.metown.R;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,9 +40,9 @@ public class ProfileOfStoreActivity extends AppCompatActivity implements OnMapRe
     GoogleMap mMap;
     SupportMapFragment supportMapFragment;
     RecyclerView ServiceNearbyCategoryView, StoreNewsView, ReviewAllView;
-    ArrayList<CategoryMainModel> serviceNearbyCategoryList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> serviceNearbyCategoryList = new ArrayList<>();
     ArrayList<ItemMainModel> storeNewsList = new ArrayList<>();
-    ArrayList<CategoryMainModel> reviewList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> reviewList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +109,8 @@ public class ProfileOfStoreActivity extends AppCompatActivity implements OnMapRe
     public void AddServiceNearbyCategoryItems() {
         serviceNearbyCategoryList.clear();
         for (int i = 1; i <= 12; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Item name");
-            serviceNearbyCategoryList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Item name");
+            serviceNearbyCategoryList.add(staticCategoryModel);
         }
 
         if (serviceNearbyCategoryList.size() > 0) {
@@ -183,8 +183,8 @@ public class ProfileOfStoreActivity extends AppCompatActivity implements OnMapRe
     public void AddReviewAllItems() {
         reviewList.clear();
         for (int i = 1; i <= 5; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Item name");
-            reviewList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Item name");
+            reviewList.add(staticCategoryModel);
         }
 
         if (reviewList.size() > 0) {
@@ -200,7 +200,7 @@ public class ProfileOfStoreActivity extends AppCompatActivity implements OnMapRe
     public static class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
+        ArrayList<StaticCategoryModel> arrayList;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -213,7 +213,7 @@ public class ProfileOfStoreActivity extends AppCompatActivity implements OnMapRe
             }
         }
 
-        public ReviewAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public ReviewAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -227,7 +227,7 @@ public class ProfileOfStoreActivity extends AppCompatActivity implements OnMapRe
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
+            StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
             holder.txtReply.setVisibility(View.GONE);
 

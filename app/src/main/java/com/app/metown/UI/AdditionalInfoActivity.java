@@ -690,6 +690,7 @@ public class AdditionalInfoActivity extends AppCompatActivity implements View.On
                 return params;
             }
 
+            // Form data passing for Image
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();

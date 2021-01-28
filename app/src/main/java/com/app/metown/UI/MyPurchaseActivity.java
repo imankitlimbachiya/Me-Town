@@ -3,6 +3,7 @@ package com.app.metown.UI;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -153,32 +154,17 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbWV0b3duLmFwLXNvdXRoZWFzdC0xLmVsYXN0aWNiZWFuc3RhbGsuY29tL2FwaS9sb2dpbiIsImlhdCI6MTYwNjQxMzY1NywiZXhwIjoxNjA3NjIzMjU3LCJuYmYiOjE2MDY0MTM2NTcsImp0aSI6IjdkaHlrb1hzbWhCaWdxdU4iLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.D_NZt_zTqC23_75avlVI54SY_UqbG1zHG6lSrcLgy58");
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
                 Log.e("HEADER", "" + APIConstant.getInstance().MY_PURCHASE + params);
                 return params;
             }
-
-            // Form data passing
-            /*protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                // params.put("email", edtEmail.getText().toString());
-                // params.put("fcm_token", edtPassword.getText().toString());
-                // params.put("device_type", APIConstant.getInstance().ApiSecretsKey);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().SIGN_UP + params);
-                return params;
-            }*/
-
-            // Raw data passing
-            /*@Override
-            public byte[] getBody() throws AuthFailureError {
-                String params = "{\"nick_name\":\"" + NickName + "\",\"email\":\"" + Email + "\",\"phone_number\":\"" + PhoneNumber +
-                        "\",\"device_type\":\"" + "A" + "\",\"social_id\":\"" + "" + "\",\"referral_code\":\"" + ReferralCode +
-                        "\",\"fcm_token\":\"" + FCMToken + "\"}";
-                Log.e("PARAMETER", "" + APIConstant.getInstance().MY_SALES + params);
-                return params.getBytes();
-            }*/
         };
+
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_PURCHASE);

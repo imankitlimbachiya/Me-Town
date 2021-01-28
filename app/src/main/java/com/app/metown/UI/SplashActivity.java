@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Log.e("Activity","SplashActivity");
+        Log.e("Activity", "SplashActivity");
 
         mContext = this;
 
@@ -36,20 +36,20 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
-        UserID = sharedPreferences.getString("UserID","");
+        UserID = sharedPreferences.getString("UserID", "");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                Intent intent;
                 if (UserID.equals("")) {
-                    Intent intent = new Intent(mContext, MainActivity.class);
-                    startActivity(intent);
+                    intent = new Intent(mContext, MainActivity.class);
                 } else {
-                    Intent intent = new Intent(mContext, HomeActivity.class);
-                    startActivity(intent);
+                    intent = new Intent(mContext, HomeActivity.class);
                 }
+                startActivity(intent);
                 finish();
 
-                /*Intent intent = new Intent(mContext, ProfileEditActivity.class);
+                /*Intent intent = new Intent(mContext, OrganiseMeetUpActivity.class);
                 startActivity(intent);
                 finish();*/
 

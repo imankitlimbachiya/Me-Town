@@ -55,11 +55,10 @@ public class SetLocationActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgBack:
-                finish();
-                break;
             case R.id.btnDone:
                 Intent Home = new Intent(mContext, HomeActivity.class);
                 startActivity(Home);
+                finish();
                 break;
         }
     }

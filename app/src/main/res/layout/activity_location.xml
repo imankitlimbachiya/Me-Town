@@ -11,8 +11,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <TextView
             android:id="@+id/txtLocation"
@@ -23,8 +22,7 @@
             android:fontFamily="@font/alte_haas_grotesk_bold"
             android:text="Location"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/imgBack"
@@ -34,8 +32,7 @@
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/txtLocation"
             android:padding="12dp"
-            android:src="@drawable/down_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/down_arrow" />
 
     </RelativeLayout>
 
@@ -64,8 +61,7 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="We are preparing to\nopen for this 'location'"
                 android:textColor="@color/veryLightSkyPink"
-                android:textSize="20sp"
-                tools:ignore="HardcodedText" />
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -76,8 +72,7 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="You can look around 'MeTown community'\nif you set your location to one of the\nopened towns!\n\nThe community will open when certain\namount of user apply for the location"
                 android:textColor="@color/veryDarkGrey"
-                android:textSize="15sp"
-                tools:ignore="HardcodedText" />
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"

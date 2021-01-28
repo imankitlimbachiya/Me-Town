@@ -1,11 +1,27 @@
 package com.app.metown.UI;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,42 +29,85 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.CategoryMainModel;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.app.metown.AppConstants.APIConstant;
+import com.app.metown.AppConstants.ConstantFunction;
+import com.app.metown.AppConstants.Utility;
+import com.app.metown.Models.CategoryModel;
+import com.app.metown.Models.TownModel;
 import com.app.metown.R;
+import com.app.metown.VolleySupport.AppController;
+import com.app.metown.VolleySupport.VolleyMultipartRequest;
+import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterMyBusinessActivity extends AppCompatActivity implements View.OnClickListener {
 
     Context mContext;
     ProgressBar progressBar;
-    ImageView imgBack;
-    TextView txtTypeOfBusiness, txtNameOfStore, txtDetailTypeOfBusiness, txtAddress, txtDetailedAddress,
+    ImageView imgBack, imgCamera;
+    TextView txtTypeOfBusiness, txtSelectedCategory, txtNameOfStore, txtDetailTypeOfBusiness, txtAddress, txtDetailedAddress,
             txtContactNumber, txtPhoto, txtDone;
+    EditText edtNameOfStore, edtDetailTypeOfBusiness, edtAddress, edtDetailedAddress, edtContactNumber, edtIntroduceYourStore;
+    Dialog dialog;
+    LinearLayout SelectCategoryLayout;
     RelativeLayout SelectBarangayLayout;
-    RecyclerView BarangayKeywordView, BarangayKeywordFromAlphabetView;
-    ArrayList<CategoryMainModel> selectBarangayKeywordList = new ArrayList<>();
-    ArrayList<CategoryMainModel> selectBarangayKeywordFromAlphabetList = new ArrayList<>();
+    RecyclerView BarangayCategoryView, TownFromAlphabetView, SelectCategoryView;
+    String CategoryType = "1", ParentID = "0", Title = "", CategoryID = "", BarangayID = "1";
+    ArrayList<CategoryModel> categoryList = new ArrayList<>();
+    ArrayList<TownModel> townList = new ArrayList<>();
+
+    String mPath = "";
+    private static final int SELECT_IMAGE = 4;
+    private int MY_REQUEST_CODE, REQUEST_CODE;
+    File photo;
+    Bitmap mBitmap;
+    private ArrayList<Bitmap> mTempBitmapArray = new ArrayList<Bitmap>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_my_business);
 
-        Log.e("Activity","RegisterMyBusinessActivity");
+        Log.e("Activity", "RegisterMyBusinessActivity");
 
         mContext = this;
 
@@ -57,14 +116,21 @@ public class RegisterMyBusinessActivity extends AppCompatActivity implements Vie
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnText();
+
+        ViewSetText();
     }
 
     public void ViewInitialization() {
         progressBar = findViewById(R.id.progressBar);
 
         imgBack = findViewById(R.id.imgBack);
+        imgCamera = findViewById(R.id.imgCamera);
 
+        txtDone = findViewById(R.id.txtDone);
         txtTypeOfBusiness = findViewById(R.id.txtTypeOfBusiness);
+        txtSelectedCategory = findViewById(R.id.txtSelectedCategory);
         txtNameOfStore = findViewById(R.id.txtNameOfStore);
         txtDetailTypeOfBusiness = findViewById(R.id.txtDetailTypeOfBusiness);
         txtAddress = findViewById(R.id.txtAddress);
@@ -72,6 +138,26 @@ public class RegisterMyBusinessActivity extends AppCompatActivity implements Vie
         txtContactNumber = findViewById(R.id.txtContactNumber);
         txtPhoto = findViewById(R.id.txtPhoto);
 
+        edtNameOfStore = findViewById(R.id.edtNameOfStore);
+        edtDetailTypeOfBusiness = findViewById(R.id.edtDetailTypeOfBusiness);
+        edtAddress = findViewById(R.id.edtAddress);
+        edtDetailedAddress = findViewById(R.id.edtDetailedAddress);
+        edtContactNumber = findViewById(R.id.edtContactNumber);
+        edtIntroduceYourStore = findViewById(R.id.edtIntroduceYourStore);
+
+        SelectCategoryLayout = findViewById(R.id.SelectCategoryLayout);
+        SelectBarangayLayout = findViewById(R.id.SelectBarangayLayout);
+    }
+
+    public void ViewOnText() {
+        imgBack.setOnClickListener(this);
+        txtDone.setOnClickListener(this);
+        SelectCategoryLayout.setOnClickListener(this);
+        SelectBarangayLayout.setOnClickListener(this);
+        imgCamera.setOnClickListener(this);
+    }
+
+    public void ViewSetText() {
         String TypeOfBusiness = "<font color='#000000'>Type of business</font>" + " " + "<font color='#FFCE5D'><small>●</small></font>";
         txtTypeOfBusiness.setText(Html.fromHtml(TypeOfBusiness));
 
@@ -92,14 +178,6 @@ public class RegisterMyBusinessActivity extends AppCompatActivity implements Vie
 
         String Photo = "<font color='#000000'>Photos</font>" + " " + "<font color='#FFCE5D'><small>●</small></font>";
         txtPhoto.setText(Html.fromHtml(Photo));
-
-        SelectBarangayLayout = findViewById(R.id.SelectBarangayLayout);
-
-        txtDone = findViewById(R.id.txtDone);
-
-        imgBack.setOnClickListener(this);
-        txtDone.setOnClickListener(this);
-        SelectBarangayLayout.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -109,69 +187,301 @@ public class RegisterMyBusinessActivity extends AppCompatActivity implements Vie
             case R.id.imgBack:
                 finish();
                 break;
-            case R.id.txtDone:
-                /*Intent PostForSale = new Intent(mContext, PostForSaleActivity.class);
-                startActivity(PostForSale);
-                finish();*/
+            case R.id.imgCamera:
+                SelectImage();
+                break;
+            case R.id.SelectCategoryLayout:
+                dialog = new Dialog(mContext);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.select_category_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                SelectCategoryView = dialog.findViewById(R.id.SelectCategoryView);
+                GetCategoryApi(CategoryType, ParentID);
                 break;
             case R.id.SelectBarangayLayout:
-                final Dialog dialog = new Dialog(mContext);
+                dialog = new Dialog(mContext);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.select_barangay_dialog);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                BarangayKeywordView = dialog.findViewById(R.id.BarangayKeywordView);
-                BarangayKeywordFromAlphabetView = dialog.findViewById(R.id.BarangayKeywordFromAlphabetView);
-                AddSelectBarangayKeywordItems();
-                AddSelectBarangayKeywordFromAlphabetViewItems();
+                BarangayCategoryView = dialog.findViewById(R.id.BarangayCategoryView);
+                TownFromAlphabetView = dialog.findViewById(R.id.TownFromAlphabetView);
+                GetBarangayApi(CategoryType, ParentID);
                 dialog.findViewById(R.id.UnSelectBarangayLayout).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         dialog.cancel();
                     }
                 });
-                dialog.show();
+                break;
+            case R.id.txtDone:
+                String NameOfStore = edtNameOfStore.getText().toString().trim();
+                String DetailTypeOfBusiness = edtDetailTypeOfBusiness.getText().toString().trim();
+                String Address = edtAddress.getText().toString().trim();
+                String DetailedAddress = edtDetailedAddress.getText().toString().trim();
+                String ContactNumber = edtContactNumber.getText().toString().trim();
+                String IntroduceYourStore = edtIntroduceYourStore.getText().toString().trim();
+                if (CategoryID.equals("")) {
+                    Toast.makeText(mContext, "Please Select Your Business Category.", Toast.LENGTH_LONG).show();
+                } else if (NameOfStore.equals("")) {
+                    Toast.makeText(mContext, "Please Choose Your Business Image.", Toast.LENGTH_LONG).show();
+                } else if (DetailTypeOfBusiness.equals("")) {
+                    Toast.makeText(mContext, "Please Enter Your Detail Type Of Business.", Toast.LENGTH_LONG).show();
+                } else if (Address.equals("")) {
+                    Toast.makeText(mContext, "Please Enter Your Address Of Business.", Toast.LENGTH_LONG).show();
+                } else if (BarangayID.equals("")) {
+                    Toast.makeText(mContext, "Please Select Your Barangay.", Toast.LENGTH_LONG).show();
+                } else if (DetailedAddress.equals("")) {
+                    Toast.makeText(mContext, "Please Enter Your Detailed Address Of Business.", Toast.LENGTH_LONG).show();
+                } else if (ContactNumber.equals("")) {
+                    Toast.makeText(mContext, "Please Enter Your Contact Number Of Business.", Toast.LENGTH_LONG).show();
+                } else if (!ConstantFunction.isValidMobile(ContactNumber)) {
+                    Toast.makeText(mContext, "Please Enter Your Valid Contact Number.", Toast.LENGTH_LONG).show();
+                } else if (mBitmap == null) {
+                    Toast.makeText(mContext, "Please Select Image of your Business.", Toast.LENGTH_LONG).show();
+                } else if (IntroduceYourStore.equals("")) {
+                    Toast.makeText(mContext, "Please Introduce Your Store.", Toast.LENGTH_LONG).show();
+                } else {
+                    RegisterBusinessApi(CategoryID, NameOfStore, DetailTypeOfBusiness, Address, BarangayID, DetailedAddress, ContactNumber, IntroduceYourStore, mBitmap);
+                }
                 break;
         }
     }
 
-    public void AddSelectBarangayKeywordItems() {
-        selectBarangayKeywordList.clear();
-        for (int i = 1; i <= 10; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Item name");
-            selectBarangayKeywordList.add(categoryMainModel);
+    private void GetCategoryApi(final String CategoryType, final String ParentID) {
+        String req = "req";
+        categoryList.clear();
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_CATEGORY,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_CATEGORY + response);
+                            dialog.show();
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equals("false")) {
+                                JSONObject objectData = JsonMain.getJSONObject("data");
+                                JSONArray arrayCategoryList = objectData.getJSONArray("category_list");
+                                for (int i = 0; i < arrayCategoryList.length(); i++) {
+                                    CategoryModel categoryModel = new CategoryModel();
+                                    categoryModel.setCategoryID(arrayCategoryList.getJSONObject(i).getString("id"));
+                                    categoryModel.setCategoryTitle(arrayCategoryList.getJSONObject(i).getString("category_title"));
+                                    categoryList.add(categoryModel);
+                                }
+                                if (categoryList.size() > 0) {
+                                    SelectCategoryAdapter selectCategoryAdapter = new SelectCategoryAdapter(mContext, categoryList);
+                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                                    SelectCategoryView.setLayoutManager(mLayoutManager);
+                                    SelectCategoryView.setItemAnimator(new DefaultItemAnimator());
+                                    SelectCategoryView.setAdapter(selectCategoryAdapter);
+                                    selectCategoryAdapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            progressBar.setVisibility(View.GONE);
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Accept", "application/json");
+                return params;
+            }
+
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"category_type\":\"" + CategoryType + "\",\"parent_id\":\"" + ParentID + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_CATEGORY + params);
+                return params.getBytes();
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_CATEGORY);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }
+
+    public class SelectCategoryAdapter extends RecyclerView.Adapter<SelectCategoryAdapter.MyViewHolder> {
+
+        Context mContext;
+        ArrayList<CategoryModel> arrayList;
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+
+            TextView txtCategoryName;
+
+            MyViewHolder(View view) {
+                super(view);
+
+                txtCategoryName = view.findViewById(R.id.txtCategoryName);
+            }
         }
 
-        if (selectBarangayKeywordList.size() > 0) {
-            SelectBarangayKeywordAdapter selectBarangayKeywordAdapter = new SelectBarangayKeywordAdapter(mContext, selectBarangayKeywordList);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 4, RecyclerView.VERTICAL, false);
-            BarangayKeywordView.setLayoutManager(mLayoutManager);
-            BarangayKeywordView.setItemAnimator(new DefaultItemAnimator());
-            BarangayKeywordView.setAdapter(selectBarangayKeywordAdapter);
-            selectBarangayKeywordAdapter.notifyDataSetChanged();
+        public SelectCategoryAdapter(Context mContext, ArrayList<CategoryModel> arrayList) {
+            this.mContext = mContext;
+            this.arrayList = arrayList;
         }
+
+
+        @NotNull
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_category_adapter, parent, false);
+            return new MyViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
+            final CategoryModel categoryModel = arrayList.get(position);
+
+            holder.txtCategoryName.setText("  " + categoryModel.getCategoryTitle());
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CategoryID = categoryModel.getCategoryID();
+                    Title = categoryModel.getCategoryTitle();
+                    dialog.cancel();
+                    txtSelectedCategory.setText(Title);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return arrayList.size();
+        }
+    }
+
+    private void GetBarangayApi(final String CategoryType, final String ParentID) {
+        String req = "req";
+        categoryList.clear();
+        townList.clear();
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_BARANGAY,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            dialog.show();
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_BARANGAY + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equals("false")) {
+                                JSONObject objectData = JsonMain.getJSONObject("data");
+                                JSONArray arrayCategoryList = objectData.getJSONArray("category_list");
+                                for (int i = 0; i < arrayCategoryList.length(); i++) {
+                                    CategoryModel categoryModel = new CategoryModel();
+                                    categoryModel.setCategoryID(arrayCategoryList.getJSONObject(i).getString("id"));
+                                    categoryModel.setCategoryTitle(arrayCategoryList.getJSONObject(i).getString("name"));
+                                    categoryList.add(categoryModel);
+                                }
+                                if (categoryList.size() > 0) {
+                                    SelectBarangayKeywordAdapter selectBarangayKeywordAdapter = new SelectBarangayKeywordAdapter(mContext, categoryList);
+                                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 4, RecyclerView.VERTICAL, false);
+                                    BarangayCategoryView.setLayoutManager(mLayoutManager);
+                                    BarangayCategoryView.setItemAnimator(new DefaultItemAnimator());
+                                    BarangayCategoryView.setAdapter(selectBarangayKeywordAdapter);
+                                    selectBarangayKeywordAdapter.notifyDataSetChanged();
+                                }
+
+                                JSONArray arrayAllTownList = objectData.getJSONArray("all_town_list");
+                                for (int i = 0; i < arrayAllTownList.length(); i++) {
+                                    TownModel townModel = new TownModel();
+                                    townModel.setAlphabet(arrayAllTownList.getJSONObject(i).getString("alphabet"));
+                                    townModel.setTownList(arrayAllTownList.getJSONObject(i).getJSONArray("town_list"));
+                                    townList.add(townModel);
+                                }
+                                if (townList.size() > 0) {
+                                    TownFromAlphabetAdapter townFromAlphabetAdapter = new TownFromAlphabetAdapter(mContext, townList);
+                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                                    TownFromAlphabetView.setLayoutManager(mLayoutManager);
+                                    TownFromAlphabetView.setItemAnimator(new DefaultItemAnimator());
+                                    TownFromAlphabetView.setAdapter(townFromAlphabetAdapter);
+                                    townFromAlphabetAdapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                // params.put("Content-Type", "application/json");
+                // params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().GET_BARANGAY + params);
+                return params;
+            }
+
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"category_type\":\"" + CategoryType + "\",\"parent_id\":\"" + ParentID + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_BARANGAY + params);
+                return params.getBytes();
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_BARANGAY);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
     public static class SelectBarangayKeywordAdapter extends RecyclerView.Adapter<SelectBarangayKeywordAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
+        ArrayList<CategoryModel> arrayList;
 
         static class MyViewHolder extends RecyclerView.ViewHolder {
 
-            // RadioButton btnSelect;
+            TextView txtCategoryName;
 
             MyViewHolder(View view) {
                 super(view);
 
-                // btnSelect = view.findViewById(R.id.btnSelect);
+                txtCategoryName = view.findViewById(R.id.txtCategoryName);
             }
         }
 
-        public SelectBarangayKeywordAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public SelectBarangayKeywordAdapter(Context mContext, ArrayList<CategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
-
 
         @NotNull
         @Override
@@ -182,9 +492,9 @@ public class RegisterMyBusinessActivity extends AppCompatActivity implements Vie
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
+            CategoryModel categoryModel = arrayList.get(position);
 
-            // holder.btnSelect.setText("  " + categoryModel.getCategoryName());
+            holder.txtCategoryName.setText(categoryModel.getCategoryName());
         }
 
         @Override
@@ -193,98 +503,27 @@ public class RegisterMyBusinessActivity extends AppCompatActivity implements Vie
         }
     }
 
-    public void AddSelectBarangayKeywordFromAlphabetViewItems() {
-        selectBarangayKeywordFromAlphabetList.clear();
-        for (int i = 1; i <= 4; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Item name");
-            selectBarangayKeywordFromAlphabetList.add(categoryMainModel);
-        }
-
-        if (selectBarangayKeywordFromAlphabetList.size() > 0) {
-            SelectBarangayKeywordFromAlphabetAdapter selectBarangayKeywordFromAlphabetAdapter = new
-                    SelectBarangayKeywordFromAlphabetAdapter(mContext, selectBarangayKeywordFromAlphabetList);
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-            BarangayKeywordFromAlphabetView.setLayoutManager(mLayoutManager);
-            BarangayKeywordFromAlphabetView.setItemAnimator(new DefaultItemAnimator());
-            BarangayKeywordFromAlphabetView.setAdapter(selectBarangayKeywordFromAlphabetAdapter);
-            selectBarangayKeywordFromAlphabetAdapter.notifyDataSetChanged();
-        }
-    }
-
-    public static class SelectBarangayKeywordFromAlphabetAdapter extends RecyclerView.Adapter<SelectBarangayKeywordFromAlphabetAdapter.MyViewHolder> {
+    public static class TownFromAlphabetAdapter extends RecyclerView.Adapter<TownFromAlphabetAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
-        ArrayList<CategoryMainModel> selectBarangayKeywordFromSpecificAlphabetList = new ArrayList<>();
+        ArrayList<TownModel> arrayList;
+        ArrayList<TownModel> townFromSpecificAlphabetList = new ArrayList<>();
 
         static class MyViewHolder extends RecyclerView.ViewHolder {
 
-            RecyclerView BarangayKeywordFromSpecificAlphabetView;
+            TextView txtAlphabet;
+            RecyclerView TownFromSpecificAlphabetView;
 
             MyViewHolder(View view) {
                 super(view);
 
-                BarangayKeywordFromSpecificAlphabetView = view.findViewById(R.id.BarangayKeywordFromSpecificAlphabetView);
+                txtAlphabet = view.findViewById(R.id.txtAlphabet);
+
+                TownFromSpecificAlphabetView = view.findViewById(R.id.TownFromSpecificAlphabetView);
             }
         }
 
-        public SelectBarangayKeywordFromAlphabetAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
-            this.mContext = mContext;
-            this.arrayList = arrayList;
-        }
-
-
-        @NotNull
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_barangay_keyword_from_alphabet_adapter,parent, false);
-            return new MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
-
-            selectBarangayKeywordFromSpecificAlphabetList.clear();
-            for (int i = 1; i <= 4; i++) {
-                CategoryMainModel CategoryMainModel = new CategoryMainModel(String.valueOf(i), "Item name");
-                selectBarangayKeywordFromSpecificAlphabetList.add(CategoryMainModel);
-            }
-
-            if (selectBarangayKeywordFromSpecificAlphabetList.size() > 0) {
-                SelectBarangayKeywordFromSpecificAlphabetAdapter selectBarangayKeywordFromSpecificAlphabetAdapter = new
-                        SelectBarangayKeywordFromSpecificAlphabetAdapter(mContext, selectBarangayKeywordFromSpecificAlphabetList);
-                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                holder.BarangayKeywordFromSpecificAlphabetView.setLayoutManager(mLayoutManager);
-                holder.BarangayKeywordFromSpecificAlphabetView.setItemAnimator(new DefaultItemAnimator());
-                holder.BarangayKeywordFromSpecificAlphabetView.setAdapter(selectBarangayKeywordFromSpecificAlphabetAdapter);
-                selectBarangayKeywordFromSpecificAlphabetAdapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return arrayList.size();
-        }
-    }
-
-    public static class SelectBarangayKeywordFromSpecificAlphabetAdapter extends RecyclerView.Adapter<SelectBarangayKeywordFromSpecificAlphabetAdapter.MyViewHolder> {
-
-        Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
-
-        static class MyViewHolder extends RecyclerView.ViewHolder {
-
-            //
-
-            MyViewHolder(View view) {
-                super(view);
-
-                //
-            }
-        }
-
-        public SelectBarangayKeywordFromSpecificAlphabetAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public TownFromAlphabetAdapter(Context mContext, ArrayList<TownModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -292,19 +531,489 @@ public class RegisterMyBusinessActivity extends AppCompatActivity implements Vie
         @NotNull
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_barangay_keyword_from_specific_alphabet_adapter, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.town_from_alphabet_adapter, parent, false);
             return new MyViewHolder(itemView);
         }
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
+            TownModel townModel = arrayList.get(position);
+
+            holder.txtAlphabet.setText(townModel.getAlphabet());
+
+            JSONArray arrayTownList = townModel.getTownList();
+            // Log.e("arrayTownList ","" + arrayTownList);
+            try {
+                townFromSpecificAlphabetList.clear();
+                for (int i = 0; i < arrayTownList.length(); i++) {
+                    TownModel model = new TownModel();
+                    model.setTownID(arrayTownList.getJSONObject(i).getString("id"));
+                    model.setTownName(arrayTownList.getJSONObject(i).getString("name"));
+                    townFromSpecificAlphabetList.add(model);
+                }
+                if (townFromSpecificAlphabetList.size() > 0) {
+                    TownFromSpecificAlphabetAdapter townFromSpecificAlphabetAdapter = new TownFromSpecificAlphabetAdapter(mContext, townFromSpecificAlphabetList);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                    holder.TownFromSpecificAlphabetView.setLayoutManager(mLayoutManager);
+                    holder.TownFromSpecificAlphabetView.setItemAnimator(new DefaultItemAnimator());
+                    holder.TownFromSpecificAlphabetView.setAdapter(townFromSpecificAlphabetAdapter);
+                    townFromSpecificAlphabetAdapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public int getItemCount() {
             return arrayList.size();
         }
+    }
+
+    public static class TownFromSpecificAlphabetAdapter extends RecyclerView.Adapter<TownFromSpecificAlphabetAdapter.MyViewHolder> {
+
+        Context mContext;
+        ArrayList<TownModel> arrayList;
+
+        static class MyViewHolder extends RecyclerView.ViewHolder {
+
+            TextView txtTown;
+
+            MyViewHolder(View view) {
+                super(view);
+
+                txtTown = view.findViewById(R.id.txtTown);
+            }
+        }
+
+        public TownFromSpecificAlphabetAdapter(Context mContext, ArrayList<TownModel> arrayList) {
+            this.mContext = mContext;
+            this.arrayList = arrayList;
+        }
+
+        @NotNull
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.town_from_specific_alphabet_adapter, parent, false);
+            return new MyViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
+            TownModel townModel = arrayList.get(position);
+
+            holder.txtTown.setText(townModel.getTownName());
+        }
+
+        @Override
+        public int getItemCount() {
+            return arrayList.size();
+        }
+    }
+
+    private void SelectImage() {
+        String[] str = {"Choose from gallery", "Open Camera", "cancel"};
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+        alert.setItems(str, new DialogInterface.OnClickListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                if (which == 0) {
+                    // gallery
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        REQUEST_CODE = 70;
+                    }
+                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+                    } else {
+                        PhotoGallery();
+                    }
+                } else if (which == 1) {
+                    // camera
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        MY_REQUEST_CODE = 40;
+                        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{android.Manifest.permission.CAMERA}, MY_REQUEST_CODE);
+                        } else {
+                            PhotoCameraPerm();
+                        }
+                    } else {
+                        PhotoCamera();
+                    }
+                }
+            }
+        });
+        alert.show();
+    }
+
+    @SuppressLint("NewApi")
+    private void PhotoCameraPerm() {
+        REQUEST_CODE = 50;
+        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            PhotoCamera();
+        } else {
+            requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+        }
+    }
+
+    private void PhotoGallery() {
+        // TODO Auto-generated method stub
+        if (Build.VERSION.SDK_INT < 19) {
+            Intent intent = new Intent();
+            intent.setType("image/jpeg");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Image"), 11);
+        } else {
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+            galleryIntent.setType("image/jpeg");
+            startActivityForResult(galleryIntent, 33);
+        }
+    }
+
+    private void PhotoCamera() {
+        // TODO Auto-generated method stub
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 11:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = data.getData();
+                    String path = getPath(mContext, selectedImage);
+                    if (path != null) {
+                        mPath = path;
+                        try {
+                            mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+                            ExifInterface exif = new ExifInterface(photo.toString());
+                            if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("6")) {
+                                mBitmap = rotate(mBitmap, 90);
+                            } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("8")) {
+                                mBitmap = rotate(mBitmap, 270);
+                            } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("3")) {
+                                mBitmap = rotate(mBitmap, 180);
+                            } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("0")) {
+                                mBitmap = rotate(mBitmap, 90);
+                            }
+                            Glide.with(mContext).load(mBitmap).into(imgCamera);
+                        } catch (IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+                break;
+            case 33:
+                if (resultCode == RESULT_OK) {
+                    mTempBitmapArray.clear();
+                    mPath = "";
+                    Uri selectedImageUri = data.getData();
+                    try {
+                        mPath = getImagePath(selectedImageUri);
+                        try {
+                            mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+                            Glide.with(mContext).load(mBitmap).into(imgCamera);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (URISyntaxException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                } else if (resultCode == SELECT_IMAGE) {
+                    Uri selectedImage = data.getData();
+                    String path = getPath(mContext, selectedImage);
+                    if (path != null) {
+                        mPath = path;
+                        try {
+                            mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+                            Glide.with(mContext).load(mBitmap).into(imgCamera);
+                        } catch (IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+                break;
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    mTempBitmapArray.clear();
+                    onCaptureImageResult(data);
+                }
+                break;
+        }
+    }
+
+    public int getOrientation(Uri selectedImage) {
+        int orientation = 0;
+        final String[] projection = new String[]{MediaStore.Images.Media.ORIENTATION};
+        final Cursor cursor = mContext.getContentResolver().query(selectedImage, projection, null, null, null);
+        if (cursor != null) {
+            final int orientationColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION);
+            if (cursor.moveToFirst()) {
+                orientation = cursor.isNull(orientationColumnIndex) ? 0 : cursor.getInt(orientationColumnIndex);
+            }
+            cursor.close();
+        }
+        return orientation;
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        mPath = "";
+        File destination = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".jpg");
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mPath = destination.getAbsolutePath();
+        try {
+            mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+            Glide.with(mContext).load(mBitmap).into(imgCamera);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_REQUEST_CODE || requestCode == REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (requestCode == 40) {
+                    PhotoCameraPerm();
+                } else if (requestCode == 50) {
+                    PhotoCamera();
+                } else if (requestCode == 70) {
+                    PhotoGallery();
+                }
+            }
+        }
+    }
+
+    public static Bitmap rotate(Bitmap bitmap, int degree) {
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        Matrix mtx = new Matrix();
+        mtx.setRotate(degree);
+        return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
+    }
+
+    @SuppressLint("NewApi")
+    public static String getPath(final Context context, final Uri uri) {
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            // ExternalStorageProvider
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/"
+                            + split[1];
+                }
+                // TODO handle non-primary volumes
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"),
+                        Long.valueOf(id));
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{split[1]};
+                return getDataColumn(context, contentUri, selection,
+                        selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+    private String getImagePath(Uri selectedImageUri) throws URISyntaxException {
+        if ("content".equalsIgnoreCase(selectedImageUri.getScheme())) {
+            String[] projection = {"_data"};
+            Cursor cursor = null;
+            try {
+                cursor = mContext.getContentResolver().query(selectedImageUri, projection, null, null, null);
+                int column_index = cursor.getColumnIndexOrThrow("_data");
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if ("file".equalsIgnoreCase(selectedImageUri.getScheme())) {
+            //return selectedImageUri.getImagePath();
+        }
+        return null;
+    }
+
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri
+                .getAuthority());
+    }
+
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri
+                .getAuthority());
+    }
+
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri
+                .getAuthority());
+    }
+
+    private void RegisterBusinessApi(final String CategoryID, final String Name, final String Details, final String Address, final String BarangayID,
+                             final String DetailedAddress, final String PhoneNumber, final String Description, final Bitmap mBitmap) {
+        progressBar.setVisibility(View.VISIBLE);
+        // our custom volley request
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, APIConstant.getInstance().REGISTER_BUSINESS,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        progressBar.setVisibility(View.GONE);
+                        try {
+                            JSONObject JsonMain = new JSONObject(new String(response.data));
+                            Log.e("RESPONSE ", "" + APIConstant.getInstance().REGISTER_BUSINESS + JsonMain.toString());
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            String Message = JsonMain.getString("msg");
+                            if (HAS_ERROR.equals("false")) {
+                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                                finish();
+                            } else {
+                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                        Log.e("error", error.toString());
+                    }
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Transfer-Encoding", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().REGISTER_BUSINESS + params);
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("category_id", CategoryID);
+                params.put("name", Name);
+                params.put("details", Details);
+                params.put("address", Address);
+                params.put("barangay_id", BarangayID);
+                params.put("detailed_address", DetailedAddress);
+                params.put("phone_number", PhoneNumber);
+                params.put("description", Description);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().REGISTER_BUSINESS + params);
+                Log.e("param", params.toString());
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long ImageName = System.currentTimeMillis();
+                params.put("photos[]", new DataPart(ImageName + ".png", getFileDataFromDrawable(mBitmap)));
+                Log.e("PARAMETER Image", "" + APIConstant.getInstance().REGISTER_BUSINESS + params);
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 10000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 10000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+                progressBar.setVisibility(View.GONE);
+                Log.e("ErrorVolley", error.toString());
+            }
+        });
+
+        //adding the request to volley
+        Volley.newRequestQueue(getApplicationContext()).add(volleyMultipartRequest);
+    }
+
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 
     @Override

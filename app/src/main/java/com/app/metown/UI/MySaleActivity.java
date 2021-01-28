@@ -281,14 +281,14 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
 
         Context mContext;
         ArrayList<ItemModel> arrayList;
-        private String rupee;
+        String rupee;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             ImageView imgItem;
             TextView txtItemName, txtAddressOrTimePosted, txtItemPrice, txtChangeToReserved, txtChangeToSold;
             RelativeLayout OptionLayout;
-            LinearLayout FavouriteLayout;
+            LinearLayout CommentLayout, FavouriteLayout;
 
             MyViewHolder(View view) {
                 super(view);
@@ -303,6 +303,7 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
 
                 OptionLayout = view.findViewById(R.id.OptionLayout);
 
+                CommentLayout = view.findViewById(R.id.CommentLayout);
                 FavouriteLayout = view.findViewById(R.id.FavouriteLayout);
             }
         }
@@ -349,6 +350,13 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onClick(View view) {
                     mQQPop.showAtAnchorView(view, YGravity.BELOW, XGravity.LEFT, 0, 0);
+                }
+            });
+
+            holder.CommentLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AddEditCommentApi(itemModel.getItemID(), "ok...");
                 }
             });
 
@@ -812,6 +820,63 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().ADD_EDIT_FAVORITE);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }
+
+    private void AddEditCommentApi(final String ProductID,final  String Comment) {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_COMMENT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            String Message = JsonMain.getString("msg");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            progressBar.setVisibility(View.GONE);
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + params);
+                return params;
+            }
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"product_id\":\"" + ProductID + "\",\"comment\":\"" + Comment + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + params);
+                return params.getBytes();
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().ADD_EDIT_COMMENT);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 

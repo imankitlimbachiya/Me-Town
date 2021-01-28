@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +35,7 @@ public class ReviewFromBuyerAndSellerActivity extends AppCompatActivity implemen
     TextView txtAll, txtFromBuyer, txtFromSeller;
     LinearLayout AllLayout, FromBuyerLayout, FromSellerLayout;
     RecyclerView ReviewFromBuyerAndSellerView;
-    ArrayList<CategoryMainModel> reviewFromBuyerAndSellerList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> reviewFromBuyerAndSellerList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,8 +127,8 @@ public class ReviewFromBuyerAndSellerActivity extends AppCompatActivity implemen
     public void AddReviewFromBuyerAndSellerItems() {
         reviewFromBuyerAndSellerList.clear();
         for (int i = 1; i <= 3; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Item name");
-            reviewFromBuyerAndSellerList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Item name");
+            reviewFromBuyerAndSellerList.add(staticCategoryModel);
         }
 
         if (reviewFromBuyerAndSellerList.size() > 0) {
@@ -144,7 +144,7 @@ public class ReviewFromBuyerAndSellerActivity extends AppCompatActivity implemen
     public static class ReviewFromBuyerAndSellerAdapter extends RecyclerView.Adapter<ReviewFromBuyerAndSellerAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
+        ArrayList<StaticCategoryModel> arrayList;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -157,7 +157,7 @@ public class ReviewFromBuyerAndSellerActivity extends AppCompatActivity implemen
             }
         }
 
-        public ReviewFromBuyerAndSellerAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public ReviewFromBuyerAndSellerAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -171,7 +171,7 @@ public class ReviewFromBuyerAndSellerActivity extends AppCompatActivity implemen
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
+            StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

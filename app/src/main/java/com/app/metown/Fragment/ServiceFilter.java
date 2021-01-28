@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Adapters.SecondHandServiceCategoryAdapter;
 import com.app.metown.Adapters.ServiceNearbyCategoryAdapter;
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 import com.app.metown.UI.HiringHelperActivity;
 import com.app.metown.UI.NotificationActivity;
@@ -42,9 +42,9 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
     ImageView imgAlert;
     TextView txtFindMoreService;
     RecyclerView MyTownServiceView, SecondHandServiceView, StoreServiceView;
-    ArrayList<CategoryMainModel> myTownServiceList = new ArrayList<>();
-    ArrayList<CategoryMainModel> secondHandServiceList = new ArrayList<>();
-    ArrayList<CategoryMainModel> storeServiceList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> myTownServiceList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> secondHandServiceList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> storeServiceList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,8 +94,8 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
     public void AddMyTownServiceItems() {
         myTownServiceList.clear();
         for (int i = 1; i <= 12; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Item name");
-            myTownServiceList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Item name");
+            myTownServiceList.add(staticCategoryModel);
         }
 
         if (myTownServiceList.size() > 0) {
@@ -110,49 +110,49 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
 
     public void AddSecondHandServiceItems() {
         secondHandServiceList.clear();
-        CategoryMainModel categoryMainModel;
+        StaticCategoryModel staticCategoryModel;
 
-        categoryMainModel = new CategoryMainModel("1", "Popular");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("1", "Popular");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("2", "Digital/Gadget");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("2", "Digital/Gadget");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("3", "Furniture");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("3", "Furniture");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("4", "Baby&Kids");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("4", "Baby&Kids");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("5", "Living");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("5", "Living");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("6", "Sports");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("6", "Sports");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("7", "Women's");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("7", "Women's");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("8", "Men's");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("8", "Men's");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("9", "Game&Hobby");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("9", "Game&Hobby");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("10", "Beauty");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("10", "Beauty");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("11", "Pets");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("11", "Pets");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("12", "Books");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("12", "Books");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("13", "Etc.");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("13", "Etc.");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("14", "Request to buy");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("14", "Request to buy");
+        secondHandServiceList.add(staticCategoryModel);
 
         if (secondHandServiceList.size() > 0) {
             SecondHandServiceCategoryAdapter secondHandServiceCategoryAdapter = new SecondHandServiceCategoryAdapter(mContext, secondHandServiceList);
@@ -166,49 +166,49 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
 
     public void AddStoreServiceItems() {
         storeServiceList.clear();
-        CategoryMainModel categoryMainModel;
+        StaticCategoryModel staticCategoryModel;
 
-        categoryMainModel = new CategoryMainModel("1", "All");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("1", "All");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("2", "Car & Motor");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("2", "Car & Motor");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("3", "Groceries");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("3", "Groceries");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("4", "Water Dispenser");
-        secondHandServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("4", "Water Dispenser");
+        secondHandServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("5", "Laundry, Cleaning, Pest control");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("5", "Laundry, Cleaning, Pest control");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("6", "Furniture, Kitchen");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("6", "Furniture, Kitchen");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("7", "Exhibit, Event, Concert");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("7", "Exhibit, Event, Concert");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("8", "Hiring helper");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("8", "Hiring helper");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("9", "Real estate");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("9", "Real estate");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("10", "Restaurant");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("10", "Restaurant");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("11", "Hardware, key, Plumbing");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("11", "Hardware, key, Plumbing");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("12", "Gadget, Computer");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("12", "Gadget, Computer");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("13", "Massage");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("13", "Massage");
+        storeServiceList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("14", "Etc.");
-        storeServiceList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("14", "Etc.");
+        storeServiceList.add(staticCategoryModel);
 
         if (storeServiceList.size() > 0) {
             StoreServiceAdapter storeServiceAdapter = new StoreServiceAdapter(mContext, storeServiceList);
@@ -223,7 +223,7 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
     public static class StoreServiceAdapter extends RecyclerView.Adapter<StoreServiceAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
+        ArrayList<StaticCategoryModel> arrayList;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -236,7 +236,7 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
             }
         }
 
-        public StoreServiceAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public StoreServiceAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -250,20 +250,20 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            final CategoryMainModel categoryMainModel = arrayList.get(position);
+            final StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
-            holder.txtStoreService.setText(categoryMainModel.getCategoryName());
+            holder.txtStoreService.setText(staticCategoryModel.getCategoryName());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (categoryMainModel.getCategoryName().equals("Hiring helper")) {
-                        Intent intent = new Intent(mContext, HiringHelperActivity.class);
-                        mContext.startActivity(intent);
+                    Intent intent;
+                    if (staticCategoryModel.getCategoryName().equals("Hiring helper")) {
+                        intent = new Intent(mContext, HiringHelperActivity.class);
                     } else {
-                        Intent intent = new Intent(mContext, UserItemReferenceActivity.class);
-                        mContext.startActivity(intent);
+                        intent = new Intent(mContext, UserItemReferenceActivity.class);
                     }
+                    mContext.startActivity(intent);
 
                 }
             });

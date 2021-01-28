@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Models.ItemMainModel;
-import com.app.metown.Models.ItemMainModel1;
 import com.app.metown.R;
 
 import org.jetbrains.annotations.NotNull;

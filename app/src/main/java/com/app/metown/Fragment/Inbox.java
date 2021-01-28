@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Adapters.InboxAdapter;
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class Inbox extends Fragment implements View.OnClickListener {
     Context mContext;
     ProgressBar progressBar;
     RecyclerView InboxView;
-    ArrayList<CategoryMainModel> inboxList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> inboxList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,8 +60,8 @@ public class Inbox extends Fragment implements View.OnClickListener {
     public void AddInboxItems() {
         inboxList.clear();
         for (int i = 1; i <= 12; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Item name");
-            inboxList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Item name");
+            inboxList.add(staticCategoryModel);
         }
 
         if (inboxList.size() > 0) {

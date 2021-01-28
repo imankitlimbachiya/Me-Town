@@ -63,67 +63,41 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="90dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="vertical">
 
-               android:orientation="horizontal"
-               android:gravity="center"
-               >
-               <LinearLayout
-                   android:layout_width="wrap_content"
-                   android:layout_height="90dp"
-                   android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txtPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="15dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Photos"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
+                <ImageView
+                    android:id="@+id/imgPhoto"
+                    android:layout_width="33dp"
+                    android:layout_height="27dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="6dp"
+                    android:src="@drawable/photo" />
 
-                   <TextView
-                       android:id="@+id/txtPhoto"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginLeft="15dp"
-                       android:layout_marginRight="15dp"
-                       android:layout_marginTop="15dp"
-                       android:fontFamily="@font/louis_george_cafe"
-                       android:text="Photos"
-                       android:textColor="@color/black"
-                       android:textSize="14sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="0/10"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-                   <ImageView
-                       android:id="@+id/imgPhoto"
-                       android:layout_width="33dp"
-                       android:layout_height="27dp"
-                       android:layout_marginLeft="15dp"
-                       android:layout_marginTop="6dp"
-                       android:src="@drawable/photo" />
-
-                   <TextView
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginLeft="18dp"
-                       android:fontFamily="@font/louis_george_cafe"
-                       android:text="0/10"
-                       android:textColor="@color/black"
-                       android:textSize="14sp" />
-
-               </LinearLayout>
-
-               <LinearLayout
-                   android:id="@+id/SelectedLayout"
-                   android:layout_width="match_parent"
-                   android:layout_height="90dp"
-                   android:layout_weight="1"
-                   android:orientation="horizontal">
-
-                   <androidx.core.widget.NestedScrollView
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
->
-
-                   </androidx.core.widget.NestedScrollView>
-
-               </LinearLayout>
-
-           </LinearLayout>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -270,7 +244,7 @@
                     android:orientation="horizontal"
                     android:padding="10dp">
 
-                    <TextView
+                    <!--<TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
@@ -282,7 +256,19 @@
                     <ImageView
                         android:layout_width="17dp"
                         android:layout_height="17dp"
-                        android:src="@drawable/negotiable_selected" />
+                        android:src="@drawable/negotiable_selected" />-->
+
+                    <RadioButton
+                        android:id="@+id/rbtNegotiable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:button="@color/transparent"
+                        android:drawableRight="@drawable/negotiable_unselected"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="negotiable   "
+                        android:textColor="@color/grey"
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 

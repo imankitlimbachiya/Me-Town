@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +38,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     Context mContext;
     ProgressBar progressBar;
     ImageView imgBack;
-    RelativeLayout OtherSettingLayout, LogoutLayout;
+    RelativeLayout OtherSettingLayout, LogoutLayout, DeleteLayout;
+
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch PrimaryNotificationSwitch, OtherNotificationSwitch, DoNotDisturbSwitch, VibrationSwitch;
+
+    String PrimaryNotification = "1", Vibration = "1", DoNotDisturb = "1", OtherNotification = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +70,67 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         OtherSettingLayout = findViewById(R.id.OtherSettingLayout);
         LogoutLayout = findViewById(R.id.LogoutLayout);
+        DeleteLayout = findViewById(R.id.DeleteLayout);
+
+        PrimaryNotificationSwitch = findViewById(R.id.PrimaryNotificationSwitch);
+        OtherNotificationSwitch = findViewById(R.id.OtherNotificationSwitch);
+        DoNotDisturbSwitch = findViewById(R.id.DoNotDisturbSwitch);
+        VibrationSwitch = findViewById(R.id.VibrationSwitch);
+
+        PrimaryNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    PrimaryNotification = "1";
+                } else {
+                    PrimaryNotification = "0";
+                }
+                UserSettingApi();
+            }
+        });
+
+        OtherNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    OtherNotification = "1";
+                } else {
+                    OtherNotification = "0";
+                }
+                UserSettingApi();
+            }
+        });
+
+        DoNotDisturbSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    DoNotDisturb = "1";
+                } else {
+                    DoNotDisturb = "0";
+                }
+                UserSettingApi();
+            }
+        });
+
+        VibrationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    Vibration = "1";
+                } else {
+                    Vibration = "0";
+                }
+                UserSettingApi();
+            }
+        });
     }
 
     public void ViewOnClick() {
         imgBack.setOnClickListener(this);
         OtherSettingLayout.setOnClickListener(this);
         LogoutLayout.setOnClickListener(this);
+        DeleteLayout.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -84,6 +146,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.LogoutLayout:
                 LogoutApi();
+                break;
+            case R.id.DeleteLayout:
+                DeleteUserApi();
                 break;
         }
     }
@@ -104,7 +169,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
                                 String SuccessMessage = JsonMain.getString("msg");
                                 Toast.makeText(mContext, SuccessMessage, Toast.LENGTH_LONG).show();
-                                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                                 SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
                                 sharedPreferencesEditor.clear();
                                 sharedPreferencesEditor.apply();
@@ -128,6 +193,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }) {
 
+            // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -145,6 +211,130 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().LOGOUT);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }
+
+    private void UserSettingApi() {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().USER_SETTING,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().USER_SETTING + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                String msg = JsonMain.getString("msg");
+                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                            } else {
+                                String msg = JsonMain.getString("msg");
+                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                        Log.e("ERROR", "" + error.getMessage());
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().USER_SETTING + params);
+                return params;
+            }
+
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String UserID = sharedPreferences.getString("UserID", "");
+                // Log.e("UserID ","" + UserID);
+                String params = "{\"id\":\"" + UserID + "\",\"primary_notification\":\"" + PrimaryNotification +
+                        "\",\"vibration\":\"" + Vibration + "\",\"do_not_disturb\":\"" + DoNotDisturb
+                        + "\",\"other_notification\":\"" + OtherNotification + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().USER_SETTING + params);
+                return params.getBytes();
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().USER_SETTING);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }
+
+    private void DeleteUserApi() {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().DELETE_USER,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().DELETE_USER + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                String SuccessMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, SuccessMessage, Toast.LENGTH_LONG).show();
+                                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                                SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+                                sharedPreferencesEditor.clear();
+                                sharedPreferencesEditor.apply();
+                                sharedPreferencesEditor.commit();
+                                Intent Main = new Intent(mContext, MainActivity.class);
+                                startActivity(Main);
+                                finish();
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().DELETE_USER + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().DELETE_USER);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 

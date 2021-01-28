@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +30,7 @@ public class ReviewAllActivity extends AppCompatActivity implements View.OnClick
     ProgressBar progressBar;
     ImageView imgBack;
     RecyclerView ReviewAllView;
-    ArrayList<CategoryMainModel> reviewList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> reviewList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,8 @@ public class ReviewAllActivity extends AppCompatActivity implements View.OnClick
     public void AddReviewAllItems() {
         reviewList.clear();
         for (int i = 1; i <= 10; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Item name");
-            reviewList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Item name");
+            reviewList.add(staticCategoryModel);
         }
 
         if (reviewList.size() > 0) {
@@ -90,7 +90,7 @@ public class ReviewAllActivity extends AppCompatActivity implements View.OnClick
     public static class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
+        ArrayList<StaticCategoryModel> arrayList;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -103,7 +103,7 @@ public class ReviewAllActivity extends AppCompatActivity implements View.OnClick
             }
         }
 
-        public ReviewAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public ReviewAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -117,7 +117,7 @@ public class ReviewAllActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         public void onBindViewHolder(@NotNull ReviewAdapter.MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
+            StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

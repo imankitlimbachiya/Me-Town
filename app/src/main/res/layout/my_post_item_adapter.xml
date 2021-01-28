@@ -18,8 +18,7 @@
         android:singleLine="true"
         android:text="'category'"
         android:textColor="@color/black"
-        android:textSize="15sp"
-        tools:ignore="HardcodedText" />
+        android:textSize="15sp" />
 
     <RelativeLayout
         android:id="@+id/MyPostLayout"
@@ -28,16 +27,14 @@
         android:layout_below="@id/txtCategoryName"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="14dp"
-        tools:ignore="RtlHardcoded,UselessLeaf">
+        android:layout_marginRight="14dp">
 
         <ImageView
             android:id="@+id/imgMyPost"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginLeft="2dp"
-            android:background="@drawable/circle_outer_border_bg"
-            tools:ignore="ContentDescription,RtlHardcoded,UselessLeaf" />
+            android:background="@drawable/circle_outer_border_bg" />
 
         <TextView
             android:layout_width="match_parent"
@@ -49,8 +46,7 @@
             android:singleLine="true"
             android:text="'details'"
             android:textColor="@color/grey"
-            android:textSize="11sp"
-            tools:ignore="HardcodedText,SmallSp" />
+            android:textSize="11sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -63,8 +59,7 @@
             android:singleLine="true"
             android:text="0 Day Ago"
             android:textColor="@color/grey"
-            android:textSize="11sp"
-            tools:ignore="HardcodedText,SmallSp" />
+            android:textSize="11sp" />
 
     </RelativeLayout>
 

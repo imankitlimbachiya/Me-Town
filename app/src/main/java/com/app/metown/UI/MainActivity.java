@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     GoogleApiClient mGoogleApiClient;
     GoogleSignInOptions gso;
     private static final int RC_SIGN_IN = 7;
-    String PhoneNumber = "9898009898", DeviceType = "A", FCMToken = "5B4EB961-B66B-4958-8195-BBD4EBF3956D", Otp = "1234";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,16 +143,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(signInIntent, RC_SIGN_IN);
                 break;
             case R.id.imgTalk:
-                // GoToPhoneVerifyActivity();
+
                 break;
             case R.id.imgLine:
                 // GoToPhoneVerifyActivity();
                 break;
             case R.id.btnSignUp:
-                GoToPhoneVerifyActivity();
+                GoToPhoneVerifyActivity("SignUp");
                 break;
             case R.id.btnLogin:
-                LoginApi(PhoneNumber, DeviceType, FCMToken, Otp);
+                GoToPhoneVerifyActivity("Login");
                 break;
             case R.id.txtLookAround:
                 Intent Home = new Intent(mContext, HomeActivity.class);
@@ -162,100 +161,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void LoginApi(final String PhoneNumber, final String DeviceType, final String FCMToken, final String Otp) {
-        String req = "req";
-        progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().LOG_IN,
-                new Response.Listener<String>() {
-                    @SuppressLint("ApplySharedPref")
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().LOG_IN + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONObject objectData = JsonMain.getJSONObject("data");
-
-                                JSONObject objectUser = objectData.getJSONObject("user");
-
-                                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
-                                SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-                                sharedPreferencesEditor.putString("UserID", objectUser.getString("user_id"));
-                                sharedPreferencesEditor.putString("UniqueID", objectUser.getString("unique_id"));
-                                sharedPreferencesEditor.putString("NickName", objectUser.getString("nick_name"));
-                                sharedPreferencesEditor.putString("Email", objectUser.getString("email"));
-                                sharedPreferencesEditor.putString("SocialID", objectUser.getString("social_id"));
-                                sharedPreferencesEditor.putString("PhoneNumber", objectUser.getString("phone_number"));
-                                sharedPreferencesEditor.putString("InvitationCode", objectUser.getString("invitation_code"));
-                                sharedPreferencesEditor.putString("Status", objectUser.getString("status"));
-                                sharedPreferencesEditor.putString("EmailVerify", objectUser.getString("email_verify"));
-                                sharedPreferencesEditor.putString("ProfilePicture", objectUser.getString("profile_pic"));
-
-                                JSONObject objectToken = objectData.getJSONObject("token");
-
-                                sharedPreferencesEditor.putString("Token", objectToken.getString("token"));
-                                sharedPreferencesEditor.putString("Type", objectToken.getString("type"));
-                                sharedPreferencesEditor.apply();
-                                sharedPreferencesEditor.commit();
-
-                                Intent SetLocation = new Intent(mContext, HomeActivity.class);
-                                startActivity(SetLocation);
-                                finish();
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
-
-            // Header data passing
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().LOG_IN + params);
-                return params;
-            }
-
-            // Raw data passing
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                String params = "{\"phone_number\":\"" + PhoneNumber + "\",\"device_type\":\"" + DeviceType +
-                        "\",\"fcm_token\":\"" + FCMToken + "\",\"otp\":\"" + Otp + "\"}";
-                Log.e("PARAMETER", "" + APIConstant.getInstance().LOG_IN + params);
-                return params.getBytes();
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().LOG_IN);
-        AppController.getInstance().addToRequestQueue(stringRequest, req);
-    }
-
-    public void GoToPhoneVerifyActivity() {
+    public void GoToPhoneVerifyActivity(String Type) {
         Intent PhoneVerify = new Intent(mContext, PhoneVerifyActivity.class);
         PhoneVerify.putExtra("SocialID", "");
         PhoneVerify.putExtra("Email", "");
-        PhoneVerify.putExtra("Type", "Login");
+        PhoneVerify.putExtra("Type", Type);
         PhoneVerify.putExtra("NickName", "");
         startActivity(PhoneVerify);
     }
 
     private void FacebookLogin() {
-        if (ConstantFunction.isNetworkAvailable(MainActivity.this)) {
+        if (ConstantFunction.isNetworkAvailable(mContext)) {
             callbackManager = CallbackManager.Factory.create();
             LoginManager manager = LoginManager.getInstance();
             manager.setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY);

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Adapters.ReviewOptionAdapter;
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class ReviewActivity extends AppCompatActivity implements View.OnClickLis
     TextView txtSubmit;
     ImageView imgBack;
     RecyclerView ReviewOptionView;
-    ArrayList<CategoryMainModel> reviewOptionList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> reviewOptionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,19 +76,19 @@ public class ReviewActivity extends AppCompatActivity implements View.OnClickLis
 
     public void AddReviewOptionItems() {
         reviewOptionList.clear();
-        CategoryMainModel categoryMainModel;
+        StaticCategoryModel staticCategoryModel;
 
-        categoryMainModel = new CategoryMainModel("1", "Kind");
-        reviewOptionList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("1", "Kind");
+        reviewOptionList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("2", "Cheap price");
-        reviewOptionList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("2", "Cheap price");
+        reviewOptionList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("3", "Satisfied");
-        reviewOptionList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("3", "Satisfied");
+        reviewOptionList.add(staticCategoryModel);
 
-        categoryMainModel = new CategoryMainModel("4", "Not enough");
-        reviewOptionList.add(categoryMainModel);
+        staticCategoryModel = new StaticCategoryModel("4", "Not enough");
+        reviewOptionList.add(staticCategoryModel);
 
         if (reviewOptionList.size() > 0) {
             ReviewOptionAdapter reviewOptionAdapter = new ReviewOptionAdapter(mContext, reviewOptionList);

@@ -3,6 +3,7 @@ package com.app.metown.UI;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,18 +13,32 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.app.metown.AppConstants.APIConstant;
 import com.app.metown.Models.ItemMainModel;
+import com.app.metown.Models.TopicKeywordModel;
 import com.app.metown.R;
+import com.app.metown.VolleySupport.AppController;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CouponBoxActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -74,8 +89,8 @@ public class CouponBoxActivity extends AppCompatActivity implements View.OnClick
     public void AddCouponItems() {
         couponList.clear();
         for (int i = 1; i <= 10; i++) {
-          /*  ItemMainModel itemMainModel = new ItemMainModel(String.valueOf(i), "Item name");
-            couponList.add(itemMainModel);*/
+            ItemMainModel itemMainModel = new ItemMainModel(String.valueOf(i), "Item name");
+            couponList.add(itemMainModel);
         }
 
         if (couponList.size() > 0) {

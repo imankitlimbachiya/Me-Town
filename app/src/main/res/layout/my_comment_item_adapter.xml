@@ -9,63 +9,60 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/MyPostLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        tools:ignore="RtlHardcoded,UselessLeaf">
+        android:layout_marginRight="14dp">
 
         <ImageView
-            android:id="@+id/imgMyPost"
+            android:id="@+id/imgComment"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/circle_outer_border_bg"
-            tools:ignore="ContentDescription,RtlHardcoded,UselessLeaf" />
+            android:background="@drawable/circle_outer_border_bg" />
 
         <TextView
+            android:id="@+id/txtComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="35dp"
-            android:layout_toRightOf="@id/imgMyPost"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/OptionLayout"
+            android:layout_toRightOf="@id/imgComment"
             android:fontFamily="@font/louis_george_cafe"
             android:singleLine="true"
             android:text="'details'"
             android:textColor="@color/grey"
-            android:textSize="11sp"
-            tools:ignore="HardcodedText,SmallSp" />
+            android:textSize="11sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="35dp"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@id/imgMyPost"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/OptionLayout"
+            android:layout_toRightOf="@id/imgComment"
             android:fontFamily="@font/louis_george_cafe"
             android:singleLine="true"
             android:text="0 Day Ago"
             android:textColor="@color/grey"
-            android:textSize="11sp"
-            tools:ignore="HardcodedText,SmallSp" />
+            android:textSize="11sp" />
 
         <RelativeLayout
             android:id="@+id/OptionLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_alignParentRight="true">
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp">
 
             <ImageView
                 android:id="@+id/imgOption"
                 android:layout_width="6dp"
                 android:layout_height="24dp"
-                android:src="@drawable/option"
-                tools:ignore="ContentDescription" />
+                android:src="@drawable/option" />
 
         </RelativeLayout>
 

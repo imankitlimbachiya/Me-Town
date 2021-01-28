@@ -36,6 +36,8 @@ public class PriceActivity extends AppCompatActivity implements View.OnClickList
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
     }
 
     public void ViewInitialization() {
@@ -44,7 +46,9 @@ public class PriceActivity extends AppCompatActivity implements View.OnClickList
         imgBack = findViewById(R.id.imgBack);
 
         btnAddPrice = findViewById(R.id.btnAddPrice);
+    }
 
+    public void ViewOnClick() {
         imgBack.setOnClickListener(this);
         btnAddPrice.setOnClickListener(this);
     }

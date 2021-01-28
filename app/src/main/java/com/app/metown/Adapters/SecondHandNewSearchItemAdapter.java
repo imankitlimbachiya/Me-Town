@@ -23,7 +23,7 @@ public class SecondHandNewSearchItemAdapter extends RecyclerView.Adapter<SecondH
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
-       TextView item_name;
+        TextView item_name;
 
         MyViewHolder(View view) {
             super(view);
@@ -48,8 +48,8 @@ public class SecondHandNewSearchItemAdapter extends RecyclerView.Adapter<SecondH
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
         ItemMainModel itemMainModel = arrayList.get(position);
-        Log.e("name",itemMainModel.getItemName());
-         holder.item_name.setText("  " + itemMainModel.getItemName());
+
+        holder.item_name.setText("  " + itemMainModel.getItemName());
     }
 
     @Override

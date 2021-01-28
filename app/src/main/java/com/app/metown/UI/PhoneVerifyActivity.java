@@ -43,7 +43,10 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
     EditText edtEnterYourEmail, edtEnterYourMobileNumber, edtEnterCode;
     Button btnSendCode, btnAgreeToGetStarted;
 
-    String Data = "", Type = "", SocialID = "", Email = "", NickName = "", FCMToken = "5B4EB961-B66B-4958-8195-BBD4EBF3956D";
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor sharedPreferencesEditor;
+    String Otp = "", Type = "", SocialID = "", Email = "", NickName = "", FCMToken = "5B4EB961-B66B-4958-8195-BBD4EBF3956D";
+    String UserID = "", PhoneNumber = "", ProfilePicture = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,10 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
+
+        GetUserDefault();
     }
 
     public void ViewInitialization() {
@@ -73,10 +80,6 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
         btnSendCode = findViewById(R.id.btnSendCode);
         btnAgreeToGetStarted = findViewById(R.id.btnAgreeToGetStarted);
 
-        imgBack.setOnClickListener(this);
-        btnSendCode.setOnClickListener(this);
-        btnAgreeToGetStarted.setOnClickListener(this);
-
         txtPrivacyPolicy = findViewById(R.id.txtPrivacyPolicy);
         txtPrivacyPolicy.setPaintFlags(txtPrivacyPolicy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -84,12 +87,12 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
         SocialID = getIntent().getStringExtra("SocialID");
         Email = getIntent().getStringExtra("Email");
         NickName = getIntent().getStringExtra("NickName");
-        Log.e("Type", "" + Type);
+        /*Log.e("Type", "" + Type);
         Log.e("SocialID", "" + SocialID);
         Log.e("Email", "" + Email);
-        Log.e("NickName", "" + NickName);
+        Log.e("NickName", "" + NickName);*/
 
-        if (Data.equals("")) {
+        if (Otp.equals("")) {
             btnAgreeToGetStarted.setEnabled(false);
         }
 
@@ -97,6 +100,18 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
             edtEnterYourEmail.setText(Email);
             edtEnterYourEmail.setEnabled(false);
         }
+    }
+
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
+        btnSendCode.setOnClickListener(this);
+        btnAgreeToGetStarted.setOnClickListener(this);
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    public void GetUserDefault() {
+        sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+        sharedPreferencesEditor = sharedPreferences.edit();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -144,14 +159,28 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
                 } else if (Otp.equals("")) {
                     Toast.makeText(mContext, "Please Enter Your Code", Toast.LENGTH_LONG).show();
                 } else {
-                    if (Type.equals("Social")) {
-                        SignUpApi(NickName, Email, MobileNumber, FCMToken);
+                    // Log.e("UserID ", "" + UserID);
+                    if (UserID.equals("")) {
+                        if (Type.equals("Social")) {
+                            SignUpApi(NickName, Email, MobileNumber, FCMToken, SocialID);
+                        } else if (Type.equals("SignUp")) {
+                            Intent NickName = new Intent(mContext, NickNameActivity.class);
+                            NickName.putExtra("MobileNumber", MobileNumber);
+                            NickName.putExtra("Email", Email);
+                            startActivity(NickName);
+                            finish();
+                        } else {
+                            Toast.makeText(mContext, "You Are Not Member Of MeTown.\nPlease Sign up.", Toast.LENGTH_LONG).show();
+                            Intent Main = new Intent(mContext, MainActivity.class);
+                            startActivity(Main);
+                            finish();
+                        }
                     } else {
-                        Intent InvitationCode = new Intent(mContext, InvitationCodeActivity.class);
-                        InvitationCode.putExtra("MobileNumber", MobileNumber);
-                        InvitationCode.putExtra("Otp", Otp);
-                        InvitationCode.putExtra("Email", Email);
-                        startActivity(InvitationCode);
+                        Intent CheckAccount = new Intent(mContext, CheckAccountActivity.class);
+                        CheckAccount.putExtra("MobileNumber", MobileNumber);
+                        CheckAccount.putExtra("Otp", Otp);
+                        CheckAccount.putExtra("ProfilePicture", ProfilePicture);
+                        startActivity(CheckAccount);
                         finish();
                     }
                 }
@@ -173,9 +202,15 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
                             String HAS_ERROR = JsonMain.getString("has_error");
                             // Log.e("HAS_ERROR", " " + HAS_ERROR);
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                Data = JsonMain.getString("data");
-                                Toast.makeText(mContext, Data, Toast.LENGTH_LONG).show();
-                                edtEnterCode.setText(Data);
+                                JSONObject objectData = JsonMain.getJSONObject("data");
+                                if (objectData.has("user")) {
+                                    JSONObject objectUser = objectData.getJSONObject("user");
+                                    UserID = objectUser.getString("user_id");
+                                    PhoneNumber = objectUser.getString("phone_number");
+                                    ProfilePicture = objectUser.getString("profile_pic");
+                                }
+                                Otp = objectData.getString("otp");
+                                edtEnterCode.setText(Otp);
                                 btnAgreeToGetStarted.setEnabled(true);
                             } else {
                                 Toast.makeText(mContext, "No Data Available...", Toast.LENGTH_LONG).show();
@@ -196,6 +231,7 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Content-Type", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().OTP + params);
                 return params;
             }
 
@@ -206,13 +242,14 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
                 return params.getBytes();
             }
         };
+
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().OTP);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
-    private void SignUpApi(final String NickName, final String Email, final String PhoneNumber, final String FCMToken) {
+    private void SignUpApi(final String NickName, final String Email, final String PhoneNumber, final String FCMToken, final String SocialID) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().SIGN_UP,
@@ -278,6 +315,7 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Content-Type", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().SIGN_UP + params);
                 return params;
             }
 
@@ -285,7 +323,7 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
             @Override
             public byte[] getBody() throws AuthFailureError {
                 String params = "{\"nick_name\":\"" + NickName + "\",\"email\":\"" + Email + "\",\"phone_number\":\"" + PhoneNumber +
-                        "\",\"device_type\":\"" + "A" + "\",\"social_id\":\"" + "" + "\",\"referral_code\":\"" + "" +
+                        "\",\"device_type\":\"" + "A" + "\",\"social_id\":\"" + SocialID + "\",\"referral_code\":\"" + "" +
                         "\",\"fcm_token\":\"" + FCMToken + "\"}";
                 Log.e("PARAMETER", "" + APIConstant.getInstance().SIGN_UP + params);
                 return params.getBytes();

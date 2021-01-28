@@ -11,18 +11,16 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/left_arrow"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            tools:ignore="ContentDescription,RtlHardcoded"/>
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Register my business"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/txtDone"
@@ -45,8 +42,7 @@
             android:fontFamily="@font/alte_haas_grotesk_bold"
             android:text="Done"
             android:textColor="@color/black"
-            android:textSize="13sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="13sp" />
 
     </RelativeLayout>
 
@@ -65,8 +61,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -81,18 +76,29 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Type of business"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txtSelectedCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/txtTypeOfBusiness"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
                 <LinearLayout
+                    android:id="@+id/SelectCategoryLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    tools:ignore="RtlHardcoded,UseCompoundDrawables">
+                    android:paddingRight="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -101,14 +107,12 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="select"
                         android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        tools:ignore="HardcodedText" />
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="7dp"
-                        android:src="@drawable/down_arrow_grey"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/down_arrow_grey" />
 
                 </LinearLayout>
 
@@ -241,8 +245,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:background="@drawable/edt_search_bg"
-                    tools:ignore="UselessParent">
+                    android:background="@drawable/edt_search_bg">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -251,8 +254,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Select barangay"
                         android:textColor="@color/grey"
-                        android:textSize="16sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:layout_width="9dp"
@@ -260,8 +262,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="25dp"
-                        android:src="@drawable/down_arrow_grey"
-                        tools:ignore="ContentDescription,RtlHardcoded" />
+                        android:src="@drawable/down_arrow_grey" />
 
                 </RelativeLayout>
 
@@ -359,8 +360,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Photos"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/imgCamera"
@@ -391,25 +391,24 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Introduce your store"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/edtIntroduceYourStore"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:textColorHint="@color/grey"
-                    android:hint="Please focus on product, service and price descriptions\n(At least write more than 40 characters.)"
                     android:layout_below="@id/txtIntroduceYourStore"
                     android:layout_marginLeft="22dp"
-                    android:layout_marginRight="15dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginRight="15dp"
                     android:background="@color/transparent"
                     android:fontFamily="@font/louis_george_cafe"
+                    android:hint="Please focus on product, service and price descriptions\n(At least write more than 40 characters.)"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:singleLine="true"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
                     android:textSize="12sp" />
 
             </RelativeLayout>
@@ -417,8 +416,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/grey"
-                android:layout_marginBottom="2dp"/>
+                android:layout_marginBottom="2dp"
+                android:background="@color/grey" />
 
         </LinearLayout>
 
@@ -432,7 +431,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

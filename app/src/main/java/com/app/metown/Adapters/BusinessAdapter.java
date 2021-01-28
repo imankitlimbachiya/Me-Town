@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.PostHireHelperModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 import com.app.metown.UI.CheckSiteMapActivity;
 import com.app.metown.UI.ProfileOfStoreActivity;
@@ -21,20 +22,21 @@ import java.util.ArrayList;
 public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.MyViewHolder> {
 
     Context mContext;
-    ArrayList<CategoryMainModel> arrayList;
+    ArrayList<PostHireHelperModel> arrayList;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtCheckTheSiteOnMap;
+        TextView txtBusinessName, txtCheckTheSiteOnMap;
 
         MyViewHolder(View view) {
             super(view);
 
+            txtBusinessName = view.findViewById(R.id.txtBusinessName);
             txtCheckTheSiteOnMap = view.findViewById(R.id.txtCheckTheSiteOnMap);
         }
     }
 
-    public BusinessAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+    public BusinessAdapter(Context mContext, ArrayList<PostHireHelperModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
     }
@@ -48,9 +50,9 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        CategoryMainModel categoryMainModel = arrayList.get(position);
+        PostHireHelperModel postHireHelperModel = arrayList.get(position);
 
-        // holder.btnSelect.setText("  " + categoryModel.getCategoryName());
+        // holder.txtBusinessName.setText(postHireHelperModel.getKeyword());
 
         holder.txtCheckTheSiteOnMap.setOnClickListener(new View.OnClickListener() {
             @Override

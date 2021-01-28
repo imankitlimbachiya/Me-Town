@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Adapters.PopularKeywordAdapter;
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class StoreAndServiceNearYouActivity extends AppCompatActivity implements
     ImageView imgBack;
     Button btnRegisterMyBusiness;
     RecyclerView PopularKeywordView;
-    ArrayList<CategoryMainModel> popularKeywordList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> popularKeywordList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +79,8 @@ public class StoreAndServiceNearYouActivity extends AppCompatActivity implements
     public void AddPopularKeywordItems() {
         popularKeywordList.clear();
         for (int i = 1; i <= 10; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Notification comes here");
-            popularKeywordList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Notification comes here");
+            popularKeywordList.add(staticCategoryModel);
         }
 
         if (popularKeywordList.size() > 0) {

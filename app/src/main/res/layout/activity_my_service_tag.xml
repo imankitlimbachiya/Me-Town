@@ -11,8 +11,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -21,8 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="My Service Tag"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
     </RelativeLayout>
 
@@ -52,15 +49,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="15dp"
-                android:background="@drawable/round_normal_corner_bg"
-                tools:ignore="UselessParent">
+                android:background="@drawable/round_normal_corner_bg">
 
                 <EditText
                     android:id="@+id/edtFindCategory"
@@ -77,8 +72,7 @@
                     android:singleLine="true"
                     android:textColor="@color/grey"
                     android:textColorHint="@color/grey"
-                    android:textSize="13sp"
-                    tools:ignore="Autofill,HardcodedText,RtlHardcoded,RtlSymmetry" />
+                    android:textSize="13sp" />
 
                 <ImageView
                     android:id="@+id/imgSearch"
@@ -87,8 +81,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
-                    android:src="@drawable/search_edt"
-                    tools:ignore="ContentDescription,HardcodedText,RtlHardcoded" />
+                    android:src="@drawable/search_edt" />
 
             </RelativeLayout>
 
@@ -106,8 +99,12 @@
                 android:text="You can not find what you are looking for?"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="15sp"
-                tools:ignore="HardcodedText" />
+                android:textSize="15sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ServiceKindView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -121,7 +118,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

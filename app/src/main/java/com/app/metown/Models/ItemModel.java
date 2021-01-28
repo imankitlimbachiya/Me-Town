@@ -2,8 +2,8 @@ package com.app.metown.Models;
 
 public class ItemModel {
 
-    String ItemID, ItemSellerID, ItemBuyerID, ItemCategoryID, ItemCategoryTitle, ItemName, ItemDescription, ItemStatus, ItemType,
-            ItemPrice, ItemLatitude, ItemLongitude, ItemUpdatedAt, ItemIsNegotiable, ItemImages, ItemStatusTitle, ItemTypeTitle, ItemFavouriteCount;
+    String ItemID, ItemSellerID, ItemBuyerID, ItemCategoryID, ItemCategoryTitle, ItemName, ItemDescription, ItemStatus, ItemType, ItemPrice,
+            ItemLatitude, ItemLongitude, ItemUpdatedAt, ItemIsNegotiable, ItemImages, ItemStatusTitle, ItemTypeTitle, ItemFavouriteCount;
 
     public String getItemID() {
         return ItemID;

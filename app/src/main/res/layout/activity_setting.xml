@@ -11,8 +11,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -21,8 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Settings"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
     </RelativeLayout>
 
@@ -52,8 +49,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,8 +58,7 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="Notification Settings"
                 android:textColor="@color/black"
-                android:textSize="10sp"
-                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                android:textSize="10sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -77,8 +72,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Primary notification"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,21 +83,20 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Chats and Comments"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="12sp" />
 
                 <Switch
+                    android:id="@+id/PrimaryNotificationSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
-                    android:thumbTint="#9464B2"
                     android:checked="false"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
                     android:theme="@style/SCBSwitch"
-                    tools:ignore="RtlHardcoded,UnusedAttribute,UseSwitchCompatOrMaterialXml" />
+                    android:thumbTint="#9464B2" />
 
             </RelativeLayout>
 
@@ -125,8 +118,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Other notifications"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,21 +129,20 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Favourite, Keyword Alerts, etc"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="12sp" />
 
                 <Switch
+                    android:id="@+id/OtherNotificationSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
-                    android:thumbTint="#9464B2"
                     android:checked="false"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
                     android:theme="@style/SCBSwitch"
-                    tools:ignore="RtlHardcoded,UnusedAttribute,UseSwitchCompatOrMaterialXml" />
+                    android:thumbTint="#9464B2" />
 
             </RelativeLayout>
 
@@ -168,26 +159,25 @@
                     android:id="@+id/txtDoNotDisturb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Do Not Disturb"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <Switch
+                    android:id="@+id/DoNotDisturbSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
-                    android:thumbTint="#9464B2"
                     android:checked="false"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
                     android:theme="@style/SCBSwitch"
-                    tools:ignore="RtlHardcoded,UnusedAttribute,UseSwitchCompatOrMaterialXml" />
+                    android:thumbTint="#9464B2" />
 
             </RelativeLayout>
 
@@ -204,22 +194,20 @@
                     android:id="@+id/txtTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="'#time' ~ '#time'"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/right_arrow"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
+                    android:src="@drawable/right_arrow" />
 
             </RelativeLayout>
 
@@ -236,26 +224,25 @@
                     android:id="@+id/txtVibration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Vibration"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <Switch
+                    android:id="@+id/VibrationSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
-                    android:thumbTint="#9464B2"
                     android:checked="false"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
                     android:theme="@style/SCBSwitch"
-                    tools:ignore="RtlHardcoded,UnusedAttribute,UseSwitchCompatOrMaterialXml" />
+                    android:thumbTint="#9464B2" />
 
             </RelativeLayout>
 
@@ -272,13 +259,12 @@
                     android:id="@+id/txtNotificationSound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Notification Sound"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/txtSoundName"
@@ -290,17 +276,15 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="'Sound name'"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/right_arrow"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
+                    android:src="@drawable/right_arrow" />
 
             </RelativeLayout>
 
@@ -317,8 +301,7 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="Notification Settings"
                 android:textColor="@color/black"
-                android:textSize="10sp"
-                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                android:textSize="10sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -328,13 +311,12 @@
                     android:id="@+id/txtFollower"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Followers"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
@@ -351,13 +333,12 @@
                     android:id="@+id/txtManageBlockedUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Manage blocked users"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
@@ -374,13 +355,12 @@
                     android:id="@+id/txtManageHiddenUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Manage hidden users"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
@@ -398,13 +378,12 @@
                     android:id="@+id/txtOtherSetting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Other Settings"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
@@ -421,8 +400,7 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="Other"
                 android:textColor="@color/black"
-                android:textSize="10sp"
-                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                android:textSize="10sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -432,13 +410,12 @@
                     android:id="@+id/txtDeleteCache"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Delete Cache"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
@@ -455,13 +432,12 @@
                     android:id="@+id/txtOpenSourceLicences"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Open source licences"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
@@ -478,20 +454,19 @@
                     android:id="@+id/txtVersion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Version '#version'"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/grey"/>
+                android:background="@color/grey" />
 
             <RelativeLayout
                 android:id="@+id/LogoutLayout"
@@ -502,23 +477,23 @@
                     android:id="@+id/txtLogout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Log out"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/grey"
-                android:layout_marginBottom="2dp"/>
+                android:layout_marginBottom="2dp"
+                android:background="@color/grey" />
 
             <RelativeLayout
+                android:id="@+id/DeleteLayout"
                 android:layout_width="match_parent"
                 android:layout_height="46dp">
 
@@ -526,21 +501,20 @@
                     android:id="@+id/txtDeleteAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Delete Account"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/grey"
-                android:layout_marginBottom="2dp"/>
+                android:layout_marginBottom="2dp"
+                android:background="@color/grey" />
 
         </LinearLayout>
 
@@ -554,7 +528,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.ExifInterface;
@@ -33,10 +34,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +69,7 @@ import com.app.metown.Models.PhraseModel;
 import com.app.metown.R;
 import com.app.metown.VolleySupport.AppController;
 import com.app.metown.VolleySupport.VolleyMultipartRequest;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -95,18 +99,16 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
     ProgressBar progressBar;
     TextView txtPhoto, txtTitle, txtCategories, txtSelectedCategory, txtPrice, txtDescription, txtDone;
     ImageView imgBack, imgPhoto, imgPhrase;
-    EditText edtTitle, edtPrice, edtDescription;
-    EditText edtEnterPhrase;
+    EditText edtTitle, edtPrice, edtDescription, edtEnterPhrase;
     RelativeLayout SelectCategoryLayout;
-    LinearLayout RangeSettingLayout, SelectedLayout;
+    LinearLayout RangeSettingLayout;
     RecyclerView PhraseView, SelectCategoryView;
     ArrayList<PhraseModel> phraseList = new ArrayList<>();
     ArrayList<CategoryModel> categoryList = new ArrayList<>();
     Dialog dialog;
-
-    int total_image = 0;
-    String CategoryType = "1", ParentID = "0";
-    String Photos = "[IMG-20190928-WA0020.jpg]", Title = "Big billion days", CategoryID = "6", Price = "500", Negotiable = "1", Description = "Big billion days end now...", Latitude = "23.112659", Longitude = "72.547752";
+    RadioButton rbtNegotiable;
+    String CategoryType = "1", ParentID = "0", Title = "", CategoryID = "", Price = "", Negotiable = "0", Description = "",
+            Latitude = "23.112659", Longitude = "72.547752";
 
     String mPath = "";
     private static final int SELECT_IMAGE = 4;
@@ -134,6 +136,8 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
         ViewInitialization();
 
         ViewOnClick();
+
+        ViewSetText();
     }
 
     public void ViewInitialization() {
@@ -146,19 +150,49 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
         edtTitle = findViewById(R.id.edtTitle);
         edtPrice = findViewById(R.id.edtPrice);
         edtDescription = findViewById(R.id.edtDescription);
-        SelectedLayout = findViewById(R.id.SelectedLayout);
 
         txtDone = findViewById(R.id.txtDone);
-        txtSelectedCategory = findViewById(R.id.txtSelectedCategory);
         txtPhoto = findViewById(R.id.txtPhoto);
         txtTitle = findViewById(R.id.txtTitle);
         txtCategories = findViewById(R.id.txtCategories);
+        txtSelectedCategory = findViewById(R.id.txtSelectedCategory);
         txtPrice = findViewById(R.id.txtPrice);
         txtDescription = findViewById(R.id.txtDescription);
 
         SelectCategoryLayout = findViewById(R.id.SelectCategoryLayout);
         RangeSettingLayout = findViewById(R.id.RangeSettingLayout);
 
+        rbtNegotiable = findViewById(R.id.rbtNegotiable);
+    }
+
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
+        txtDone.setOnClickListener(this);
+        imgPhoto.setOnClickListener(this);
+        imgPhrase.setOnClickListener(this);
+        SelectCategoryLayout.setOnClickListener(this);
+        RangeSettingLayout.setOnClickListener(this);
+
+        rbtNegotiable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.e("isChecked ", "" + isChecked);
+                buttonView.setSelected(!buttonView.isSelected());
+                Negotiable = "1";
+                Drawable img;
+                if (isChecked) {
+                    img = mContext.getResources().getDrawable(R.drawable.negotiable_selected);
+                } else {
+                    img = mContext.getResources().getDrawable(R.drawable.negotiable_unselected);
+                }
+                img.setBounds(0, 0, 60, 60);
+                buttonView.setCompoundDrawables(null, null, img, null);
+            }
+        });
+    }
+
+    public void ViewSetText() {
         String Photo = "<font color='#000000'>Photos</font>" + " " + "<font color='#FFCE5D'><small>●</small></font>";
         txtPhoto.setText(Html.fromHtml(Photo));
 
@@ -175,15 +209,6 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
         txtDescription.setText(Html.fromHtml(Description));
     }
 
-    public void ViewOnClick() {
-        imgBack.setOnClickListener(this);
-        txtDone.setOnClickListener(this);
-        imgPhoto.setOnClickListener(this);
-        imgPhrase.setOnClickListener(this);
-        SelectCategoryLayout.setOnClickListener(this);
-        RangeSettingLayout.setOnClickListener(this);
-    }
-
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -192,32 +217,25 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.imgPhoto:
-//                if(total_image<=10){
-//                    LinearLayout ll = (LinearLayout)findViewById(R.id.imgeselected);
-//                    ImageView ii= new ImageView(this);
-//                    LinearLayout.LayoutParams viewParamsCenter = new LinearLayout.LayoutParams(
-//                            80, 77);
-//                    ii.setMaxHeight(20);
-//                    viewParamsCenter.gravity= Gravity.CENTER;
-//                    viewParamsCenter.setMargins(10, 10, 10, 10);
-//                    ii.setMaxWidth(20);
-//                    ii.setBackgroundResource(R.drawable.photo);
-//                    ii.setLayoutParams(viewParamsCenter);
-//
-//                    ll.addView(ii);
-//
-//                    total_image++;
-//                }
                 SelectImage();
                 break;
             case R.id.txtDone:
                 Title = edtTitle.getText().toString().trim();
                 Price = edtPrice.getText().toString().trim();
                 Description = edtDescription.getText().toString().trim();
-                if (mBitmap != null) {
-                    Profile_image_Upload(mBitmap);
+                if (mBitmap == null) {
+                    Toast.makeText(mContext, "Please Choose Your Business Image.", Toast.LENGTH_LONG).show();
+                } else if (Title.equals("")) {
+                    Toast.makeText(mContext, "Please Enter Your Business Title.", Toast.LENGTH_LONG).show();
+                } else if (CategoryID.equals("")) {
+                    Toast.makeText(mContext, "Please Select Your Business Category.", Toast.LENGTH_LONG).show();
+                } else if (Price.equals("")) {
+                    Toast.makeText(mContext, "Please Select Your Business Price.", Toast.LENGTH_LONG).show();
+                } else if (Description.equals("")) {
+                    Toast.makeText(mContext, "Please Select Your Business Description.", Toast.LENGTH_LONG).show();
+                } else {
+                    PostSaleApi(Title, CategoryID, Price, Negotiable, Description, Latitude, Longitude, mBitmap);
                 }
-                // PostSaleApi(Photos, Title, CategoryID, Price, Negotiable, Description, Latitude, Longitude);
                 break;
             case R.id.imgPhrase:
                 dialog = new Dialog(mContext);
@@ -247,13 +265,6 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 SelectCategoryView = dialog.findViewById(R.id.SelectCategoryView);
                 GetCategoryApi(CategoryType, ParentID);
-                /*dialog.findViewById(R.id.UnSelectBarangayLayout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                    }
-                });*/
-                dialog.show();
                 break;
             case R.id.RangeSettingLayout:
                 Intent SetRange = new Intent(mContext, SetRangeActivity.class);
@@ -266,10 +277,8 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
     private void getLastLocation() {
         // check if permissions are given
         if (checkPermissions()) {
-
             // check if location is enabled
             if (isLocationEnabled()) {
-
                 // getting last
                 // location from
                 // FusedLocationClient
@@ -284,14 +293,11 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                         } else {
                             Latitude = String.valueOf(location.getLatitude());
                             Longitude = String.valueOf(location.getLongitude());
-                            Log.e("lat", Latitude + ',' + Longitude);
-
                         }
                     }
                 });
             } else {
-                Toast.makeText(this, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(mContext, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
@@ -302,17 +308,12 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private LocationCallback
-            mLocationCallback
-            = new LocationCallback() {
-
+    private LocationCallback mLocationCallback = new LocationCallback() {
         @Override
-        public void onLocationResult(
-                LocationResult locationResult) {
+        public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
             Latitude = String.valueOf(mLastLocation.getLatitude());
             Longitude = String.valueOf(mLastLocation.getLongitude());
-            Log.e("lat", Latitude + ',' + Longitude);
         }
     };
 
@@ -334,17 +335,6 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
 
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-
-        // If we want background location
-        // on Android 10.0 and higher,
-        // use:
-        /* ActivityCompat
-                .checkSelfPermission(
-                    this,
-                    Manifest.permission
-                        .ACCESS_BACKGROUND_LOCATION)
-            == PackageManager.PERMISSION_GRANTED
-        */
     }
 
     private void requestPermissions() {
@@ -367,6 +357,7 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                         try {
                             progressBar.setVisibility(View.GONE);
                             Log.e("RESPONSE", "" + APIConstant.getInstance().GET_CATEGORY + response);
+                            dialog.show();
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
                             if (HAS_ERROR.equals("false")) {
@@ -418,6 +409,7 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                 return params.getBytes();
             }
         };
+
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_CATEGORY);
@@ -714,17 +706,11 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                     // gallery
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         REQUEST_CODE = 70;
-                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-                        } else {
-                            PhotoGallery();
-                        }
+                    }
+                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
                     } else {
-                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-                        } else {
-                            PhotoGallery();
-                        }
+                        PhotoGallery();
                     }
                 } else if (which == 1) {
                     // camera
@@ -796,12 +782,7 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                             } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("0")) {
                                 mBitmap = rotate(mBitmap, 90);
                             }
-
-                            if (ConstantFunction.isNetworkAvailable(mContext)) {
-//                                Profile_image_Upload(mBitmap);
-                            } else {
-                                Toast.makeText(mContext, "Please Check Your Network Connection", Toast.LENGTH_SHORT).show();
-                            }
+                            Glide.with(mContext).load(mBitmap).into(imgPhoto);
                         } catch (IOException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
@@ -818,20 +799,14 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                         mPath = getImagePath(selectedImageUri);
                         try {
                             mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+                            Glide.with(mContext).load(mBitmap).into(imgPhoto);
                         } catch (IOException e) {
                             e.printStackTrace();
-                        }
-
-                        if (ConstantFunction.isNetworkAvailable(mContext)) {
-//                            Profile_image_Upload(mBitmap);
-                        } else {
-                            Toast.makeText(mContext, "Please Check Your Network Connection", Toast.LENGTH_SHORT).show();
                         }
                     } catch (URISyntaxException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-
                 } else if (resultCode == SELECT_IMAGE) {
                     Uri selectedImage = data.getData();
                     String path = getPath(mContext, selectedImage);
@@ -839,15 +814,10 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                         mPath = path;
                         try {
                             mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
-
+                            Glide.with(mContext).load(mBitmap).into(imgPhoto);
                         } catch (IOException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
-                        }
-                        if (ConstantFunction.isNetworkAvailable(mContext)) {
-//                            Profile_image_Upload(mBitmap);
-                        } else {
-                            Toast.makeText(mContext, "Please Check Your Network Connection", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -895,13 +865,9 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
         mPath = destination.getAbsolutePath();
         try {
             mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+            Glide.with(mContext).load(mBitmap).into(imgPhoto);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        if (ConstantFunction.isNetworkAvailable(mContext)) {
-//            new PostSaleApi().execute();
-        } else {
-            Toast.makeText(mContext, "Please Check Your Network Connection", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1019,23 +985,19 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
     }
 
     public static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri
-                .getAuthority());
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
     public static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri
-                .getAuthority());
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
     public static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri
-                .getAuthority());
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    private void Profile_image_Upload(final Bitmap bitmap) {
-        // getting the tag from the edittext
-        // final String tags = editTextTags.getText().toString().trim();
+    private void PostSaleApi(final String Title, final String CategoryID, final String Price, final String Negotiable,
+                             final String Description, final String Latitude, final String Longitude, final Bitmap mBitmap) {
         progressBar.setVisibility(View.VISIBLE);
         // our custom volley request
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, APIConstant.getInstance().POST_SALE,
@@ -1044,8 +1006,8 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                     public void onResponse(NetworkResponse response) {
                         progressBar.setVisibility(View.GONE);
                         try {
+                            Log.e("RESPONSE ", "" + APIConstant.getInstance().POST_SALE + response);
                             JSONObject JsonMain = new JSONObject(new String(response.data));
-                            Log.e("response", JsonMain.toString());
                             String HAS_ERROR = JsonMain.getString("has_error");
                             String Message = JsonMain.getString("msg");
                             if (HAS_ERROR.equals("false")) {
@@ -1064,7 +1026,6 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
                         Log.e("error", error.toString());
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
@@ -1092,7 +1053,7 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                 params.put("Content-Transfer-Encoding", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().MY_ACTIVE_SALES + params);
+                Log.e("HEADER", "" + APIConstant.getInstance().POST_SALE + params);
                 return params;
             }
 
@@ -1100,7 +1061,8 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 long ImageName = System.currentTimeMillis();
-                params.put("photos[]", new DataPart(ImageName + ".png", getFileDataFromDrawable(bitmap)));
+                params.put("photos[]", new DataPart(ImageName + ".png", getFileDataFromDrawable(mBitmap)));
+                Log.e("PARAMETER Image", "" + APIConstant.getInstance().POST_SALE + params);
                 return params;
             }
         };
@@ -1120,7 +1082,6 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
             public void retry(VolleyError error) throws VolleyError {
                 progressBar.setVisibility(View.GONE);
                 Log.e("ErrorVolley", error.toString());
-
             }
         });
 
@@ -1132,76 +1093,6 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
-    }
-
-    private void PostSaleApi(final String Photos, final String Title, final String CategoryID, final String Price, final String Negotiable, final String Description, final String Latitude, final String Longitude) {
-        String req = "req";
-        progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().POST_SALE,
-                new Response.Listener<String>() {
-                    @SuppressLint("ApplySharedPref")
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().POST_SALE + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            String Message = JsonMain.getString("msg");
-                            if (HAS_ERROR.equals(false)) {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                                Intent Home = new Intent(mContext, HomeActivity.class);
-                                startActivity(Home);
-                                finish();
-                            } else {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
-
-            // Header data passing
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
-                String Token = sharedPreferences.getString("Token", "");
-                String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Transfer-Encoding", "application/json");
-                params.put("Authorization", Type + " " + Token);
-                params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().MY_ACTIVE_SALES + params);
-                return params;
-            }
-
-            // Form data passing
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("photos[]", Photos);
-                params.put("title", Title);
-                params.put("category_id", CategoryID);
-                params.put("price", Price);
-                params.put("negotiable", Negotiable);
-                params.put("description", Description);
-                params.put("lats", Latitude);
-                params.put("longs", Longitude);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().POST_SALE + params);
-                return params;
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().SIGN_UP);
-        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
     @Override

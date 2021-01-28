@@ -7,26 +7,22 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/txtTown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/louis_george_cafe"
         android:singleLine="true"
-        android:text="A"
+        android:text="Acacia"
         android:textColor="@color/black"
-        android:textSize="26sp"
+        android:textSize="14sp"
         tools:ignore="HardcodedText,RtlHardcoded" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/grey" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/BarangayKeywordFromSpecificAlphabetView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
 </LinearLayout>

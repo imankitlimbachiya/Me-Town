@@ -2,7 +2,8 @@ package com.app.metown.Models;
 
 public class CategoryModel {
 
-    String CategoryID, CategoryName, CategoryTitle, CategoryParentID, CategoryParentCategoryTitle, CategoryType, CategoryStatus;
+    String CategoryID, CategoryName, CategoryTitle, CategoryImage, CategoryParentID, CategoryParentCategoryTitle,
+            CategoryType, CategoryStatus, Images;
 
     public String getCategoryID() {
         return CategoryID;
@@ -26,6 +27,14 @@ public class CategoryModel {
 
     public void setCategoryTitle(String categoryTitle) {
         CategoryTitle = categoryTitle;
+    }
+
+    public String getCategoryImage() {
+        return CategoryImage;
+    }
+
+    public void setCategoryImage(String categoryImage) {
+        CategoryImage = categoryImage;
     }
 
     public String getCategoryParentID() {
@@ -58,5 +67,13 @@ public class CategoryModel {
 
     public void setCategoryStatus(String categoryStatus) {
         CategoryStatus = categoryStatus;
+    }
+
+    public String getImages() {
+        return Images;
+    }
+
+    public void setImages(String images) {
+        Images = images;
     }
 }

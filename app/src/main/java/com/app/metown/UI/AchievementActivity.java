@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -37,8 +37,8 @@ public class AchievementActivity extends AppCompatActivity implements View.OnCli
     RecyclerView SuperAchievementView, NormalAchievementView;
     LinearLayout SuperAchievementLayout, NormalAchievementLayout;
     RelativeLayout SuperAchievementViewLayout, NormalAchievementViewLayout;
-    ArrayList<CategoryMainModel> superAchievementList = new ArrayList<>();
-    ArrayList<CategoryMainModel> normalAchievementList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> superAchievementList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> normalAchievementList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,8 +127,8 @@ public class AchievementActivity extends AppCompatActivity implements View.OnCli
     public void AddSuperAchievementItems() {
         superAchievementList.clear();
         for (int i = 1; i <= 3; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Got 15 compliment from other users");
-            superAchievementList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Got 15 compliment from other users");
+            superAchievementList.add(staticCategoryModel);
         }
 
         if (superAchievementList.size() > 0) {
@@ -145,7 +145,7 @@ public class AchievementActivity extends AppCompatActivity implements View.OnCli
     public static class SuperAchievementAdapter extends RecyclerView.Adapter<SuperAchievementAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
+        ArrayList<StaticCategoryModel> arrayList;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -158,7 +158,7 @@ public class AchievementActivity extends AppCompatActivity implements View.OnCli
             }
         }
 
-        public SuperAchievementAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public SuperAchievementAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -172,7 +172,7 @@ public class AchievementActivity extends AppCompatActivity implements View.OnCli
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
+            StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -192,8 +192,8 @@ public class AchievementActivity extends AppCompatActivity implements View.OnCli
     public void AddNormalAchievementItems() {
         normalAchievementList.clear();
         for (int i = 1; i <= 3; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Got 15 compliment from other users");
-            normalAchievementList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Got 15 compliment from other users");
+            normalAchievementList.add(staticCategoryModel);
         }
 
         if (normalAchievementList.size() > 0) {
@@ -210,7 +210,7 @@ public class AchievementActivity extends AppCompatActivity implements View.OnCli
     public static class NormalAchievementAdapter extends RecyclerView.Adapter<NormalAchievementAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
+        ArrayList<StaticCategoryModel> arrayList;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -223,7 +223,7 @@ public class AchievementActivity extends AppCompatActivity implements View.OnCli
             }
         }
 
-        public NormalAchievementAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public NormalAchievementAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -237,7 +237,7 @@ public class AchievementActivity extends AppCompatActivity implements View.OnCli
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
+            StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

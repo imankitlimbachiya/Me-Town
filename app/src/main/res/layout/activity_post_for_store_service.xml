@@ -11,18 +11,16 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/left_arrow"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            tools:ignore="ContentDescription,RtlHardcoded"/>
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Post for Store &amp; Services"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/txtDone"
@@ -45,8 +42,7 @@
             android:fontFamily="@font/alte_haas_grotesk_bold"
             android:text="Done"
             android:textColor="@color/black"
-            android:textSize="13sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="13sp" />
 
     </RelativeLayout>
 
@@ -60,13 +56,13 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/view">
+        android:layout_below="@id/view"
+        android:layout_above="@id/RangeSettingLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,16 +78,15 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Photos"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
                 <ImageView
+                    android:id="@+id/imgPhoto"
                     android:layout_width="33dp"
                     android:layout_height="27dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="6dp"
-                    android:src="@drawable/photo"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
+                    android:src="@drawable/photo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -100,11 +95,9 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="0/10"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
-
 
             <View
                 android:layout_width="match_parent"
@@ -125,8 +118,19 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Categories"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txtSelectedCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/txtCategories"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:id="@+id/SelectCategoryLayout"
@@ -136,8 +140,7 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    tools:ignore="RtlHardcoded,UseCompoundDrawables">
+                    android:paddingRight="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -146,14 +149,12 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="select"
                         android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        tools:ignore="HardcodedText" />
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="7dp"
-                        android:src="@drawable/down_arrow_grey"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/down_arrow_grey" />
 
                 </LinearLayout>
 
@@ -178,8 +179,21 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Title"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -188,9 +202,9 @@
                 android:layout_height="1dp"
                 android:background="@color/grey" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="66dp"
+                android:layout_height="70dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -202,10 +216,23 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Price"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
-            </RelativeLayout>
+                <EditText
+                    android:id="@+id/edtPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -226,8 +253,21 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Contact number"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtContactNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -236,18 +276,37 @@
                 android:layout_height="1dp"
                 android:background="@color/grey" />
 
-            <TextView
-                android:id="@+id/txtDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/louis_george_cafe"
-                android:text="Description"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text="Description"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -258,12 +317,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/LearnAboutLocalAdsLayout"
+        android:layout_margin="10dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="20dp"
-        tools:ignore="RtlHardcoded,UseCompoundDrawables,UselessParent">
+        android:padding="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -272,14 +329,12 @@
             android:fontFamily="@font/alte_haas_grotesk_regular"
             android:text="Range Setting"
             android:textColor="@color/grey"
-            android:textSize="15sp"
-            tools:ignore="HardcodedText" />
+            android:textSize="15sp" />
 
         <ImageView
             android:layout_width="13dp"
             android:layout_height="7dp"
-            android:src="@drawable/down_arrow_grey"
-            tools:ignore="ContentDescription" />
+            android:src="@drawable/down_arrow_grey" />
 
     </LinearLayout>
 
@@ -298,8 +353,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Learn about local ads"
             android:textColor="@color/lightWhite"
-            android:textSize="15sp"
-            tools:ignore="HardcodedText" />
+            android:textSize="15sp" />
 
         <ImageView
             android:layout_width="13dp"
@@ -307,8 +361,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/txtLearnAboutLocalAds"
-            android:src="@drawable/top_arrow_white"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/top_arrow_white" />
 
     </RelativeLayout>
 
@@ -320,7 +373,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

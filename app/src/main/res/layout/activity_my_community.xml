@@ -4,36 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
     android:background="@color/white"
+    android:focusableInTouchMode="true"
     tools:context=".UI.MyCommunityActivity">
 
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/left_arrow"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            tools:ignore="ContentDescription,RtlHardcoded"/>
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Community"
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/louis_george_cafe"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/imgBack"
-            tools:ignore="HardcodedText,RtlHardcoded"/>
+            android:fontFamily="@font/louis_george_cafe"
+            android:text="My Community"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
 
     </RelativeLayout>
 
@@ -42,8 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@id/TitleLayout"
-        android:orientation="horizontal"
-        tools:ignore="DisableBaselineAlignment">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/MyPostLayout"
@@ -61,8 +57,7 @@
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="My Posts"
                 android:textColor="@color/black"
-                android:textSize="15sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="15sp" />
 
             <View
                 android:id="@+id/MyPostView"
@@ -89,8 +84,7 @@
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="My Comments"
                 android:textColor="@color/grey"
-                android:textSize="15sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="15sp" />
 
             <View
                 android:id="@+id/MyCommentView"
@@ -111,53 +105,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/MyPostResponseLayout"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/PostView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                tools:ignore="UselessParent">
+                android:visibility="gone" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/MyPostItemView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/MyCommentResponseLayout"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/CommentView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                tools:ignore="UselessParent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/MyCommentItemView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/HiddenResponseLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible"
-                tools:ignore="UselessParent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/HiddenItemView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -169,9 +129,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:indeterminate="true"
-        android:indeterminateTintMode="src_atop"
         android:indeterminateTint="@color/colorAccent"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone" />
 
 </RelativeLayout>

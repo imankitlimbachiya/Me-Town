@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Adapters.ComplimentAdapter;
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class ComplimentActivity extends AppCompatActivity implements View.OnClic
     ImageView imgBack;
     TextView txtQuestion, txtSubmit;
     RecyclerView ComplimentView;
-    ArrayList<CategoryMainModel> complimentList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> complimentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +82,8 @@ public class ComplimentActivity extends AppCompatActivity implements View.OnClic
     public void AddComplimentItems() {
         complimentList.clear();
         for (int i = 1; i <= 10; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Notification comes here");
-            complimentList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Notification comes here");
+            complimentList.add(staticCategoryModel);
         }
 
         if (complimentList.size() > 0) {

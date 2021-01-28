@@ -4,12 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.CategoryModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,27 +20,26 @@ import java.util.ArrayList;
 public class CategorySearchAdapter extends RecyclerView.Adapter<CategorySearchAdapter.MyViewHolder> {
 
     Context mContext;
-    ArrayList<CategoryMainModel> arrayList;
+    ArrayList<CategoryModel> arrayList;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView imgCategory;
         TextView txtCategoryName;
-        LinearLayout MainLayout;
 
         MyViewHolder(View view) {
             super(view);
 
-            txtCategoryName = view.findViewById(R.id.txtCategoryName);
+            imgCategory = view.findViewById(R.id.imgCategory);
 
-            MainLayout = view.findViewById(R.id.MainLayout);
+            txtCategoryName = view.findViewById(R.id.txtCategoryName);
         }
     }
 
-    public CategorySearchAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+    public CategorySearchAdapter(Context mContext, ArrayList<CategoryModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
     }
-
 
     @NotNull
     @Override
@@ -50,15 +50,9 @@ public class CategorySearchAdapter extends RecyclerView.Adapter<CategorySearchAd
 
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        CategoryMainModel categoryMainModel = arrayList.get(position);
+        CategoryModel categoryModel = arrayList.get(position);
 
-        holder.txtCategoryName.setText(categoryMainModel.getCategoryName());
-
-        /*int i = arrayList.size() - 1;
-
-        if (position == i) {
-            setMargins(holder.MainLayout, 0, 30, 25, 0);
-        }*/
+        holder.txtCategoryName.setText(categoryModel.getCategoryTitle());
     }
 
     @Override

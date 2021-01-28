@@ -667,6 +667,7 @@ public class ProfileEditActivity extends AppCompatActivity implements View.OnCli
                 return params;
             }
 
+            // Form data passing (For Image)
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();

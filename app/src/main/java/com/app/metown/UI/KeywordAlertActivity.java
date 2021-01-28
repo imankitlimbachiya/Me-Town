@@ -47,7 +47,7 @@ public class KeywordAlertActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keyword_alert);
 
-        Log.e("Activity","KeywordAlertActivity");
+        Log.e("Activity", "KeywordAlertActivity");
 
         mContext = this;
 
@@ -56,6 +56,8 @@ public class KeywordAlertActivity extends AppCompatActivity implements View.OnCl
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
     }
 
     public void ViewInitialization() {
@@ -65,13 +67,13 @@ public class KeywordAlertActivity extends AppCompatActivity implements View.OnCl
 
         edtKeyword = findViewById(R.id.edtKeyword);
 
-
         txtAdd = findViewById(R.id.txtAdd);
         txtNotGettingNotification = findViewById(R.id.txtNotGettingNotification);
         txtKeywordCountAlert = findViewById(R.id.txtKeywordCountAlert);
-
         txtNotGettingNotification.setPaintFlags(txtNotGettingNotification.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+    }
 
+    public void ViewOnClick() {
         imgBack.setOnClickListener(this);
         txtAdd.setOnClickListener(this);
 
@@ -109,19 +111,11 @@ public class KeywordAlertActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-
     private void SetKeywordApi(final String KeyWord) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().SET_KEYWORD,
                 new Response.Listener<String>() {
-                    @SuppressLint("ApplySharedPref")
                     @Override
                     public void onResponse(final String response) {
                         try {
@@ -161,30 +155,24 @@ public class KeywordAlertActivity extends AppCompatActivity implements View.OnCl
                 return params;
             }
 
-            // Form data passing
-            /*protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                // params.put("email", edtEmail.getText().toString());
-                // params.put("password", edtPassword.getText().toString());
-                // params.put("secretkey", APIConstant.getInstance().ApiSecretsKey);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().SIGN_UP + params);
-                return params;
-            }*/
-
             // Raw data passing
             @Override
             public byte[] getBody() throws AuthFailureError {
-                String params = "{\"keyword\":\"" + KeyWord+ "\"}";
+                String params = "{\"keyword\":\"" + KeyWord + "\"}";
                 Log.e("PARAMETER", "" + APIConstant.getInstance().SET_KEYWORD + params);
                 return params.getBytes();
             }
         };
+
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().SET_KEYWORD);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

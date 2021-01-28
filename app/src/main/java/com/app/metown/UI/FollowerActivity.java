@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.AppConstants.APIConstant;
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +35,7 @@ public class FollowerActivity extends AppCompatActivity implements View.OnClickL
     ImageView imgBack;
     RelativeLayout ResponseLayout, NoResponseLayout;
     RecyclerView FollowerView;
-    ArrayList<CategoryMainModel> followerList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> followerList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +94,8 @@ public class FollowerActivity extends AppCompatActivity implements View.OnClickL
 
             followerList.clear();
             for (int i = 1; i <= 10; i++) {
-                CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "");
-                followerList.add(categoryMainModel);
+                StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "");
+                followerList.add(staticCategoryModel);
             }
 
             if (followerList.size() > 0) {
@@ -114,7 +114,7 @@ public class FollowerActivity extends AppCompatActivity implements View.OnClickL
     public static class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
+        ArrayList<StaticCategoryModel> arrayList;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -127,7 +127,7 @@ public class FollowerActivity extends AppCompatActivity implements View.OnClickL
             }
         }
 
-        public FollowerAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public FollowerAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -141,7 +141,7 @@ public class FollowerActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
+            StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

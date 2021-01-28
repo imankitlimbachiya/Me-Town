@@ -11,8 +11,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -21,8 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Select advertising category"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
     </RelativeLayout>
 
@@ -52,15 +49,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:orientation="vertical"
-                tools:ignore="UselessParent">
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -75,8 +70,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="First category"
                         android:textColor="@color/grey"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -84,8 +78,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="15dp"
-                        android:src="@drawable/right_arrow"
-                        tools:ignore="ContentDescription,RtlHardcoded" />
+                        android:src="@drawable/right_arrow" />
 
                 </RelativeLayout>
 
@@ -103,8 +96,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Second category"
                         android:textColor="@color/grey"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -112,8 +104,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="15dp"
-                        android:src="@drawable/right_arrow"
-                        tools:ignore="ContentDescription,RtlHardcoded" />
+                        android:src="@drawable/right_arrow" />
 
                 </RelativeLayout>
 
@@ -127,8 +118,7 @@
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="Your advertisment might not be approved if you don't\nselect the right category"
                 android:textColor="@color/redPink"
-                android:textSize="12sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="12sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -144,8 +134,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Select advertising price"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -157,8 +146,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="It will take 3 to 4 hours to review your advertising\nrequest (working days only)"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -181,8 +169,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="How many viewer in radius"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -194,8 +181,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="(per person)\nHow many user in your radius"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -218,8 +204,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="How many will view your ad"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -231,8 +216,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="(per person)\nHow many user in your radius"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -244,41 +228,38 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="Press the button below to agree with the"
                 android:textColor="@color/black"
-                android:textSize="15sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="advertising service terms"
                 android:textColor="@color/redPink"
-                android:textSize="12sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/btnConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:text="Confirm"
-                android:textAllCaps="false"
-                android:textSize="19sp"
-                android:textColor="@color/white"
-                android:background="@drawable/gradient_ltr"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                tools:ignore="HardcodedText"
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/gradient_ltr"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:text="Confirm"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="19sp" />
 
         </LinearLayout>
 
@@ -292,7 +273,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +30,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
     ProgressBar progressBar;
     ImageView imgBack;
     RecyclerView StoreItemView;
-    ArrayList<CategoryMainModel> storeItemList = new ArrayList<>();
+    ArrayList<StaticCategoryModel> storeItemList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,8 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
     public void AddStoreItems() {
         storeItemList.clear();
         for (int i = 1; i <= 3; i++) {
-            CategoryMainModel categoryMainModel = new CategoryMainModel(String.valueOf(i), "Got 15 compliment from other users");
-            storeItemList.add(categoryMainModel);
+            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Got 15 compliment from other users");
+            storeItemList.add(staticCategoryModel);
         }
 
         if (storeItemList.size() > 0) {
@@ -90,7 +90,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
     public static class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<CategoryMainModel> arrayList;
+        ArrayList<StaticCategoryModel> arrayList;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -103,7 +103,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
             }
         }
 
-        public StoreItemAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+        public StoreItemAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -117,7 +117,7 @@ public class BusinessInfoActivity extends AppCompatActivity implements View.OnCl
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            CategoryMainModel categoryMainModel = arrayList.get(position);
+            StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

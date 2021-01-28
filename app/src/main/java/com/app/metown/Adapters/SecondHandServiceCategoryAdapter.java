@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.CategoryMainModel;
+import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 import com.app.metown.UI.UserItemReferenceActivity;
 
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class SecondHandServiceCategoryAdapter extends RecyclerView.Adapter<SecondHandServiceCategoryAdapter.MyViewHolder> {
 
     Context mContext;
-    ArrayList<CategoryMainModel> arrayList;
+    ArrayList<StaticCategoryModel> arrayList;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -33,7 +33,7 @@ public class SecondHandServiceCategoryAdapter extends RecyclerView.Adapter<Secon
         }
     }
 
-    public SecondHandServiceCategoryAdapter(Context mContext, ArrayList<CategoryMainModel> arrayList) {
+    public SecondHandServiceCategoryAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
     }
@@ -48,9 +48,9 @@ public class SecondHandServiceCategoryAdapter extends RecyclerView.Adapter<Secon
 
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        CategoryMainModel categoryMainModel = arrayList.get(position);
+        StaticCategoryModel staticCategoryModel = arrayList.get(position);
 
-        holder.txtServiceCategory.setText(categoryMainModel.getCategoryName());
+        holder.txtServiceCategory.setText(staticCategoryModel.getCategoryName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
