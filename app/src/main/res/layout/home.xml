@@ -4,20 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:focusableInTouchMode="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="true"
-        tools:ignore="UselessParent">
+        android:focusableInTouchMode="true">
 
         <RelativeLayout
             android:id="@+id/TitleLayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            tools:ignore="UselessLeaf">
+            android:layout_height="?attr/actionBarSize">
 
             <TextView
                 android:id="@+id/txtLocation"
@@ -28,19 +26,17 @@
                 android:fontFamily="@font/alte_haas_grotesk_bold"
                 android:text="Location"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/imgBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/txtLocation"
-                android:src="@drawable/down_arrow"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/txtLocation"
                 android:padding="12dp"
-                tools:ignore="ContentDescription,RtlHardcoded"/>
+                android:src="@drawable/down_arrow" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -49,31 +45,27 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                tools:ignore="RtlHardcoded">
+                android:paddingRight="20dp">
 
                 <ImageView
                     android:id="@+id/imgSearch"
                     android:layout_width="21dp"
                     android:layout_height="21dp"
                     android:layout_marginRight="22dp"
-                    android:src="@drawable/search"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
+                    android:src="@drawable/search" />
 
                 <ImageView
                     android:id="@+id/imgFilter"
                     android:layout_width="22dp"
                     android:layout_height="18dp"
                     android:layout_marginRight="20dp"
-                    android:src="@drawable/filter"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
+                    android:src="@drawable/filter" />
 
                 <ImageView
                     android:id="@+id/imgAlert"
                     android:layout_width="19dp"
                     android:layout_height="21dp"
-                    android:src="@drawable/alert"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
+                    android:src="@drawable/alert" />
 
             </LinearLayout>
 
@@ -84,8 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@id/TitleLayout"
-            android:orientation="horizontal"
-            tools:ignore="DisableBaselineAlignment">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/SecondHandLayout"
@@ -103,8 +94,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_bold"
                     android:text="Second hand"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="13sp" />
 
                 <View
                     android:id="@+id/SecondHandView"
@@ -131,8 +121,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_bold"
                     android:text="Community"
                     android:textColor="@color/grey"
-                    android:textSize="13sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="13sp" />
 
                 <View
                     android:id="@+id/CommunityView"
@@ -154,8 +143,7 @@
                 android:id="@+id/ResponseLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:ignore="UselessLeaf">
+                android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/SecondHandItemView"
@@ -168,32 +156,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <LinearLayout
+                        android:id="@+id/PrepareOpenLocationLayout"
                         android:layout_width="match_parent"
                         android:layout_height="175dp"
-                        android:orientation="vertical"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
                         android:layout_marginTop="22dp"
+                        android:layout_marginRight="15dp"
                         android:layout_marginBottom="17dp"
-                        android:background="@drawable/round_medium_corner_bg">
+                        android:background="@drawable/round_medium_corner_bg"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/txtPrepareOpenLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="28dp"
-                            android:layout_marginRight="28dp"
                             android:layout_marginTop="25dp"
+                            android:layout_marginRight="28dp"
                             android:layout_marginBottom="15dp"
                             android:fontFamily="@font/louis_george_cafe"
-                            android:text="We are prepaing to\nopen for this 'location'"
+                            android:text="We are preparing to\nOpen for this 'location'"
                             android:textColor="@color/skyPink"
-                            android:textSize="20sp"
-                            tools:ignore="HardcodedText,RtlHardcoded" />
+                            android:textSize="20sp" />
 
                         <TextView
+                            android:id="@+id/txtPrepareOpenLocationDescription"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="28dp"
@@ -201,8 +191,7 @@
                             android:fontFamily="@font/louis_george_cafe"
                             android:text="community is a place where\nI can communicate with my\nneighbors around my neighborhood"
                             android:textColor="@color/veryDarkGrey"
-                            android:textSize="15sp"
-                            tools:ignore="HardcodedText,RtlHardcoded" />
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
@@ -213,71 +202,79 @@
                         android:layout_marginLeft="28dp"
                         android:layout_marginRight="28dp"
                         android:fontFamily="@font/alte_haas_grotesk_regular"
+                        android:gravity="right"
                         android:text="Are you still wondering about community?"
                         android:textColor="@color/yellow"
-                        android:textSize="12sp"
-                        android:gravity="right"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="12sp" />
 
                     <View
+                        android:id="@+id/btnApplyView"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/lightGrey"
                         android:layout_marginLeft="7dp"
-                        android:layout_marginRight="7dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"/>
+                        android:layout_marginRight="7dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/lightGrey" />
 
                     <Button
                         android:id="@+id/btnApply"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:text="Apply"
-                        android:textAllCaps="false"
-                        android:textSize="18sp"
-                        android:textColor="@color/lightRedPink"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
                         android:background="@drawable/btn_gradient_bg"
                         android:fontFamily="@font/alte_haas_grotesk_regular"
-                        tools:ignore="HardcodedText"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"/>
+                        android:text="Apply"
+                        android:textAllCaps="false"
+                        android:textColor="@color/lightRedPink"
+                        android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/txtApplyCommunityDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
                         android:layout_marginTop="22dp"
+                        android:layout_marginRight="40dp"
                         android:layout_marginBottom="22dp"
                         android:fontFamily="@font/alte_haas_grotesk_regular"
                         android:text="Apply to open the community for my location!"
                         android:textColor="@color/grey"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/txtLookingForwardDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
                         android:layout_marginTop="8dp"
+                        android:layout_marginRight="40dp"
                         android:layout_marginBottom="20dp"
                         android:fontFamily="@font/louis_george_cafe"
-                        android:text="'number of people' neighbours are\nlooking forward to open the community!\nDon't hesitate to apply together\nwith them!"
+                        android:text="'number of people' neighbours are\nLooking forward to open the community!\nDon't hesitate to apply together\nwith them!"
                         android:textColor="@color/veryDarkGrey"
-                        android:textSize="16sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="16sp" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="12dp"
-                        android:background="@color/lightWhite"/>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/CommunityPostView"
+                    <LinearLayout
+                        android:id="@+id/CommunityPostLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"/>
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="12dp"
+                            android:background="@color/lightWhite" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/CommunityPostView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -285,15 +282,34 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <RelativeLayout
+            android:id="@+id/NoResponseLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/TabLayout"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txtError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:fontFamily="@font/alte_haas_grotesk_bold"
+                android:text="No Data Available..."
+                android:textColor="@color/grey"
+                android:textSize="13sp" />
+
+        </RelativeLayout>
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:indeterminateTintMode="src_atop"
             android:indeterminateTint="@color/colorAccent"
-            android:visibility="gone"
-            tools:ignore="UnusedAttribute" />
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

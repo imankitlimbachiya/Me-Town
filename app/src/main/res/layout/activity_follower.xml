@@ -11,8 +11,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -21,8 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Follower"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
     </RelativeLayout>
 
@@ -52,22 +49,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/ResponseLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:ignore="UselessLeaf,UselessParent"
+                android:paddingTop="20dp"
                 android:visibility="visible">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/FollowerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    tools:ignore="UnusedAttribute" />
+                    android:layout_height="wrap_content" />
 
             </RelativeLayout>
 
@@ -80,34 +74,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/view"
-        tools:ignore="UselessLeaf"
         android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_centerInParent="true"
-            tools:ignore="UselessLeaf,UselessParent">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/imgAddFollower"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_gravity="center"
-                android:src="@drawable/follower"
-                tools:ignore="ContentDescription,RtlHardcoded" />
+                android:src="@drawable/follower" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="No Follower"
                 android:textColor="@color/grey"
-                android:textSize="18sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/txtFindMore"
@@ -115,12 +106,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="Find more"
                 android:textColor="@color/redPink"
-                android:textSize="15sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -134,7 +123,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -48,10 +48,12 @@ public class ManageUserActivity extends AppCompatActivity implements View.OnClic
     Context mContext;
     ProgressBar progressBar;
     ImageView imgBack;
+    TextView txtError;
     EasyPopup mQQPop;;
     RecyclerView UserView;
+    RelativeLayout ResponseLayout, NoResponseLayout;
     ArrayList<ManageUserModel> manageUserList = new ArrayList<>();
-    String ID = "", ToUserID = "", Type = "";
+    String ID = "", ToUserID = "", Type = "", WhichUser = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,39 @@ public class ManageUserActivity extends AppCompatActivity implements View.OnClic
 
         ViewOnClick();
 
+        OpenEasyPopup();
+
+        GetIntentData();
+    }
+
+    public void ViewInitialization() {
+        progressBar = findViewById(R.id.progressBar);
+
+        imgBack = findViewById(R.id.imgBack);
+
+        txtError = findViewById(R.id.txtError);
+
+        UserView = findViewById(R.id.UserView);
+
+        ResponseLayout = findViewById(R.id.ResponseLayout);
+        NoResponseLayout = findViewById(R.id.NoResponseLayout);
+    }
+
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
+    }
+
+    public void GetIntentData() {
+        WhichUser = getIntent().getStringExtra("WhichUser");
+
+        if (WhichUser.equals("Block")) {
+            GetBlockHiddenUserApi("2");
+        } else if (WhichUser.equals("Hidden")) {
+            GetBlockHiddenUserApi("1");
+        }
+    }
+
+    public void OpenEasyPopup() {
         mQQPop = EasyPopup.create()
                 .setContext(mContext)
                 .setContentView(R.layout.manage_user_menu)
@@ -99,20 +134,6 @@ public class ManageUserActivity extends AppCompatActivity implements View.OnClic
                 // .setDimColor(Color.RED)
                 // .setDimView(mTitleBar)
                 .apply();
-
-        GetBlockHiddenUserApi("1");
-    }
-
-    public void ViewInitialization() {
-        progressBar = findViewById(R.id.progressBar);
-
-        imgBack = findViewById(R.id.imgBack);
-
-        UserView = findViewById(R.id.UserView);
-    }
-
-    public void ViewOnClick() {
-        imgBack.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -151,6 +172,8 @@ public class ManageUserActivity extends AppCompatActivity implements View.OnClic
                                     manageUserList.add(manageUserModel);
                                 }
                                 if (manageUserList.size() > 0) {
+                                    NoResponseLayout.setVisibility(View.GONE);
+                                    ResponseLayout.setVisibility(View.VISIBLE);
                                     ManageUserAdapter manageUserAdapter = new ManageUserAdapter(mContext, manageUserList);
                                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                                     UserView.setLayoutManager(mLayoutManager);
@@ -159,19 +182,20 @@ public class ManageUserActivity extends AppCompatActivity implements View.OnClic
                                     manageUserAdapter.notifyDataSetChanged();
                                 }
                             } else {
-                                String msg = JsonMain.getString("msg");
-                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                                ResponseLayout.setVisibility(View.GONE);
+                                NoResponseLayout.setVisibility(View.VISIBLE);
+                                txtError.setText(ErrorMessage);
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Log.e("ERROR", "" + error.getMessage());
                     }
                 }) {
 

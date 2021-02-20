@@ -60,6 +60,7 @@ public class FavouriteActivity extends AppCompatActivity implements View.OnClick
     ArrayList<ItemModel> categoryFavouriteItemList = new ArrayList<>();
     ArrayList<JobKeywordModel> jobKeywordList = new ArrayList<>();
     JSONArray arrayData;
+    String offSetSecondHand = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +81,7 @@ public class FavouriteActivity extends AppCompatActivity implements View.OnClick
 
         AddFavouriteCategoryItems();
 
-        GetFavouriteListApi("1");
-
-        // AddCategoryFavouriteItems("1");
+        GetFavouriteListApi("1", offSetSecondHand);
     }
 
     public void ViewInitialization() {
@@ -200,16 +199,16 @@ public class FavouriteActivity extends AppCompatActivity implements View.OnClick
                 public void onClick(View view) {
                     switch (staticCategoryModel.getCategoryName()) {
                         case "Second hand":
-                            GetFavouriteListApi("1");
+                            GetFavouriteListApi("1", offSetSecondHand);
                             break;
                         case "Advertising":
-                            GetFavouriteListApi("2");
+                            GetFavouriteListApi("2", offSetSecondHand);
                             break;
                         case "Stores & Services":
-                            GetFavouriteListApi("3");
+                            GetFavouriteListApi("3", offSetSecondHand);
                             break;
                         case "My Community":
-                            GetFavouriteListApi("4");
+                            GetFavouriteListApi("4", offSetSecondHand);
                             break;
                         case "Job Keyword":
                             GetJobKeywordListApi();
@@ -227,7 +226,7 @@ public class FavouriteActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void GetFavouriteListApi(final String Type) {
+    private void GetFavouriteListApi(final String Type, final String offSet) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_FAVORITE_LIST,
@@ -280,7 +279,7 @@ public class FavouriteActivity extends AppCompatActivity implements View.OnClick
             // Raw data passing
             @Override
             public byte[] getBody() throws AuthFailureError {
-                String params = "{\"type\":\"" + Type + "\"}";
+                String params = "{\"type\":\"" + Type + "\",\"offset\":\"" + offSet + "\"}";
                 Log.e("PARAMETER", "" + APIConstant.getInstance().GET_FAVORITE_LIST + params);
                 return params.getBytes();
             }

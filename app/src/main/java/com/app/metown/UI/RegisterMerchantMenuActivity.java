@@ -91,7 +91,7 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
     ArrayList<CategoryModel> categoryList = new ArrayList<>();
     String CategoryType = "1", ParentID = "0", Title = "", CategoryID = "";
 
-    private ArrayList<Bitmap> mTempBitmapArray = new ArrayList<Bitmap>();
+    ArrayList<Bitmap> mTempBitmapArray = new ArrayList<>();
     private int MY_REQUEST_CODE, REQUEST_CODE;
     private static final int SELECT_IMAGE = 4;
     String mPath = "";
@@ -202,7 +202,6 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 SelectCategoryView = dialog.findViewById(R.id.SelectCategoryView);
                 GetCategoryApi(CategoryType, ParentID);
-                dialog.show();
                 break;
             case R.id.imgPhoto:
                 SelectImage();
@@ -233,6 +232,7 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
                                     categoryList.add(categoryModel);
                                 }
                                 if (categoryList.size() > 0) {
+                                    dialog.show();
                                     SelectCategoryAdapter selectCategoryAdapter = new SelectCategoryAdapter(mContext, categoryList);
                                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                                     SelectCategoryView.setLayoutManager(mLayoutManager);
@@ -349,17 +349,11 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
                     // gallery
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         REQUEST_CODE = 70;
-                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-                        } else {
-                            PhotoGallery();
-                        }
+                    }
+                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
                     } else {
-                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-                        } else {
-                            PhotoGallery();
-                        }
+                        PhotoGallery();
                     }
                 } else if (which == 1) {
                     // camera
@@ -419,8 +413,10 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
                     String path = getPath(mContext, selectedImage);
                     if (path != null) {
                         mPath = path;
+                        Log.e("mPath","" + mPath);
                         try {
                             mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+                            Log.e("mBitmap","" + mBitmap);
                             ExifInterface exif = new ExifInterface(photo.toString());
                             if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("6")) {
                                 mBitmap = rotate(mBitmap, 90);
@@ -434,26 +430,6 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
 
                             if (mBitmap != null) {
                                 Glide.with(mContext).load(mBitmap).into(imgPhoto);
-                                /*if (ConstantFunction.isNetworkAvailable(mContext)) {
-                                    NickName = edtNickName.getText().toString().trim();
-                                    Email = edtEmail.getText().toString().trim();
-                                    MobileNumber = edtPhoneNumber.getText().toString().trim();
-                                    if (NickName.equals("")) {
-                                        Toast.makeText(mContext, "Please Enter Your Nick Name", Toast.LENGTH_LONG).show();
-                                    } else if (Email.equals("")) {
-                                        Toast.makeText(mContext, "Please Enter Your Email", Toast.LENGTH_LONG).show();
-                                    } else if (!ConstantFunction.isValidEmail(Email)) {
-                                        Toast.makeText(mContext, "Please Enter Your Valid Email", Toast.LENGTH_SHORT).show();
-                                    } else if (MobileNumber.equals("")) {
-                                        Toast.makeText(mContext, "Please Enter Your MobileNumber", Toast.LENGTH_LONG).show();
-                                    } else if (!ConstantFunction.isValidMobile(MobileNumber)) {
-                                        Toast.makeText(mContext, "Please Enter Your Valid MobileNumber", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        ProfileImageUpload(NickName, Email, MobileNumber, mBitmap);
-                                    }
-                                } else {
-                                    Toast.makeText(mContext, "Please Check Your Network Connection", Toast.LENGTH_SHORT).show();
-                                }*/
                             } else {
                                 Toast.makeText(mContext, "Please Choose Again...", Toast.LENGTH_SHORT).show();
                             }
@@ -471,34 +447,16 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
                     Uri selectedImageUri = data.getData();
                     try {
                         mPath = getImagePath(selectedImageUri);
+                        Log.e("mPath","" + mPath);
                         try {
                             mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+                            Log.e("mBitmap","" + mBitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
 
                         if (mBitmap != null) {
                             Glide.with(mContext).load(mBitmap).into(imgPhoto);
-                                /*if (ConstantFunction.isNetworkAvailable(mContext)) {
-                                    NickName = edtNickName.getText().toString().trim();
-                                    Email = edtEmail.getText().toString().trim();
-                                    MobileNumber = edtPhoneNumber.getText().toString().trim();
-                                    if (NickName.equals("")) {
-                                        Toast.makeText(mContext, "Please Enter Your Nick Name", Toast.LENGTH_LONG).show();
-                                    } else if (Email.equals("")) {
-                                        Toast.makeText(mContext, "Please Enter Your Email", Toast.LENGTH_LONG).show();
-                                    } else if (!ConstantFunction.isValidEmail(Email)) {
-                                        Toast.makeText(mContext, "Please Enter Your Valid Email", Toast.LENGTH_SHORT).show();
-                                    } else if (MobileNumber.equals("")) {
-                                        Toast.makeText(mContext, "Please Enter Your MobileNumber", Toast.LENGTH_LONG).show();
-                                    } else if (!ConstantFunction.isValidMobile(MobileNumber)) {
-                                        Toast.makeText(mContext, "Please Enter Your Valid MobileNumber", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        ProfileImageUpload(NickName, Email, MobileNumber, mBitmap);
-                                    }
-                                } else {
-                                    Toast.makeText(mContext, "Please Check Your Network Connection", Toast.LENGTH_SHORT).show();
-                                }*/
                         } else {
                             Toast.makeText(mContext, "Please Choose Again...", Toast.LENGTH_SHORT).show();
                         }
@@ -506,14 +464,15 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-
                 } else if (resultCode == SELECT_IMAGE) {
                     Uri selectedImage = data.getData();
                     String path = getPath(mContext, selectedImage);
                     if (path != null) {
                         mPath = path;
+                        Log.e("mPath","" + mPath);
                         try {
                             mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+                            Log.e("mBitmap","" + mBitmap);
                         } catch (IOException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
@@ -521,26 +480,6 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
 
                         if (mBitmap != null) {
                             Glide.with(mContext).load(mBitmap).into(imgPhoto);
-                                /*if (ConstantFunction.isNetworkAvailable(mContext)) {
-                                    NickName = edtNickName.getText().toString().trim();
-                                    Email = edtEmail.getText().toString().trim();
-                                    MobileNumber = edtPhoneNumber.getText().toString().trim();
-                                    if (NickName.equals("")) {
-                                        Toast.makeText(mContext, "Please Enter Your Nick Name", Toast.LENGTH_LONG).show();
-                                    } else if (Email.equals("")) {
-                                        Toast.makeText(mContext, "Please Enter Your Email", Toast.LENGTH_LONG).show();
-                                    } else if (!ConstantFunction.isValidEmail(Email)) {
-                                        Toast.makeText(mContext, "Please Enter Your Valid Email", Toast.LENGTH_SHORT).show();
-                                    } else if (MobileNumber.equals("")) {
-                                        Toast.makeText(mContext, "Please Enter Your MobileNumber", Toast.LENGTH_LONG).show();
-                                    } else if (!ConstantFunction.isValidMobile(MobileNumber)) {
-                                        Toast.makeText(mContext, "Please Enter Your Valid MobileNumber", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        ProfileImageUpload(NickName, Email, MobileNumber, mBitmap);
-                                    }
-                                } else {
-                                    Toast.makeText(mContext, "Please Check Your Network Connection", Toast.LENGTH_SHORT).show();
-                                }*/
                         } else {
                             Toast.makeText(mContext, "Please Choose Again...", Toast.LENGTH_SHORT).show();
                         }
@@ -574,34 +513,16 @@ public class RegisterMerchantMenuActivity extends AppCompatActivity implements V
             e.printStackTrace();
         }
         mPath = destination.getAbsolutePath();
+        Log.e("mPath","" + mPath);
         try {
             mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
+            Log.e("mBitmap","" + mBitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (mBitmap != null) {
             Glide.with(mContext).load(mBitmap).into(imgPhoto);
-            /*if (ConstantFunction.isNetworkAvailable(mContext)) {
-                NickName = edtNickName.getText().toString().trim();
-                Email = edtEmail.getText().toString().trim();
-                MobileNumber = edtPhoneNumber.getText().toString().trim();
-                if (NickName.equals("")) {
-                    Toast.makeText(mContext, "Please Enter Your Nick Name", Toast.LENGTH_LONG).show();
-                } else if (Email.equals("")) {
-                    Toast.makeText(mContext, "Please Enter Your Email", Toast.LENGTH_LONG).show();
-                } else if (!ConstantFunction.isValidEmail(Email)) {
-                    Toast.makeText(mContext, "Please Enter Your Valid Email", Toast.LENGTH_SHORT).show();
-                } else if (MobileNumber.equals("")) {
-                    Toast.makeText(mContext, "Please Enter Your MobileNumber", Toast.LENGTH_LONG).show();
-                } else if (!ConstantFunction.isValidMobile(MobileNumber)) {
-                    Toast.makeText(mContext, "Please Enter Your Valid MobileNumber", Toast.LENGTH_LONG).show();
-                } else {
-                    ProfileImageUpload(NickName, Email, MobileNumber, mBitmap);
-                }
-            } else {
-                Toast.makeText(mContext, "Please Check Your Network Connection", Toast.LENGTH_SHORT).show();
-            }*/
         } else {
             Toast.makeText(mContext, "Please Choose Again...", Toast.LENGTH_SHORT).show();
         }

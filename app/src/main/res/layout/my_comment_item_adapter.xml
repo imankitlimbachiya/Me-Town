@@ -21,7 +21,7 @@
             android:background="@drawable/circle_outer_border_bg" />
 
         <TextView
-            android:id="@+id/txtComment"
+            android:id="@+id/txtDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

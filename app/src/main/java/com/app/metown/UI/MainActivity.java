@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.imgLine:
-                // GoToPhoneVerifyActivity();
+
                 break;
             case R.id.btnSignUp:
                 GoToPhoneVerifyActivity("SignUp");
@@ -213,11 +213,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+
                             // facebookImage = "http://graph.facebook.com/" + facebookUserID + "/picture?type=large";
                             // String facebookImage = "http://graph.facebook.com/" + Profile.getCurrentProfile().getId() + "/picture?type=large";
                             // Log.e("facebookImage", "" + facebookImage);
                         }
                     });
+
                     progressDialog.dismiss();
                     Bundle parameters = new Bundle();
                     parameters.putString("fields", "id,name,email,first_name,last_name,gender");

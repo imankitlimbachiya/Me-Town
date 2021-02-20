@@ -12,19 +12,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.metown.R;
+import com.bumptech.glide.Glide;
 
 public class SelectBuyerActivity extends AppCompatActivity implements View.OnClickListener {
 
     Context mContext;
     ProgressBar progressBar;
-    ImageView imgBack;
+    ImageView imgBack, imgItem;
+    TextView txtItemName;
     LinearLayout ReviewCompletedLayout;
     RelativeLayout LeaveReviewLayout;
     Button btnFindBuyerFromRecentChat, btnMaybeLater;
+    String ItemID = "", ItemName = "", ItemImage = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +44,21 @@ public class SelectBuyerActivity extends AppCompatActivity implements View.OnCli
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
+
+        GetIntentData();
+
+        ViewSetText();
     }
 
     public void ViewInitialization() {
         progressBar = findViewById(R.id.progressBar);
 
         imgBack = findViewById(R.id.imgBack);
+        imgItem = findViewById(R.id.imgItem);
+
+        txtItemName = findViewById(R.id.txtItemName);
 
         ReviewCompletedLayout = findViewById(R.id.ReviewCompletedLayout);
 
@@ -53,12 +66,25 @@ public class SelectBuyerActivity extends AppCompatActivity implements View.OnCli
 
         btnFindBuyerFromRecentChat = findViewById(R.id.btnFindBuyerFromRecentChat);
         btnMaybeLater = findViewById(R.id.btnMaybeLater);
+    }
 
+    public void ViewOnClick() {
         imgBack.setOnClickListener(this);
         ReviewCompletedLayout.setOnClickListener(this);
         LeaveReviewLayout.setOnClickListener(this);
         btnFindBuyerFromRecentChat.setOnClickListener(this);
         btnMaybeLater.setOnClickListener(this);
+    }
+
+    public void GetIntentData() {
+        ItemID = getIntent().getStringExtra("ItemID");
+        ItemName = getIntent().getStringExtra("ItemName");
+        ItemImage = getIntent().getStringExtra("ItemImage");
+    }
+
+    public void ViewSetText() {
+        txtItemName.setText(ItemName);
+        Glide.with(mContext).load(ItemImage).into(imgItem);
     }
 
     @SuppressLint("NonConstantResourceId")

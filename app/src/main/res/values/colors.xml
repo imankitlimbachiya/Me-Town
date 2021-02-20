@@ -2,6 +2,8 @@
 <resources>
     <color name="colorPrimary">#EFEFEF</color>
     <color name="colorPrimaryDark">#EFEFEF</color>
+    <!--<color name="colorPrimary">#CECECE</color>
+    <color name="colorPrimaryDark">#CECECE</color>-->
     <color name="colorAccent">#757575</color>
 
     <color name="transparent">#00000000</color>

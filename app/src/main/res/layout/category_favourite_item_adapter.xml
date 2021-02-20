@@ -93,7 +93,7 @@
                 android:layout_width="28dp"
                 android:layout_height="26dp"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/like" />
+                android:src="@drawable/dislike" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
                         android:id="@+id/imgLike"
                         android:layout_width="19dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/like" />
+                        android:src="@drawable/dislike" />
 
                     <TextView
                         android:id="@+id/txtLikeCount"

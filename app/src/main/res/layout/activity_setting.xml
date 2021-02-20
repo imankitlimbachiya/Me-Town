@@ -304,6 +304,7 @@
                 android:textSize="10sp" />
 
             <RelativeLayout
+                android:id="@+id/FollowerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="46dp">
 
@@ -326,6 +327,7 @@
                 android:background="@color/grey" />
 
             <RelativeLayout
+                android:id="@+id/ManageBlockUserLayout"
                 android:layout_width="match_parent"
                 android:layout_height="46dp">
 
@@ -348,6 +350,7 @@
                 android:background="@color/grey" />
 
             <RelativeLayout
+                android:id="@+id/ManageHiddenUserLayout"
                 android:layout_width="match_parent"
                 android:layout_height="46dp">
 

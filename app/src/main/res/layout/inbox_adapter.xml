@@ -8,27 +8,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="54dp"
-        android:orientation="horizontal"
         android:layout_centerVertical="true"
-        tools:ignore="DisableBaselineAlignment,UselessParent">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgSender"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="14dp"
-            tools:ignore="RtlHardcoded,UselessLeaf"
-            android:background="@drawable/circle_outer_border_bg"/>
+            android:background="@drawable/profile_default" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            tools:ignore="InefficientWeight,RtlHardcoded,UselessLeaf">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,66 +35,63 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/txtSenderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="'username'"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:singleLine="true"
                     android:fontFamily="@font/alte_haas_grotesk_bold"
-                    tools:ignore="HardcodedText" />
+                    android:singleLine="true"
+                    android:text="'username'"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="'Address'"
-                    android:textSize="10sp"
-                    android:textColor="@color/grey"
-                    android:singleLine="true"
                     android:fontFamily="@font/louis_george_cafe_bold"
-                    tools:ignore="HardcodedText,SmallSp" />
+                    android:singleLine="true"
+                    android:text="'Address'"
+                    android:textColor="@color/grey"
+                    android:textSize="10sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="'Date'"
-                    android:textSize="10sp"
-                    android:textColor="@color/grey"
-                    android:singleLine="true"
                     android:fontFamily="@font/louis_george_cafe"
-                    tools:ignore="HardcodedText,SmallSp" />
+                    android:singleLine="true"
+                    android:text="'Date'"
+                    android:textColor="@color/grey"
+                    android:textSize="10sp" />
 
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtLastMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Can we meet in starbucks a.."
-                android:textSize="17sp"
-                android:textColor="@color/veryDarkGrey"
-                android:singleLine="true"
+                android:layout_alignParentBottom="true"
                 android:fontFamily="@font/louis_george_cafe"
-                tools:ignore="HardcodedText" />
+                android:singleLine="true"
+                android:text="Can we meet in starbucks a.."
+                android:textColor="@color/veryDarkGrey"
+                android:textSize="17sp" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/imgProduct"
             android:layout_width="53dp"
             android:layout_height="53dp"
             android:layout_gravity="center"
-            android:layout_marginRight="14dp"
-            tools:ignore="RtlHardcoded,UselessLeaf"
-            android:background="@drawable/round_normal_corner_dark_bg"/>
+            android:src="@drawable/round_normal_corner_dark_bg" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey" />
 
 </RelativeLayout>

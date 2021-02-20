@@ -3,6 +3,7 @@ package com.app.metown.UI;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,18 +13,33 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.app.metown.AppConstants.APIConstant;
 import com.app.metown.Models.ItemMainModel;
+import com.app.metown.Models.TopicKeywordModel;
 import com.app.metown.R;
+import com.app.metown.VolleySupport.AppController;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TopicListActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,14 +48,14 @@ public class TopicListActivity extends AppCompatActivity implements View.OnClick
     ImageView imgBack;
     Button btnTopicLookingFor;
     RecyclerView TopicItemView;
-    ArrayList<ItemMainModel> topicList = new ArrayList<>();
+    ArrayList<TopicKeywordModel> topicList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_list);
 
-        Log.e("Activity","TopicListActivity");
+        Log.e("Activity", "TopicListActivity");
 
         mContext = this;
 
@@ -48,6 +64,10 @@ public class TopicListActivity extends AppCompatActivity implements View.OnClick
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
+
+        GetTopicApi();
     }
 
     public void ViewInitialization() {
@@ -57,12 +77,12 @@ public class TopicListActivity extends AppCompatActivity implements View.OnClick
 
         btnTopicLookingFor = findViewById(R.id.btnTopicLookingFor);
 
+        TopicItemView = findViewById(R.id.TopicItemView);
+    }
+
+    public void ViewOnClick() {
         imgBack.setOnClickListener(this);
         btnTopicLookingFor.setOnClickListener(this);
-
-        TopicItemView = findViewById(R.id.TopicItemView);
-
-        AddTopicItems();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -73,46 +93,98 @@ public class TopicListActivity extends AppCompatActivity implements View.OnClick
                 finish();
                 break;
             case R.id.btnTopicLookingFor:
-                Intent intent = new Intent(mContext, AddTopicActivity.class);
-                startActivity(intent);
+                Intent AddTopic = new Intent(mContext, AddTopicActivity.class);
+                startActivity(AddTopic);
                 break;
         }
     }
 
-    public void AddTopicItems() {
+    private void GetTopicApi() {
+        String req = "req";
         topicList.clear();
-        for (int i = 1; i <= 10; i++) {
-            ItemMainModel itemMainModel = new ItemMainModel(String.valueOf(i), "Item name");
-            topicList.add(itemMainModel);
-        }
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().GET_TOPIC,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_TOPIC + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                JSONArray arrayData = JsonMain.getJSONArray("data");
+                                for (int i = 0; i < arrayData.length(); i++) {
+                                    TopicKeywordModel topicKeywordModel = new TopicKeywordModel();
+                                    topicKeywordModel.setTopicID(arrayData.getJSONObject(i).getString("id"));
+                                    topicKeywordModel.setTopic(arrayData.getJSONObject(i).getString("title"));
+                                    topicList.add(topicKeywordModel);
+                                }
+                                if (topicList.size() > 0) {
+                                    TopicItemAdapter topicItemAdapter = new TopicItemAdapter(mContext, topicList);
+                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                                    TopicItemView.setLayoutManager(mLayoutManager);
+                                    TopicItemView.setItemAnimator(new DefaultItemAnimator());
+                                    TopicItemView.setAdapter(topicItemAdapter);
+                                    topicItemAdapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            progressBar.setVisibility(View.GONE);
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
 
-        if (topicList.size() > 0) {
-            TopicItemAdapter topicItemAdapter = new TopicItemAdapter(mContext, topicList);
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-            TopicItemView.setLayoutManager(mLayoutManager);
-            TopicItemView.setItemAnimator(new DefaultItemAnimator());
-            TopicItemView.setAdapter(topicItemAdapter);
-            topicItemAdapter.notifyDataSetChanged();
-        }
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().GET_TOPIC + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_TOPIC);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
-    public static class TopicItemAdapter extends RecyclerView.Adapter<TopicItemAdapter.MyViewHolder> {
+    public class TopicItemAdapter extends RecyclerView.Adapter<TopicItemAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<ItemMainModel> arrayList;
+        ArrayList<TopicKeywordModel> arrayList;
 
-        public static class MyViewHolder extends RecyclerView.ViewHolder {
+        public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            // RelativeLayout OptionLayout;
+            TextView txtTopic;
+            Button btnFollow;
 
             MyViewHolder(View view) {
                 super(view);
 
-                // OptionLayout = view.findViewById(R.id.OptionLayout);
+                txtTopic = view.findViewById(R.id.txtTopic);
+
+                btnFollow = view.findViewById(R.id.btnFollow);
             }
         }
 
-        public TopicItemAdapter(Context mContext, ArrayList<ItemMainModel> arrayList) {
+        public TopicItemAdapter(Context mContext, ArrayList<TopicKeywordModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -126,13 +198,14 @@ public class TopicListActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            ItemMainModel itemMainModel = arrayList.get(position);
+            final TopicKeywordModel topicKeywordModel = arrayList.get(position);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.txtTopic.setText(topicKeywordModel.getTopic());
+
+            holder.btnFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent AddTopic = new Intent(mContext, AddTopicActivity.class);
-                    mContext.startActivity(AddTopic);
+                    TopicFollowApi(topicKeywordModel.getTopicID());
                 }
             });
         }
@@ -141,6 +214,63 @@ public class TopicListActivity extends AppCompatActivity implements View.OnClick
         public int getItemCount() {
             return arrayList.size();
         }
+    }
+
+    private void TopicFollowApi(final String ID) {
+        String req = "req";
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().TOPIC_FOLLOW,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().TOPIC_FOLLOW + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                /*String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();*/
+                                GetTopicApi();
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                // params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().TOPIC_FOLLOW + params);
+                return params;
+            }
+
+            // Form data passing
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("topic_id", ID);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().TOPIC_FOLLOW + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().TOPIC_FOLLOW);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
     @Override

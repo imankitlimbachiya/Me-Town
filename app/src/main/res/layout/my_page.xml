@@ -10,14 +10,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="true"
-        tools:ignore="UselessParent">
+        android:focusableInTouchMode="true">
 
         <RelativeLayout
             android:id="@+id/TitleLayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            tools:ignore="UselessLeaf">
+            android:layout_height="?attr/actionBarSize">
 
             <ImageView
                 android:id="@+id/imgBack"
@@ -26,8 +24,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:padding="12dp"
-                android:src="@drawable/left_arrow"
-                tools:ignore="ContentDescription,RtlHardcoded" />
+                android:src="@drawable/left_arrow" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,8 +34,7 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="MeTown"
                 android:textColor="@color/black"
-                android:textSize="17sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="17sp" />
 
         </RelativeLayout>
 
@@ -58,8 +54,7 @@
                 android:id="@+id/ResponseLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:ignore="UselessLeaf">
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="58dp"
@@ -68,6 +63,7 @@
                     android:layout_marginTop="30dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgUser"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/profile_default" />
@@ -77,12 +73,12 @@
                         android:layout_height="21dp"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentBottom="true"
-                        android:src="@drawable/camera"
-                        tools:ignore="RtlHardcoded" />
+                        android:src="@drawable/camera" />
 
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/txtNickName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -90,8 +86,7 @@
                     android:fontFamily="@font/louis_george_cafe_bold"
                     android:text="nickname"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/txtSeeProfile"
@@ -104,15 +99,13 @@
                     android:gravity="center"
                     android:text="See Profile"
                     android:textColor="@color/darkGrey"
-                    android:textSize="10sp"
-                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                    android:textSize="10sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
                     android:layout_marginTop="22dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@color/lightWhite" />
+                    android:layout_marginBottom="20dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -121,8 +114,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Credit plant"
                     android:textColor="@color/black"
-                    android:textSize="11sp"
-                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                    android:textSize="11sp" />
 
                 <RelativeLayout
                     android:layout_width="280dp"
@@ -141,8 +133,7 @@
                         android:fontFamily="@font/alte_haas_grotesk_regular"
                         android:text="53cm"
                         android:textColor="@color/black"
-                        android:textSize="9sp"
-                        tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                        android:textSize="9sp" />
 
                     <ImageView
                         android:layout_width="230dp"
@@ -150,8 +141,7 @@
                         android:layout_marginLeft="-4dp"
                         android:layout_marginTop="36dp"
                         android:layout_toRightOf="@id/imgScaleIndicator"
-                        android:src="@drawable/scale"
-                        tools:ignore="ContentDescription,RtlHardcoded" />
+                        android:src="@drawable/scale" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imgScaleIndicator"
@@ -170,8 +160,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="114dp"
-                    android:orientation="horizontal"
-                    tools:ignore="DisableBaselineAlignment">
+                    android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -200,8 +189,7 @@
                                 android:fontFamily="@font/alte_haas_grotesk_regular"
                                 android:text="My sales"
                                 android:textColor="@color/black"
-                                android:textSize="8sp"
-                                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                                android:textSize="8sp" />
 
                         </LinearLayout>
 
@@ -234,8 +222,7 @@
                                 android:fontFamily="@font/alte_haas_grotesk_regular"
                                 android:text="My Purchases"
                                 android:textColor="@color/black"
-                                android:textSize="8sp"
-                                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                                android:textSize="8sp" />
 
                         </LinearLayout>
 
@@ -267,8 +254,7 @@
                                 android:fontFamily="@font/alte_haas_grotesk_regular"
                                 android:text="Favourites"
                                 android:textColor="@color/black"
-                                android:textSize="8sp"
-                                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                                android:textSize="8sp" />
 
                         </LinearLayout>
 
@@ -291,8 +277,7 @@
                         android:id="@+id/imgMerchantMenu"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/merchant_menu"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/merchant_menu" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -303,8 +288,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Merchant menu"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -319,8 +303,7 @@
                         android:id="@+id/imgRangeLocation"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/range_location"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/range_location" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -331,8 +314,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Set range"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -346,8 +328,7 @@
                         android:id="@+id/imgVerifyLocation"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/verify_location"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/verify_location" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -358,8 +339,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Verify location"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -374,8 +354,7 @@
                         android:id="@+id/imgKeywordAlert"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/keyword_alert"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/keyword_alert" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -386,8 +365,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Keyword alerts"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -401,8 +379,7 @@
                         android:id="@+id/imgFollowedUser"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/followed_user"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/followed_user" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -413,8 +390,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Followed users"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -433,8 +409,7 @@
                         android:id="@+id/imgMyCommunityPostComment"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/my_community_post_comment"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/my_community_post_comment" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -445,8 +420,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="My community posts &amp; comments"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -462,8 +436,7 @@
                         android:id="@+id/imgFollowedCommunityKeyword"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/followed_community_keyword"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/followed_community_keyword" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -474,8 +447,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Followed community keywords"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -494,8 +466,7 @@
                         android:id="@+id/imgInviteFriend"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/invite_friend"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/invite_friend" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -506,12 +477,12 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Invite friends"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/ShareMeTownLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
@@ -521,8 +492,7 @@
                         android:id="@+id/imgShare"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/share"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/share" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -533,8 +503,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Share MeTown"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -548,8 +517,7 @@
                         android:id="@+id/imgAnnouncement"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/announcement"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/announcement" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -560,8 +528,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Announcement"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -576,8 +543,7 @@
                         android:id="@+id/imgHelpCenter"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/help_center"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/help_center" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -588,8 +554,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Help center"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -598,8 +563,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
                     android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp"
                     android:layout_marginBottom="15dp">
 
                     <ImageView
@@ -618,8 +583,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Settings"
                         android:textColor="@color/black"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -635,8 +599,7 @@
             android:indeterminate="true"
             android:indeterminateTint="@color/colorAccent"
             android:indeterminateTintMode="src_atop"
-            android:visibility="gone"
-            tools:ignore="UnusedAttribute" />
+            android:visibility="gone" />
 
     </RelativeLayout>
 

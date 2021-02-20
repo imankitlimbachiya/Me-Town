@@ -108,14 +108,14 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
     Dialog dialog;
     RadioButton rbtNegotiable;
     String CategoryType = "1", ParentID = "0", Title = "", CategoryID = "", Price = "", Negotiable = "0", Description = "",
-            Latitude = "23.112659", Longitude = "72.547752";
+            Latitude = "24.180748175598684", Longitude = "72.40219872927553", LocationName = "TeaYos Cafe";
 
     String mPath = "";
     private static final int SELECT_IMAGE = 4;
     private int MY_REQUEST_CODE, REQUEST_CODE;
     File photo;
     Bitmap mBitmap;
-    private ArrayList<Bitmap> mTempBitmapArray = new ArrayList<Bitmap>();
+    ArrayList<Bitmap> mTempBitmapArray = new ArrayList<Bitmap>();
     int PERMISSION_ID = 44;
 
     FusedLocationProviderClient mFusedLocationClient;
@@ -177,7 +177,7 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.e("isChecked ", "" + isChecked);
+                // Log.e("isChecked ", "" + isChecked);
                 buttonView.setSelected(!buttonView.isSelected());
                 Negotiable = "1";
                 Drawable img;
@@ -234,7 +234,7 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                 } else if (Description.equals("")) {
                     Toast.makeText(mContext, "Please Select Your Business Description.", Toast.LENGTH_LONG).show();
                 } else {
-                    PostSaleApi(Title, CategoryID, Price, Negotiable, Description, Latitude, Longitude, mBitmap);
+                    PostSaleApi(Title, CategoryID, Price, Negotiable, Description, Latitude, Longitude, LocationName, mBitmap);
                 }
                 break;
             case R.id.imgPhrase:
@@ -334,7 +334,7 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
     }
 
     private boolean checkPermissions() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermissions() {
@@ -996,8 +996,8 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    private void PostSaleApi(final String Title, final String CategoryID, final String Price, final String Negotiable,
-                             final String Description, final String Latitude, final String Longitude, final Bitmap mBitmap) {
+    private void PostSaleApi(final String Title, final String CategoryID, final String Price, final String Negotiable, final String Description,
+                             final String Latitude, final String Longitude, final String LocationName, final Bitmap mBitmap) {
         progressBar.setVisibility(View.VISIBLE);
         // our custom volley request
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, APIConstant.getInstance().POST_SALE,
@@ -1016,8 +1016,8 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                             } else {
                                 Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } catch (JSONException exception) {
+                            exception.printStackTrace();
                         }
                     }
                 },
@@ -1025,25 +1025,10 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Log.e("error", error.toString());
                     }
                 }) {
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("title", Title);
-                params.put("category_id", CategoryID);
-                params.put("price", Price);
-                params.put("negotiable", Negotiable);
-                params.put("description", Description);
-                params.put("lats", Latitude);
-                params.put("longs", Longitude);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().POST_SALE + params);
-                Log.e("param", params.toString());
-                return params;
-            }
-
+            //
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -1057,6 +1042,24 @@ public class PostForSaleActivity extends AppCompatActivity implements View.OnCli
                 return params;
             }
 
+            //
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("title", Title);
+                params.put("category_id", CategoryID);
+                params.put("price", Price);
+                params.put("negotiable", Negotiable);
+                params.put("description", Description);
+                params.put("lats", Latitude);
+                params.put("longs", Longitude);
+                params.put("locationname", LocationName);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().POST_SALE + params);
+                Log.e("param", params.toString());
+                return params;
+            }
+
+            //
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();

@@ -55,6 +55,7 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
     RecyclerView PostView, CommentView;
     ArrayList<PostModel> postList = new ArrayList<>();
     ArrayList<CommentModel> commentList = new ArrayList<>();
+    String offSet = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
 
         ViewOnClick();
 
-        GetCommunityApi("23.112659", "72.547752", "1000");
+        MyCommunity();
     }
 
     public void ViewInitialization() {
@@ -117,29 +118,28 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
                 MyPostView.setBackgroundColor(getResources().getColor(R.color.black));
                 txtMyComment.setTextColor(getResources().getColor(R.color.grey));
                 MyCommentView.setBackgroundColor(getResources().getColor(R.color.grey));
-                GetCommunityApi("23.112659", "72.547752", "1000");
                 break;
             case R.id.MyCommentLayout:
                 txtMyComment.setTextColor(getResources().getColor(R.color.black));
                 MyCommentView.setBackgroundColor(getResources().getColor(R.color.black));
                 txtMyPost.setTextColor(getResources().getColor(R.color.grey));
                 MyPostView.setBackgroundColor(getResources().getColor(R.color.grey));
-                GetCommentListApi("1", "6");
+                MyCommunityCommentApi(offSet);
                 break;
         }
     }
 
-    private void GetCommunityApi(final String Latitude, final String Longitude, final String UserRange) {
+    private void MyCommunity() {
         String req = "req";
         postList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_COMMUNITY,
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_COMMUNITY,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(final String response) {
                         try {
                             progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_COMMUNITY + response);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_COMMUNITY + response);
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
@@ -151,7 +151,6 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
                                     postModel.setKeyword(jsonObject.getString("keyword"));
                                     postModel.setDescription(jsonObject.getString("description"));
                                     postModel.setImage(jsonObject.getString("image"));
-                                    postModel.setDistance(jsonObject.getString("distance"));
                                     postList.add(postModel);
                                 }
                                 if (postList.size() > 0) {
@@ -168,9 +167,8 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
                                 String ErrorMessage = JsonMain.getString("msg");
                                 Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
                             }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
                         }
                     }
                 },
@@ -190,21 +188,14 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
                 params.put("Content-Type", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().GET_COMMUNITY + params);
+                Log.e("HEADER", "" + APIConstant.getInstance().MY_COMMUNITY + params);
                 return params;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                String params = "{\"lats\":\"" + Latitude + "\",\"longs\":\"" + Longitude + "\",\"userRange\":\"" + UserRange + "\"}";
-                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_COMMUNITY + params);
-                return params.getBytes();
             }
         };
 
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_COMMUNITY);
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_COMMUNITY);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
@@ -215,12 +206,17 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView txtCategoryName;
+            ImageView imgMyPost;
+            TextView txtCategoryName, txtDescription, txtTimeAgo;
 
             MyViewHolder(View view) {
                 super(view);
 
+                imgMyPost = view.findViewById(R.id.imgMyPost);
+
                 txtCategoryName = view.findViewById(R.id.txtCategoryName);
+                txtDescription = view.findViewById(R.id.txtDescription);
+                txtTimeAgo = view.findViewById(R.id.txtTimeAgo);
             }
         }
 
@@ -240,13 +236,101 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
             PostModel postModel = arrayList.get(position);
 
+            Glide.with(mContext).load(postModel.getImage()).into(holder.imgMyPost);
             holder.txtCategoryName.setText(postModel.getKeyword());
+            holder.txtDescription.setText(postModel.getDescription());
+            holder.txtTimeAgo.setText(postModel.getDistance());
         }
 
         @Override
         public int getItemCount() {
             return arrayList.size();
         }
+    }
+
+    private void MyCommunityCommentApi(final String offSet) {
+        String req = "req";
+        commentList.clear();
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_COMMUNITY_COMMENT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_COMMUNITY_COMMENT + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                JSONArray arrayData = JsonMain.getJSONArray("data");
+                                for (int i = 0; i < arrayData.length(); i++) {
+                                    CommentModel commentModel = new CommentModel();
+                                    commentModel.setCommunityID(arrayData.getJSONObject(i).getString("community_id"));
+                                    commentModel.setCommentID(arrayData.getJSONObject(i).getString("comments_id"));
+                                    commentModel.setComment(arrayData.getJSONObject(i).getString("comment"));
+                                    commentModel.setProductID(arrayData.getJSONObject(i).getString("product_id"));
+                                    commentModel.setTopicID(arrayData.getJSONObject(i).getString("topic_id"));
+                                    commentModel.setUserID(arrayData.getJSONObject(i).getString("user_id"));
+                                    commentModel.setKeyword(arrayData.getJSONObject(i).getString("keyword"));
+                                    commentModel.setDescription(arrayData.getJSONObject(i).getString("description"));
+                                    commentModel.setLongitude(arrayData.getJSONObject(i).getString("longs"));
+                                    commentModel.setLatitude(arrayData.getJSONObject(i).getString("lat"));
+                                    commentModel.setLocationName(arrayData.getJSONObject(i).getString("location_name"));
+                                    commentModel.setImage(arrayData.getJSONObject(i).getString("image"));
+                                    commentList.add(commentModel);
+                                }
+                                if (commentList.size() > 0) {
+                                    PostView.setVisibility(View.GONE);
+                                    CommentView.setVisibility(View.VISIBLE);
+                                    CommentAdapter commentAdapter = new CommentAdapter(mContext, commentList);
+                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                                    CommentView.setLayoutManager(mLayoutManager);
+                                    CommentView.setItemAnimator(new DefaultItemAnimator());
+                                    CommentView.setAdapter(commentAdapter);
+                                    commentAdapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().MY_COMMUNITY_COMMENT + params);
+                return params;
+            }
+
+            // Form data passing
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("offset", offSet);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().MY_COMMUNITY_COMMENT + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_COMMUNITY_COMMENT);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
     private void GetCommentListApi(final String Type, final String ProductID) {
@@ -340,7 +424,7 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
             ImageView imgComment;
-            TextView txtComment;
+            TextView txtDescription;
             RelativeLayout OptionLayout;
 
             MyViewHolder(View view) {
@@ -348,7 +432,7 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
 
                 imgComment = view.findViewById(R.id.imgComment);
 
-                txtComment = view.findViewById(R.id.txtComment);
+                txtDescription = view.findViewById(R.id.txtDescription);
 
                 OptionLayout = view.findViewById(R.id.OptionLayout);
             }
@@ -370,17 +454,14 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
             CommentModel commentModel = arrayList.get(position);
 
-            holder.txtComment.setText(commentModel.getComment());
-
-            String Images = commentModel.getImages();
-            String[] separated = Images.split(",");
-            Glide.with(mContext).load(separated[0]).into(holder.imgComment);
+            holder.txtDescription.setText(commentModel.getDescription());
+            Glide.with(mContext).load(commentModel.getImage()).into(holder.imgComment);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent TopicList = new Intent(mContext, TopicListActivity.class);
-                    mContext.startActivity(TopicList);
+                    /*Intent TopicList = new Intent(mContext, TopicListActivity.class);
+                    mContext.startActivity(TopicList);*/
                 }
             });
         }
@@ -389,83 +470,6 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
         public int getItemCount() {
             return arrayList.size();
         }
-    }
-
-    private void MyCommunity() {
-        String req = "req";
-        postList.clear();
-        progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_COMMUNITY,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_COMMUNITY + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                /*JSONArray jsonArray = JsonMain.getJSONArray("data");
-                                for (int i = 0; jsonArray.length() > i; i++) {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    PostModel postModel = new PostModel();
-                                    postModel.setID(jsonObject.getString("id"));
-                                    postModel.setKeyword(jsonObject.getString("keyword"));
-                                    postModel.setDescription(jsonObject.getString("description"));
-                                    postModel.setImage(jsonObject.getString("image"));
-                                    postList.add(postModel);
-                                }
-                                if (postList.size() > 0) {
-                                    CommentView.setVisibility(View.GONE);
-                                    PostView.setVisibility(View.VISIBLE);
-                                    PostAdapter postAdapter = new PostAdapter(mContext, postList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                                    PostView.setLayoutManager(mLayoutManager);
-                                    PostView.setItemAnimator(new DefaultItemAnimator());
-                                    PostView.setAdapter(postAdapter);
-                                    postAdapter.notifyDataSetChanged();
-                                }*/
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
-
-            // Header data passing
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
-                String Token = sharedPreferences.getString("Token", "");
-                String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Type", "application/json");
-                params.put("Authorization", Type + " " + Token);
-                params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().MY_COMMUNITY + params);
-                return params;
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_COMMUNITY);
-        AppController.getInstance().addToRequestQueue(stringRequest, req);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MyCommunity();
     }
 
     @Override

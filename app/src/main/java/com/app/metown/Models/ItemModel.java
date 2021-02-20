@@ -3,7 +3,8 @@ package com.app.metown.Models;
 public class ItemModel {
 
     String ItemID, ItemSellerID, ItemBuyerID, ItemCategoryID, ItemCategoryTitle, ItemName, ItemDescription, ItemStatus, ItemType, ItemPrice,
-            ItemLatitude, ItemLongitude, ItemUpdatedAt, ItemIsNegotiable, ItemImages, ItemStatusTitle, ItemTypeTitle, ItemFavouriteCount;
+            ItemLatitude, ItemLongitude, ItemUpdatedAt, ItemIsNegotiable, ItemImages, ItemStatusTitle, ItemTypeTitle, ItemFavouriteCount,
+            ItemCommentCount;
 
     public String getItemID() {
         return ItemID;
@@ -147,5 +148,13 @@ public class ItemModel {
 
     public void setItemFavouriteCount(String itemFavouriteCount) {
         ItemFavouriteCount = itemFavouriteCount;
+    }
+
+    public String getItemCommentCount() {
+        return ItemCommentCount;
+    }
+
+    public void setItemCommentCount(String itemCommentCount) {
+        ItemCommentCount = itemCommentCount;
     }
 }

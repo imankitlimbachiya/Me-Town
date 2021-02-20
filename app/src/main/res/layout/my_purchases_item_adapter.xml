@@ -3,22 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="5dp"
-    android:paddingBottom="2dp"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="5dp"
+    android:paddingBottom="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <RelativeLayout
+        <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_margin="13dp"
             android:layout_gravity="center"
-            tools:ignore="RtlHardcoded"
+            android:layout_margin="13dp"
             android:background="@drawable/round_normal_corner_bg" />
 
         <RelativeLayout
@@ -31,8 +30,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginRight="30dp">
+                android:layout_marginRight="30dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtItemName"
@@ -57,29 +56,30 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="36dp"
                         android:layout_height="wrap_content"
-                        android:text="Sold"
-                        android:fontFamily="@font/alte_haas_grotesk_bold"
                         android:background="@drawable/round_medium_bg"
                         android:backgroundTint="@color/redPink"
-                        android:textSize="9sp"
-                        android:textColor="@color/white"
+                        android:fontFamily="@font/alte_haas_grotesk_bold"
+                        android:gravity="center"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
-                        android:gravity="center"/>
+                        android:text="Sold"
+                        android:textColor="@color/white"
+                        android:textSize="9sp" />
 
                     <TextView
+                        android:id="@+id/txtItemPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:fontFamily="@font/louis_george_cafe"
                         android:singleLine="true"
-                        android:text="Item price"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="10sp" />
 
@@ -91,11 +91,11 @@
                 android:id="@+id/OptionLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:layout_alignParentRight="true">
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp">
 
                 <ImageView
                     android:id="@+id/imgOption"
@@ -113,15 +113,16 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="5dp"
-                android:paddingRight="10dp"
                 android:paddingTop="5dp"
+                android:paddingRight="10dp"
                 android:paddingBottom="5dp">
 
                 <LinearLayout
+                    android:id="@+id/CommentLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginRight="7dp">
+                    android:layout_marginRight="7dp"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/imgComment"
@@ -133,37 +134,38 @@
                         android:id="@+id/txtCommentCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
                         android:fontFamily="@font/louis_george_cafe"
                         android:singleLine="true"
                         android:text="0"
                         android:textColor="@color/black"
-                        android:textSize="10sp"
-                        android:layout_marginLeft="3dp" />
+                        android:textSize="10sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/FavouriteLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="7dp">
+                    android:layout_marginLeft="7dp"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/imgLike"
                         android:layout_width="19dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/like" />
+                        android:src="@drawable/dislike" />
 
                     <TextView
                         android:id="@+id/txtLikeCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
                         android:fontFamily="@font/louis_george_cafe"
                         android:singleLine="true"
                         android:text="0"
                         android:textColor="@color/black"
-                        android:textSize="10sp"
-                        android:layout_marginLeft="3dp" />
+                        android:textSize="10sp" />
 
                 </LinearLayout>
 

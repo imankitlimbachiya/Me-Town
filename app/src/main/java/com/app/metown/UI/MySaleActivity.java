@@ -1,15 +1,20 @@
 package com.app.metown.UI;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,12 +60,15 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
     RelativeLayout NoResponseLayout;
     LinearLayout ActiveLayout, SoldLayout, HiddenLayout, ActiveResponseLayout, SoldResponseLayout, HiddenResponseLayout;
     TextView txtActive, txtSold, txtHidden, txtError;
+    EditText edtAddComment;
     View ActiveView, SoldView, HiddenView;
     RecyclerView ActiveItemView, SoldItemView, HiddenItemView;
     ArrayList<ItemModel> activeItemList = new ArrayList<>();
     ArrayList<ItemModel> soldItemList = new ArrayList<>();
     ArrayList<ItemModel> hiddenItemList = new ArrayList<>();
     JSONArray arrayData;
+    Dialog dialog;
+    String ItemID = "", From = "Active", offSetActive = "0", offSetSold = "0", offSetHidden = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +86,14 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         ViewInitialization();
 
         ViewOnClick();
+
+        ViewSetText();
+
+        OpenEasyPopup();
+
+        MyActiveSaleApi(offSetActive);
+
+        RecyclerViewScrollListener(ActiveItemView);
     }
 
     public void ViewInitialization() {
@@ -103,24 +120,28 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         txtSold = findViewById(R.id.txtSold);
         txtHidden = findViewById(R.id.txtHidden);
 
+        ActiveItemView = findViewById(R.id.ActiveItemView);
+        SoldItemView = findViewById(R.id.SoldItemView);
+        HiddenItemView = findViewById(R.id.HiddenItemView);
+    }
+
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
+        ActiveLayout.setOnClickListener(this);
+        SoldLayout.setOnClickListener(this);
+        HiddenLayout.setOnClickListener(this);
+    }
+
+    public void ViewSetText() {
         txtActive.setTextColor(getResources().getColor(R.color.black));
         ActiveView.setBackgroundColor(getResources().getColor(R.color.black));
         txtSold.setTextColor(getResources().getColor(R.color.grey));
         SoldView.setBackgroundColor(getResources().getColor(R.color.grey));
         txtHidden.setTextColor(getResources().getColor(R.color.grey));
         HiddenView.setBackgroundColor(getResources().getColor(R.color.grey));
+    }
 
-        ActiveItemView = findViewById(R.id.ActiveItemView);
-        SoldItemView = findViewById(R.id.SoldItemView);
-        HiddenItemView = findViewById(R.id.HiddenItemView);
-
-        MyActiveSaleApi();
-
-        imgBack.setOnClickListener(this);
-        ActiveLayout.setOnClickListener(this);
-        SoldLayout.setOnClickListener(this);
-        HiddenLayout.setOnClickListener(this);
-
+    public void OpenEasyPopup() {
         mQQPop = EasyPopup.create()
                 .setContext(mContext)
                 .setContentView(R.layout.option_menu)
@@ -128,8 +149,47 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 .setOnViewListener(new EasyPopup.OnViewListener() {
                     @Override
                     public void initViews(View view, EasyPopup basePopup) {
-                        // View arrowView = view.findViewById(R.id.v_arrow);
-                        // arrowView.setBackground(new TriangleDrawable(TriangleDrawable.TOP, Color.parseColor("#88FF88")));
+                        TextView txtEdit = view.findViewById(R.id.txtEdit);
+                        TextView txtHide = view.findViewById(R.id.txtHide);
+                        TextView txtUnHide = view.findViewById(R.id.txtUnHide);
+                        TextView txtDeletePost = view.findViewById(R.id.txtDeletePost);
+
+                        if (From.equals("Active")) {
+                            txtUnHide.setVisibility(View.GONE);
+                        } else if (From.equals("Sold")) {
+                            txtHide.setVisibility(View.GONE);
+                            txtUnHide.setVisibility(View.GONE);
+                        } else if (From.equals("Hidden")) {
+
+                        }
+
+                        txtEdit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        });
+
+                        txtHide.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MySaleUpdateStatusApi(ItemID, "4", From);
+                            }
+                        });
+
+                        txtUnHide.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        });
+
+                        txtDeletePost.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MySaleDeleteApi(ItemID, From);
+                            }
+                        });
                     }
                 })
                 .setFocusAndOutsideEnable(true)
@@ -140,11 +200,40 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 .apply();
     }
 
-    public void ViewOnClick() {
-        imgBack.setOnClickListener(this);
-        ActiveLayout.setOnClickListener(this);
-        SoldLayout.setOnClickListener(this);
-        HiddenLayout.setOnClickListener(this);
+    public void RecyclerViewScrollListener(RecyclerView recyclerView) {
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (activeItemList.size() >= 30) {
+                    if (isLastItemDisplaying(recyclerView)) {
+                        offSetActive = String.valueOf(activeItemList.size());
+                        MyActiveSaleApi(offSetActive);
+                    }
+                }
+
+                /*if (isLastItemDisplaying(recyclerView)) {
+                    offSetActive = String.valueOf(activeItemList.size());
+                    MyActiveSaleApi(offSetActive);
+                }*/
+            }
+
+            private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+                // Check if the adapter item count is greater than 0
+                if (recyclerView.getAdapter().getItemCount() != 0) {
+                    //get the last visible item on screen using the layout manager
+                    int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                    return lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1;
+                }
+                return false;
+            }
+        });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -155,18 +244,20 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.ActiveLayout:
-                MyActiveSaleApi();
+                MyActiveSaleApi(offSetActive);
                 break;
             case R.id.SoldLayout:
-                MySoldSaleApi();
+                RecyclerViewScrollListener(SoldItemView);
+                MySoldSaleApi(offSetSold);
                 break;
             case R.id.HiddenLayout:
-                MyHiddenSaleApi();
+                RecyclerViewScrollListener(HiddenItemView);
+                MyHiddenSaleApi(offSetHidden);
                 break;
         }
     }
 
-    private void MyActiveSaleApi() {
+    private void MyActiveSaleApi(final String offSetActive) {
         txtActive.setTextColor(getResources().getColor(R.color.black));
         ActiveView.setBackgroundColor(getResources().getColor(R.color.black));
         txtSold.setTextColor(getResources().getColor(R.color.grey));
@@ -177,13 +268,13 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         String req = "req";
         activeItemList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_ACTIVE_SALES,
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_ACTIVE_SALES + "/" + offSetActive,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_ACTIVE_SALES + response);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_ACTIVE_SALES + "/" + offSetActive + response);
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
@@ -208,6 +299,7 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                                     itemModel.setItemStatusTitle(arrayData.getJSONObject(i).getString("status_title"));
                                     itemModel.setItemTypeTitle(arrayData.getJSONObject(i).getString("type_title"));
                                     itemModel.setItemFavouriteCount(arrayData.getJSONObject(i).getString("favourite_count"));
+                                    itemModel.setItemCommentCount(arrayData.getJSONObject(i).getString("commnet_count"));
                                     activeItemList.add(itemModel);
                                 }
 
@@ -245,7 +337,6 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
@@ -266,14 +357,14 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 params.put("Content-Type", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().MY_ACTIVE_SALES + params);
+                Log.e("HEADER", "" + APIConstant.getInstance().MY_ACTIVE_SALES + "/" + offSetActive + params);
                 return params;
             }
         };
 
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_ACTIVE_SALES);
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_ACTIVE_SALES + "/" + offSetActive);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
@@ -286,7 +377,8 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             ImageView imgItem;
-            TextView txtItemName, txtAddressOrTimePosted, txtItemPrice, txtChangeToReserved, txtChangeToSold;
+            TextView txtItemName, txtAddressOrTimePosted, txtItemPrice, txtChangeToReserved, txtChangeToSold,
+                    txtCommentCount, txtLikeCount;
             RelativeLayout OptionLayout;
             LinearLayout CommentLayout, FavouriteLayout;
 
@@ -300,6 +392,8 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 txtItemPrice = view.findViewById(R.id.txtItemPrice);
                 txtChangeToReserved = view.findViewById(R.id.txtChangeToReserved);
                 txtChangeToSold = view.findViewById(R.id.txtChangeToSold);
+                txtCommentCount = view.findViewById(R.id.txtCommentCount);
+                txtLikeCount = view.findViewById(R.id.txtLikeCount);
 
                 OptionLayout = view.findViewById(R.id.OptionLayout);
 
@@ -321,6 +415,7 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
             return new MyViewHolder(itemView);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
             final ItemModel itemModel = arrayList.get(position);
@@ -328,6 +423,9 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
             String Images = itemModel.getItemImages();
             String[] separated = Images.split(",");
             Glide.with(mContext).load(separated[0]).into(holder.imgItem);
+
+            holder.txtCommentCount.setText(itemModel.getItemCommentCount());
+            holder.txtLikeCount.setText(itemModel.getItemFavouriteCount());
 
             holder.txtItemName.setText(itemModel.getItemName());
             holder.txtItemPrice.setText(rupee + " " + itemModel.getItemPrice());
@@ -349,6 +447,13 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
             holder.OptionLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ItemID = "";
+                    From = "";
+                    ItemID = itemModel.getItemID();
+                    From = "Active";
+                    Log.e("ItemID", "" + ItemID);
+                    Log.e("From", "" + From);
+                    OpenEasyPopup();
                     mQQPop.showAtAnchorView(view, YGravity.BELOW, XGravity.LEFT, 0, 0);
                 }
             });
@@ -356,14 +461,30 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
             holder.CommentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AddEditCommentApi(itemModel.getItemID(), "ok...");
+                    dialog = new Dialog(mContext);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.add_comment_dialog);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    edtAddComment = dialog.findViewById(R.id.edtAddComment);
+                    dialog.findViewById(R.id.txtAdd).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String Comment = edtAddComment.getText().toString().trim();
+                            if (Comment.equals("")) {
+                                Toast.makeText(mContext, "Please Enter a comment.", Toast.LENGTH_LONG).show();
+                            } else {
+                                AddEditCommentApi(itemModel.getItemID(), edtAddComment.getText().toString().trim(), "Active");
+                            }
+                        }
+                    });
+                    dialog.show();
                 }
             });
 
             holder.FavouriteLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AddEditFavoriteApi(itemModel.getItemID(), "1");
+                    AddEditFavoriteApi(itemModel.getItemID(), "Active");
                 }
             });
         }
@@ -374,7 +495,7 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void MySoldSaleApi() {
+    private void MySoldSaleApi(final String offSetSold) {
         txtSold.setTextColor(getResources().getColor(R.color.black));
         SoldView.setBackgroundColor(getResources().getColor(R.color.black));
         txtHidden.setTextColor(getResources().getColor(R.color.grey));
@@ -385,13 +506,13 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         String req = "req";
         soldItemList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_SOLD_SALES,
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_SOLD_SALES + "/" + offSetSold,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_SOLD_SALES + response);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_SOLD_SALES + "/" + offSetSold + response);
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
@@ -416,6 +537,7 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                                     itemModel.setItemStatusTitle(arrayData.getJSONObject(i).getString("status_title"));
                                     itemModel.setItemTypeTitle(arrayData.getJSONObject(i).getString("type_title"));
                                     itemModel.setItemFavouriteCount(arrayData.getJSONObject(i).getString("favourite_count"));
+                                    itemModel.setItemCommentCount(arrayData.getJSONObject(i).getString("commnet_count"));
                                     soldItemList.add(itemModel);
                                 }
 
@@ -453,14 +575,13 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Log.e("ERROR", "" + error.getMessage());
+                        // Log.e("ERROR", "" + error.getMessage());
                     }
                 }) {
 
@@ -474,14 +595,14 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 params.put("Content-Type", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().MY_SOLD_SALES + params);
+                Log.e("HEADER", "" + APIConstant.getInstance().MY_SOLD_SALES + "/" + offSetSold + params);
                 return params;
             }
         };
 
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_SOLD_SALES);
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_SOLD_SALES + "/" + offSetSold);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
@@ -489,13 +610,29 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
 
         Context mContext;
         ArrayList<ItemModel> arrayList;
+        String rupee;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            RelativeLayout ReviewLayout;
+            ImageView imgItem;
+            TextView txtItemName, txtItemPrice, txtCommentCount, txtLikeCount;
+            RelativeLayout ReviewLayout, OptionLayout;
+            LinearLayout CommentLayout, FavouriteLayout;
 
             MyViewHolder(View view) {
                 super(view);
+
+                imgItem = view.findViewById(R.id.imgItem);
+
+                txtItemName = view.findViewById(R.id.txtItemName);
+                txtItemPrice = view.findViewById(R.id.txtItemPrice);
+                txtCommentCount = view.findViewById(R.id.txtCommentCount);
+                txtLikeCount = view.findViewById(R.id.txtLikeCount);
+
+                OptionLayout = view.findViewById(R.id.OptionLayout);
+
+                CommentLayout = view.findViewById(R.id.CommentLayout);
+                FavouriteLayout = view.findViewById(R.id.FavouriteLayout);
 
                 ReviewLayout = view.findViewById(R.id.ReviewLayout);
             }
@@ -504,8 +641,8 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         public SoldItemAdapter(Context mContext, ArrayList<ItemModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
+            this.rupee = mContext.getString(R.string.rupee);
         }
-
 
         @NotNull
         @Override
@@ -516,13 +653,71 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            ItemModel itemModel = arrayList.get(position);
+            final ItemModel itemModel = arrayList.get(position);
+
+            String Images = itemModel.getItemImages();
+            String[] separated = Images.split(",");
+            Glide.with(mContext).load(separated[0]).into(holder.imgItem);
+
+            holder.txtItemName.setText(itemModel.getItemName());
+            holder.txtItemPrice.setText(rupee + " " + itemModel.getItemPrice());
+            holder.txtCommentCount.setText(itemModel.getItemCommentCount());
+            holder.txtLikeCount.setText(itemModel.getItemFavouriteCount());
+
+            holder.OptionLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ItemID = "";
+                    From = "";
+                    ItemID = itemModel.getItemID();
+                    From = "Sold";
+                    Log.e("ItemID", "" + ItemID);
+                    Log.e("From", "" + From);
+                    OpenEasyPopup();
+                    mQQPop.showAtAnchorView(view, YGravity.BELOW, XGravity.LEFT, 0, 0);
+                }
+            });
+
+            holder.CommentLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog = new Dialog(mContext);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.add_comment_dialog);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    edtAddComment = dialog.findViewById(R.id.edtAddComment);
+                    dialog.findViewById(R.id.txtAdd).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String Comment = edtAddComment.getText().toString().trim();
+                            if (Comment.equals("")) {
+                                Toast.makeText(mContext, "Please Enter a comment.", Toast.LENGTH_LONG).show();
+                            } else {
+                                AddEditCommentApi(itemModel.getItemID(), edtAddComment.getText().toString().trim(), "Sold");
+                            }
+                        }
+                    });
+                    dialog.show();
+                }
+            });
+
+            holder.FavouriteLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AddEditFavoriteApi(itemModel.getItemID(), "Sold");
+                }
+            });
 
             holder.ReviewLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, SelectBuyerActivity.class);
-                    mContext.startActivity(intent);
+                    String Images = itemModel.getItemImages();
+                    String[] separated = Images.split(",");
+                    Intent SelectBuyer = new Intent(mContext, SelectBuyerActivity.class);
+                    SelectBuyer.putExtra("ItemID", itemModel.getItemID());
+                    SelectBuyer.putExtra("ItemName", itemModel.getItemName());
+                    SelectBuyer.putExtra("ItemImage", separated[0]);
+                    mContext.startActivity(SelectBuyer);
                 }
             });
         }
@@ -533,7 +728,7 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void MyHiddenSaleApi() {
+    private void MyHiddenSaleApi(final String offSetHidden) {
         txtHidden.setTextColor(getResources().getColor(R.color.black));
         HiddenView.setBackgroundColor(getResources().getColor(R.color.black));
         txtActive.setTextColor(getResources().getColor(R.color.grey));
@@ -544,13 +739,13 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         String req = "req";
         hiddenItemList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_HIDDEN_SALES,
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_HIDDEN_SALES + "/" + offSetHidden,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_HIDDEN_SALES + response);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_HIDDEN_SALES + "/" + offSetHidden + response);
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
@@ -575,6 +770,7 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                                     itemModel.setItemStatusTitle(arrayData.getJSONObject(i).getString("status_title"));
                                     itemModel.setItemTypeTitle(arrayData.getJSONObject(i).getString("type_title"));
                                     itemModel.setItemFavouriteCount(arrayData.getJSONObject(i).getString("favourite_count"));
+                                    itemModel.setItemCommentCount(arrayData.getJSONObject(i).getString("commnet_count"));
                                     hiddenItemList.add(itemModel);
                                 }
 
@@ -612,14 +808,13 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Log.e("ERROR", "" + error.getMessage());
+                        // Log.e("ERROR", "" + error.getMessage());
                     }
                 }) {
 
@@ -633,14 +828,14 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 params.put("Content-Type", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().MY_HIDDEN_SALES + params);
+                Log.e("HEADER", "" + APIConstant.getInstance().MY_HIDDEN_SALES + "/" + offSetHidden + params);
                 return params;
             }
         };
 
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_HIDDEN_SALES);
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_HIDDEN_SALES + "/" + offSetHidden);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
@@ -648,21 +843,37 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
 
         Context mContext;
         ArrayList<ItemModel> arrayList;
+        String rupee;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            // RadioButton btnSelect;
+            ImageView imgItem;
+            TextView txtItemName, txtItemPrice, txtCommentCount, txtLikeCount;
+            RelativeLayout UnHidePostLayout, OptionLayout;
+            LinearLayout CommentLayout, FavouriteLayout;
 
             MyViewHolder(View view) {
                 super(view);
 
-                // btnSelect = view.findViewById(R.id.btnSelect);
+                imgItem = view.findViewById(R.id.imgItem);
+
+                txtItemName = view.findViewById(R.id.txtItemName);
+                txtItemPrice = view.findViewById(R.id.txtItemPrice);
+                txtCommentCount = view.findViewById(R.id.txtCommentCount);
+                txtLikeCount = view.findViewById(R.id.txtLikeCount);
+
+                OptionLayout = view.findViewById(R.id.OptionLayout);
+                UnHidePostLayout = view.findViewById(R.id.UnHidePostLayout);
+
+                CommentLayout = view.findViewById(R.id.CommentLayout);
+                FavouriteLayout = view.findViewById(R.id.FavouriteLayout);
             }
         }
 
         public HiddenItemAdapter(Context mContext, ArrayList<ItemModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
+            this.rupee = mContext.getString(R.string.rupee);
         }
 
 
@@ -675,9 +886,67 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            ItemModel itemModel = arrayList.get(position);
+            final ItemModel itemModel = arrayList.get(position);
 
-            // holder.btnSelect.setText("  " + categoryModel.getCategoryName());
+            String Images = itemModel.getItemImages();
+            String[] separated = Images.split(",");
+            Glide.with(mContext).load(separated[0]).into(holder.imgItem);
+
+            holder.txtItemName.setText(itemModel.getItemName());
+            holder.txtItemPrice.setText(rupee + " " + itemModel.getItemPrice());
+            holder.txtCommentCount.setText(itemModel.getItemCommentCount());
+            holder.txtLikeCount.setText(itemModel.getItemFavouriteCount());
+
+            holder.OptionLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ItemID = "";
+                    From = "";
+                    ItemID = itemModel.getItemID();
+                    From = "Hidden";
+                    Log.e("ItemID", "" + ItemID);
+                    Log.e("From", "" + From);
+                    OpenEasyPopup();
+                    mQQPop.showAtAnchorView(view, YGravity.BELOW, XGravity.LEFT, 0, 0);
+                }
+            });
+
+            holder.CommentLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog = new Dialog(mContext);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.add_comment_dialog);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    edtAddComment = dialog.findViewById(R.id.edtAddComment);
+                    dialog.findViewById(R.id.txtAdd).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String Comment = edtAddComment.getText().toString().trim();
+                            if (Comment.equals("")) {
+                                Toast.makeText(mContext, "Please Enter a comment.", Toast.LENGTH_LONG).show();
+                            } else {
+                                AddEditCommentApi(itemModel.getItemID(), edtAddComment.getText().toString().trim(), "Sold");
+                            }
+                        }
+                    });
+                    dialog.show();
+                }
+            });
+
+            holder.FavouriteLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AddEditFavoriteApi(itemModel.getItemID(), "Sold");
+                }
+            });
+
+            holder.UnHidePostLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MySaleUpdateStatusApi(itemModel.getItemID(), "1", "Hidden");
+                }
+            });
         }
 
         @Override
@@ -695,32 +964,35 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(String response) {
                         try {
                             progressBar.setVisibility(View.GONE);
+                            mQQPop.dismiss();
                             Log.e("RESPONSE", "" + APIConstant.getInstance().MY_SALE_UPDATE_STATUS + response);
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
                             String Message = JsonMain.getString("msg");
                             if (HAS_ERROR.equals("false")) {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                                if (From.equals("Active")) {
-                                    MyActiveSaleApi();
-                                } else if (From.equals("Sold")) {
-                                    MySoldSaleApi();
-                                } else if (From.equals("Hidden")) {
-                                    MyHiddenSaleApi();
+                                switch (From) {
+                                    case "Active":
+                                        MyActiveSaleApi(offSetActive);
+                                        break;
+                                    case "Sold":
+                                        MySoldSaleApi(offSetSold);
+                                        break;
+                                    case "Hidden":
+                                        MyHiddenSaleApi(offSetHidden);
+                                        break;
                                 }
                             } else {
                                 Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Log.e("ERROR", "" + error.getMessage());
+                        // Log.e("ERROR", "" + error.getMessage());
                     }
                 }) {
 
@@ -738,16 +1010,6 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 return params;
             }
 
-            // Form data passing
-            /*protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                // params.put("email", edtEmail.getText().toString());
-                // params.put("password", edtPassword.getText().toString());
-                // params.put("secretkey", APIConstant.getInstance().ApiSecretsKey);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().MY_SALE_UPDATE_STATUS + params);
-                return params;
-            }*/
-
             // Raw data passing
             @Override
             public byte[] getBody() throws AuthFailureError {
@@ -763,7 +1025,77 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
-    private void AddEditFavoriteApi(final String ProductID, final String ISFavorite) {
+    private void MySaleDeleteApi(final String ID, final String From) {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_SALE_DELETE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            mQQPop.dismiss();
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_SALE_DELETE + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            String Message = JsonMain.getString("msg");
+                            if (HAS_ERROR.equals("false")) {
+                                switch (From) {
+                                    case "Active":
+                                        MyActiveSaleApi(offSetActive);
+                                        break;
+                                    case "Sold":
+                                        MySoldSaleApi(offSetSold);
+                                        break;
+                                    case "Hidden":
+                                        MyHiddenSaleApi(offSetHidden);
+                                        break;
+                                }
+                            } else {
+                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                        // Log.e("ERROR", "" + error.getMessage());
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                // params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().MY_SALE_DELETE + params);
+                return params;
+            }
+
+            // Form data passing
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("id", ID);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().MY_SALE_DELETE + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_SALE_DELETE);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }
+
+    private void AddEditFavoriteApi(final String ProductID, final String From) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_FAVORITE,
@@ -777,20 +1109,29 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                             String HAS_ERROR = JsonMain.getString("has_error");
                             String Message = JsonMain.getString("msg");
                             if (HAS_ERROR.equals("false")) {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                                switch (From) {
+                                    case "Active":
+                                        MyActiveSaleApi(offSetActive);
+                                        break;
+                                    case "Sold":
+                                        MySoldSaleApi(offSetSold);
+                                        break;
+                                    case "Hidden":
+                                        MyHiddenSaleApi(offSetHidden);
+                                        break;
+                                }
                             } else {
                                 Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Log.e("ERROR", "" + error.getMessage());
+                        // Log.e("ERROR", "" + error.getMessage());
                     }
                 }) {
 
@@ -811,7 +1152,7 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
             // Raw data passing
             @Override
             public byte[] getBody() throws AuthFailureError {
-                String params = "{\"product_id\":\"" + ProductID + "\",\"is_favorite\":\"" + ISFavorite + "\"}";
+                String params = "{\"product_id\":\"" + ProductID + "\",\"is_favorite\":\"" + "1" + "\"}";
                 Log.e("PARAMETER", "" + APIConstant.getInstance().ADD_EDIT_FAVORITE + params);
                 return params.getBytes();
             }
@@ -823,7 +1164,7 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
-    private void AddEditCommentApi(final String ProductID,final  String Comment) {
+    private void AddEditCommentApi(final String ProductID, final String Comment, final String From) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_COMMENT,
@@ -832,17 +1173,28 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(final String response) {
                         try {
                             progressBar.setVisibility(View.GONE);
+                            dialog.dismiss();
                             Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + response);
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
                             String Message = JsonMain.getString("msg");
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                                dialog.dismiss();
+                                switch (From) {
+                                    case "Active":
+                                        MyActiveSaleApi(offSetActive);
+                                        break;
+                                    case "Sold":
+                                        MySoldSaleApi(offSetSold);
+                                        break;
+                                    case "Hidden":
+                                        MyHiddenSaleApi(offSetHidden);
+                                        break;
+                                }
                             } else {
                                 Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }
                     }
@@ -866,14 +1218,16 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
                 Log.e("HEADER", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + params);
                 return params;
             }
+
             // Raw data passing
             @Override
             public byte[] getBody() throws AuthFailureError {
-                String params = "{\"product_id\":\"" + ProductID + "\",\"comment\":\"" + Comment + "\"}";
+                String params = "{\"product_id\":\"" + ProductID + "\",\"type\":\"" + "1" + "\",\"comment\":\"" + Comment + "\"}";
                 Log.e("PARAMETER", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + params);
                 return params.getBytes();
             }
         };
+
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().ADD_EDIT_COMMENT);

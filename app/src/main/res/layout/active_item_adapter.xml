@@ -135,7 +135,7 @@
                         android:id="@+id/imgLike"
                         android:layout_width="19dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/like" />
+                        android:src="@drawable/dislike" />
 
                     <TextView
                         android:id="@+id/txtLikeCount"

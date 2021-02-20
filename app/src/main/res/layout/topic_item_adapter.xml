@@ -13,30 +13,28 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        tools:ignore="RtlHardcoded,UselessLeaf">
+        android:layout_marginRight="14dp">
 
         <ImageView
             android:id="@+id/imgMyPost"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginLeft="2dp"
-            android:background="@drawable/circle_outer_border_bg"
-            tools:ignore="ContentDescription,RtlHardcoded,UselessLeaf" />
+            android:background="@drawable/circle_outer_border_bg" />
 
         <TextView
+            android:id="@+id/txtTopic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="100dp"
             android:layout_marginTop="2dp"
+            android:layout_marginRight="100dp"
             android:layout_toRightOf="@id/imgMyPost"
             android:fontFamily="@font/alte_haas_grotesk_bold"
             android:singleLine="true"
             android:text="'topic'"
             android:textColor="@color/darkGrey"
-            android:textSize="15sp"
-            tools:ignore="HardcodedText" />
+            android:textSize="15sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -50,24 +48,24 @@
             android:singleLine="true"
             android:text="'# followers'"
             android:textColor="@color/grey"
-            android:textSize="15sp"
-            tools:ignore="HardcodedText" />
+            android:textSize="15sp" />
 
-        <TextView
+        <Button
+            android:id="@+id/btnFollow"
             android:layout_width="78dp"
             android:layout_height="30dp"
-            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="18dp"
             android:background="@drawable/round_very_medium_bg"
             android:backgroundTint="@color/orange"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="18dp"
-            android:layout_marginTop="6dp"
             android:fontFamily="@font/alte_haas_grotesk_bold"
+            android:gravity="center"
             android:singleLine="true"
             android:text="Follow"
+            android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="15sp"
-            tools:ignore="HardcodedText,UnusedAttribute" />
+            android:textSize="15sp" />
 
     </RelativeLayout>
 

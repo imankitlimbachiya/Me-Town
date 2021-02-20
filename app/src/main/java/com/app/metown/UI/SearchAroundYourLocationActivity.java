@@ -5,12 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,14 +55,17 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
     Context mContext;
     ProgressBar progressBar;
     ImageView imgBack, imgSearch;
-    LinearLayout SecondHandLayout, ServiceNearbyLayout, UserLayout, SecondHandResponseLayout, ServiceNearbyResponseLayout, UserResponseLayout;
-    TextView txtSecondHand, txtServiceNearby, txtUser;
+    EditText edtSearchAroundYourLocation;
+    RelativeLayout NoResponseLayout;
+    LinearLayout SecondHandLayout, ServiceNearbyLayout, UserLayout, SecondHandResponseLayout, ServiceNearbyResponseLayout,
+            UserResponseLayout, ResponseLayout;
+    TextView txtSecondHand, txtUserUnseenProduct, txtServiceNearby, txtUser, txtError;
     View SecondHandView, ServiceNearbyView, UserView;
     RecyclerView CategoryView, SecondHandSearchItemView, SecondHandNewSearchItemView, ServiceNearbyCategoryView;
     ArrayList<CategoryModel> categoryList = new ArrayList<>();
     ArrayList<ItemModel> itemList = new ArrayList<>();
-    ArrayList<ItemMainModel> secondHandNewSearchItemList = new ArrayList<>();
     ArrayList<StaticCategoryModel> serviceNearbyCategoryList = new ArrayList<>();
+    ArrayList<CategoryModel> serviceList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +81,10 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
+
+        GetSearchSecondHandApi("");
     }
 
     public void ViewInitialization() {
@@ -82,10 +93,15 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
         imgBack = findViewById(R.id.imgBack);
         imgSearch = findViewById(R.id.imgSearch);
 
+        edtSearchAroundYourLocation = findViewById(R.id.edtSearchAroundYourLocation);
+
         SecondHandView = findViewById(R.id.SecondHandView);
         ServiceNearbyView = findViewById(R.id.ServiceNearbyView);
         UserView = findViewById(R.id.UserView);
 
+        NoResponseLayout = findViewById(R.id.NoResponseLayout);
+
+        ResponseLayout = findViewById(R.id.ResponseLayout);
         SecondHandLayout = findViewById(R.id.SecondHandLayout);
         ServiceNearbyLayout = findViewById(R.id.ServiceNearbyLayout);
         UserLayout = findViewById(R.id.UserLayout);
@@ -93,7 +109,9 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
         ServiceNearbyResponseLayout = findViewById(R.id.ServiceNearbyResponseLayout);
         UserResponseLayout = findViewById(R.id.UserResponseLayout);
 
+        txtError = findViewById(R.id.txtError);
         txtSecondHand = findViewById(R.id.txtSecondHand);
+        txtUserUnseenProduct = findViewById(R.id.txtUserUnseenProduct);
         txtServiceNearby = findViewById(R.id.txtServiceNearby);
         txtUser = findViewById(R.id.txtUser);
 
@@ -104,12 +122,6 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
         txtUser.setTextColor(getResources().getColor(R.color.grey));
         UserView.setBackgroundColor(getResources().getColor(R.color.grey));
 
-        imgBack.setOnClickListener(this);
-        imgSearch.setOnClickListener(this);
-        SecondHandLayout.setOnClickListener(this);
-        ServiceNearbyLayout.setOnClickListener(this);
-        UserLayout.setOnClickListener(this);
-
         CategoryView = findViewById(R.id.CategoryView);
         SecondHandSearchItemView = findViewById(R.id.SecondHandSearchItemView);
         SecondHandNewSearchItemView = findViewById(R.id.SecondHandNewSearchItemView);
@@ -118,10 +130,32 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
         SecondHandResponseLayout.setVisibility(View.VISIBLE);
         ServiceNearbyResponseLayout.setVisibility(View.GONE);
         UserResponseLayout.setVisibility(View.GONE);
+    }
 
-        GetSearchSecondHandApi("");
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
+        imgSearch.setOnClickListener(this);
+        SecondHandLayout.setOnClickListener(this);
+        ServiceNearbyLayout.setOnClickListener(this);
+        UserLayout.setOnClickListener(this);
 
-        GetSaleListApi();
+        edtSearchAroundYourLocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                String Keyword = String.valueOf(charSequence);
+                // GetSearchSecondHandApi(Keyword);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -145,7 +179,6 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
                 SecondHandResponseLayout.setVisibility(View.VISIBLE);
                 ServiceNearbyResponseLayout.setVisibility(View.GONE);
                 GetSearchSecondHandApi("");
-                GetSaleListApi();
                 break;
             case R.id.ServiceNearbyLayout:
                 txtServiceNearby.setTextColor(getResources().getColor(R.color.black));
@@ -154,9 +187,6 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
                 UserView.setBackgroundColor(getResources().getColor(R.color.grey));
                 txtSecondHand.setTextColor(getResources().getColor(R.color.grey));
                 SecondHandView.setBackgroundColor(getResources().getColor(R.color.grey));
-                SecondHandResponseLayout.setVisibility(View.GONE);
-                UserResponseLayout.setVisibility(View.GONE);
-                ServiceNearbyResponseLayout.setVisibility(View.VISIBLE);
                 GetServiceListApi();
                 break;
             case R.id.UserLayout:
@@ -166,9 +196,6 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
                 SecondHandView.setBackgroundColor(getResources().getColor(R.color.grey));
                 txtServiceNearby.setTextColor(getResources().getColor(R.color.grey));
                 ServiceNearbyView.setBackgroundColor(getResources().getColor(R.color.grey));
-                SecondHandResponseLayout.setVisibility(View.GONE);
-                ServiceNearbyResponseLayout.setVisibility(View.GONE);
-                UserResponseLayout.setVisibility(View.VISIBLE);
                 GetUserListApi();
                 break;
         }
@@ -200,9 +227,6 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
                                     categoryModel.setCategoryType(arrayCategory.getJSONObject(i).getString("category_type"));
                                     categoryModel.setCategoryStatus(arrayCategory.getJSONObject(i).getString("status"));
                                     categoryModel.setImages(arrayCategory.getJSONObject(i).getString("images"));
-                                    /*categoryModel.setImages(arrayCategory.getJSONObject(i).getString("deleted_at"));
-                                    categoryModel.setImages(arrayCategory.getJSONObject(i).getString("created_at"));
-                                    categoryModel.setImages(arrayCategory.getJSONObject(i).getString("updated_at"));*/
                                     categoryList.add(categoryModel);
                                 }
                                 if (categoryList.size() > 0) {
@@ -243,6 +267,14 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
                                     SecondHandSearchItemView.setItemAnimator(new DefaultItemAnimator());
                                     SecondHandSearchItemView.setAdapter(secondHandSearchItemAdapter);
                                     secondHandSearchItemAdapter.notifyDataSetChanged();
+                                }
+
+                                JSONArray arrayProductView = objectData.getJSONArray("ProductView");
+                                if (arrayProductView.length() == 0) {
+                                    txtUserUnseenProduct.setVisibility(View.GONE);
+                                } else {
+                                    txtUserUnseenProduct.setVisibility(View.VISIBLE);
+                                    txtUserUnseenProduct.setText("'User Name', have you seen these?");
                                 }
                             } else {
                                 String ErrorMessage = JsonMain.getString("msg");
@@ -289,83 +321,9 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
-    private void GetSaleListApi() {
-        String req = "req";
-        secondHandNewSearchItemList.clear();
-        progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_SALE_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_SALE_LIST + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONArray SalesArray = JsonMain.getJSONArray("data");
-                                for (int i = 1; i <= 4; i++) {
-                                    JSONObject sales = SalesArray.getJSONObject(i);
-                                    ItemMainModel itemMainModel = new ItemMainModel(String.valueOf(i), sales.getString("name"));
-                                    secondHandNewSearchItemList.add(itemMainModel);
-                                }
-                                if (secondHandNewSearchItemList.size() > 0) {
-                                    SecondHandNewSearchItemAdapter secondHandNewSearchItemAdapter = new SecondHandNewSearchItemAdapter(mContext, secondHandNewSearchItemList);
-                                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
-                                    SecondHandNewSearchItemView.setLayoutManager(mLayoutManager);
-                                    SecondHandNewSearchItemView.setItemAnimator(new DefaultItemAnimator());
-                                    SecondHandNewSearchItemView.setAdapter(secondHandNewSearchItemAdapter);
-                                    secondHandNewSearchItemAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                String msg = JsonMain.getString("msg");
-                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                        Log.e("ERROR", "" + error.getMessage());
-                    }
-                }) {
-
-            // Header data passing
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
-                String Token = sharedPreferences.getString("Token", "");
-                String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Type", "application/json");
-                params.put("Authorization", Type + " " + Token);
-                params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().GET_SALE_LIST + params);
-                return params;
-            }
-
-            // Raw data passing
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                String params = "{\"location_id\":\"" + "1" + "\"}";
-                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_SALE_LIST + params);
-                return params.getBytes();
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_SALE_LIST);
-        AppController.getInstance().addToRequestQueue(stringRequest, req);
-    }
-
     private void GetServiceListApi() {
         String req = "req";
-        serviceNearbyCategoryList.clear();
+        serviceList.clear();
         progressBar.setVisibility(View.VISIBLE);
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_SERVICE_LIST,
                 new Response.Listener<String>() {
@@ -377,13 +335,26 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONArray ServiceArray = JsonMain.getJSONArray("data");
-                                for (int i = 0; i < ServiceArray.length(); i++) {
-                                    StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(1), ServiceArray.getJSONObject(1).getString("name"));
-                                    serviceNearbyCategoryList.add(staticCategoryModel);
+                                JSONArray arrayData = JsonMain.getJSONArray("data");
+                                for (int i = 0; i < arrayData.length(); i++) {
+                                    CategoryModel categoryModel = new CategoryModel();
+                                    categoryModel.setCategoryID(arrayData.getJSONObject(i).getString("id"));
+                                    categoryModel.setCategoryName(arrayData.getJSONObject(i).getString("name"));
+                                    // categoryModel.setCategoryName(arrayData.getJSONObject(i).getString("address"));
+                                    // categoryModel.setCategoryName(arrayData.getJSONObject(i).getString("images"));
+                                    // categoryModel.setCategoryName(arrayData.getJSONObject(i).getString("description"));
+                                    // categoryModel.setCategoryName(arrayData.getJSONObject(i).getString("type"));
+                                    // categoryModel.setCategoryName(arrayData.getJSONObject(i).getString("distance"));
+                                    // categoryModel.setCategoryName(arrayData.getJSONObject(i).getString("coupon"));
+                                    serviceList.add(categoryModel);
                                 }
-                                if (serviceNearbyCategoryList.size() > 0) {
-                                    ServiceNearbyCategoryAdapter serviceNearbyCategoryAdapter = new ServiceNearbyCategoryAdapter(mContext, serviceNearbyCategoryList);
+                                if (serviceList.size() > 0) {
+                                    NoResponseLayout.setVisibility(View.GONE);
+                                    ResponseLayout.setVisibility(View.VISIBLE);
+                                    SecondHandResponseLayout.setVisibility(View.GONE);
+                                    UserResponseLayout.setVisibility(View.GONE);
+                                    ServiceNearbyResponseLayout.setVisibility(View.VISIBLE);
+                                    ServiceNearbyCategoryAdapter serviceNearbyCategoryAdapter = new ServiceNearbyCategoryAdapter(mContext, serviceList);
                                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
                                     ServiceNearbyCategoryView.setLayoutManager(mLayoutManager);
                                     ServiceNearbyCategoryView.setItemAnimator(new DefaultItemAnimator());
@@ -391,8 +362,11 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
                                     serviceNearbyCategoryAdapter.notifyDataSetChanged();
                                 }
                             } else {
-                                String msg = JsonMain.getString("msg");
-                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                                String ErrorMessage = JsonMain.getString("msg");
+                                // Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                                ResponseLayout.setVisibility(View.GONE);
+                                NoResponseLayout.setVisibility(View.VISIBLE);
+                                txtError.setText(ErrorMessage);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -424,7 +398,9 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
             // Raw data passing
             @Override
             public byte[] getBody() throws AuthFailureError {
-                String params = "{\"location_id\":\"" + "1" + "\"}";
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String LocationID = sharedPreferences.getString("LocationID", "");
+                String params = "{\"location_id\":\"" + LocationID + "\"}";
                 Log.e("PARAMETER", "" + APIConstant.getInstance().GET_SERVICE_LIST + params);
                 return params.getBytes();
             }
@@ -450,13 +426,18 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
                             String HAS_ERROR = JsonMain.getString("has_error");
                             // Log.e("User RESPONSE", "" + JsonMain.toString());
                             if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONArray ServiceArray = JsonMain.getJSONArray("data");
-                                for (int i = 0; i < ServiceArray.length(); i++) {
-                                    StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(1), ServiceArray.getJSONObject(1).getString("name"));
-                                    serviceNearbyCategoryList.add(staticCategoryModel);
+                                JSONArray arrayData = JsonMain.getJSONArray("data");
+                                for (int i = 0; i < arrayData.length(); i++) {
+                                    /*StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(1), ServiceArray.getJSONObject(1).getString("name"));
+                                    serviceNearbyCategoryList.add(staticCategoryModel);*/
                                 }
-                                if (serviceNearbyCategoryList.size() > 0) {
-                                    ServiceNearbyCategoryAdapter serviceNearbyCategoryAdapter = new ServiceNearbyCategoryAdapter(mContext, serviceNearbyCategoryList);
+                                if (categoryList.size() > 0) {
+                                    NoResponseLayout.setVisibility(View.GONE);
+                                    ResponseLayout.setVisibility(View.VISIBLE);
+                                    SecondHandResponseLayout.setVisibility(View.GONE);
+                                    ServiceNearbyResponseLayout.setVisibility(View.GONE);
+                                    UserResponseLayout.setVisibility(View.VISIBLE);
+                                    ServiceNearbyCategoryAdapter serviceNearbyCategoryAdapter = new ServiceNearbyCategoryAdapter(mContext, categoryList);
                                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
                                     ServiceNearbyCategoryView.setLayoutManager(mLayoutManager);
                                     ServiceNearbyCategoryView.setItemAnimator(new DefaultItemAnimator());
@@ -464,19 +445,20 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
                                     serviceNearbyCategoryAdapter.notifyDataSetChanged();
                                 }
                             } else {
-                                String msg = JsonMain.getString("msg");
-                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                                String ErrorMessage = JsonMain.getString("msg");
+                                // Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                                ResponseLayout.setVisibility(View.GONE);
+                                NoResponseLayout.setVisibility(View.VISIBLE);
+                                txtError.setText(ErrorMessage);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Log.e("ERROR", "" + error.getMessage());
                     }
                 }) {
 
@@ -497,7 +479,9 @@ public class SearchAroundYourLocationActivity extends AppCompatActivity implemen
             // Raw data passing
             @Override
             public byte[] getBody() throws AuthFailureError {
-                String params = "{\"location_id\":\"" + "1" + "\"}";
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String LocationID = sharedPreferences.getString("LocationID", "");
+                String params = "{\"location_id\":\"" + LocationID + "\"}";
                 Log.e("PARAMETER", "" + APIConstant.getInstance().GET_USER_LIST + params);
                 return params.getBytes();
             }

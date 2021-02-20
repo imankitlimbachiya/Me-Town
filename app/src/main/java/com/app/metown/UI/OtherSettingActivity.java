@@ -38,6 +38,8 @@ public class OtherSettingActivity extends AppCompatActivity implements View.OnCl
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
     }
 
     public void ViewInitialization() {
@@ -49,13 +51,14 @@ public class OtherSettingActivity extends AppCompatActivity implements View.OnCl
 
         ChangePhoneNumberLayout = findViewById(R.id.ChangePhoneNumberLayout);
         ChangeTownOfPostLayout = findViewById(R.id.ChangeTownOfPostLayout);
+    }
 
+    public void ViewOnClick() {
         imgBack.setOnClickListener(this);
         txtVerify.setOnClickListener(this);
         ChangePhoneNumberLayout.setOnClickListener(this);
         ChangeTownOfPostLayout.setOnClickListener(this);
     }
-
 
     @SuppressLint("NonConstantResourceId")
     @Override

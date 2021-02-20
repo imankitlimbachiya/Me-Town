@@ -98,14 +98,14 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
             myTownServiceList.add(staticCategoryModel);
         }
 
-        if (myTownServiceList.size() > 0) {
+        /*if (myTownServiceList.size() > 0) {
             ServiceNearbyCategoryAdapter serviceNearbyCategoryAdapter = new ServiceNearbyCategoryAdapter(mContext, myTownServiceList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 4, RecyclerView.VERTICAL, false);
             MyTownServiceView.setLayoutManager(mLayoutManager);
             MyTownServiceView.setItemAnimator(new DefaultItemAnimator());
             MyTownServiceView.setAdapter(serviceNearbyCategoryAdapter);
             serviceNearbyCategoryAdapter.notifyDataSetChanged();
-        }
+        }*/
     }
 
     public void AddSecondHandServiceItems() {

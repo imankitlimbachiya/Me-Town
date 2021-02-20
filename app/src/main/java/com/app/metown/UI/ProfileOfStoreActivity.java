@@ -113,14 +113,14 @@ public class ProfileOfStoreActivity extends AppCompatActivity implements OnMapRe
             serviceNearbyCategoryList.add(staticCategoryModel);
         }
 
-        if (serviceNearbyCategoryList.size() > 0) {
+        /*if (serviceNearbyCategoryList.size() > 0) {
             ServiceNearbyCategoryAdapter serviceNearbyCategoryAdapter = new ServiceNearbyCategoryAdapter(mContext, serviceNearbyCategoryList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 4, RecyclerView.VERTICAL, false);
             ServiceNearbyCategoryView.setLayoutManager(mLayoutManager);
             ServiceNearbyCategoryView.setItemAnimator(new DefaultItemAnimator());
             ServiceNearbyCategoryView.setAdapter(serviceNearbyCategoryAdapter);
             serviceNearbyCategoryAdapter.notifyDataSetChanged();
-        }
+        }*/
     }
 
     public void AddStoreNewsItems() {

@@ -1,21 +1,28 @@
 package com.app.metown.UI;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +38,10 @@ import com.app.metown.AppConstants.APIConstant;
 import com.app.metown.Models.ItemModel;
 import com.app.metown.R;
 import com.app.metown.VolleySupport.AppController;
+import com.bumptech.glide.Glide;
 import com.zyyoona7.popup.EasyPopup;
+import com.zyyoona7.popup.XGravity;
+import com.zyyoona7.popup.YGravity;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -44,21 +54,25 @@ import java.util.Map;
 public class MyPurchaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     Context mContext;
-    ProgressBar progressBar;
+    ProgressBar progressBar, progress;
     ImageView imgBack;
     EasyPopup mQQPop;
     TextView txtError;
     RelativeLayout NoResponseLayout;
+    MyPurchasesAdapter myPurchasesAdapter;
     RecyclerView MyPurchasesView;
     ArrayList<ItemModel> myPurchasesList = new ArrayList<>();
     JSONArray arrayData;
+    Dialog dialog;
+    String offSet = "0";
+    EditText edtAddComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_purchases);
 
-        Log.e("Activity","MyPurchasesActivity");
+        Log.e("Activity", "MyPurchasesActivity");
 
         mContext = this;
 
@@ -67,10 +81,19 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
+
+        OpenEasyPopup();
+
+        MyPurchaseApi(offSet);
+
+        RecyclerViewScrollListener(MyPurchasesView);
     }
 
     public void ViewInitialization() {
         progressBar = findViewById(R.id.progressBar);
+        progress = findViewById(R.id.progress);
 
         NoResponseLayout = findViewById(R.id.NoResponseLayout);
 
@@ -78,10 +101,25 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
 
         txtError = findViewById(R.id.txtError);
 
-        imgBack.setOnClickListener(this);
-
         MyPurchasesView = findViewById(R.id.MyPurchasesView);
 
+        SetAdapter();
+    }
+
+    public void SetAdapter() {
+        myPurchasesAdapter = new MyPurchasesAdapter(mContext, myPurchasesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+        MyPurchasesView.setLayoutManager(mLayoutManager);
+        MyPurchasesView.setItemAnimator(new DefaultItemAnimator());
+        MyPurchasesView.setAdapter(myPurchasesAdapter);
+        // myPurchasesAdapter.notifyDataSetChanged();
+    }
+
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
+    }
+
+    public void OpenEasyPopup() {
         mQQPop = EasyPopup.create()
                 .setContext(mContext)
                 .setContentView(R.layout.option_menu)
@@ -89,8 +127,21 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
                 .setOnViewListener(new EasyPopup.OnViewListener() {
                     @Override
                     public void initViews(View view, EasyPopup basePopup) {
-                        // View arrowView = view.findViewById(R.id.v_arrow);
-                        // arrowView.setBackground(new TriangleDrawable(TriangleDrawable.TOP, Color.parseColor("#88FF88")));
+                        TextView txtEdit = view.findViewById(R.id.txtEdit);
+                        TextView txtHide = view.findViewById(R.id.txtHide);
+                        TextView txtUnHide = view.findViewById(R.id.txtUnHide);
+                        TextView txtDeletePost = view.findViewById(R.id.txtDeletePost);
+
+                        txtEdit.setVisibility(View.GONE);
+                        txtHide.setVisibility(View.GONE);
+                        txtUnHide.setVisibility(View.GONE);
+
+                        txtDeletePost.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        });
                     }
                 })
                 .setFocusAndOutsideEnable(true)
@@ -99,8 +150,41 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
                 // .setDimColor(Color.RED)
                 // .setDimView(mTitleBar)
                 .apply();
+    }
 
-        MyPurchaseApi();
+    public void RecyclerViewScrollListener(RecyclerView recyclerView) {
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (myPurchasesList.size() >= 30) {
+                    if (isLastItemDisplaying(recyclerView)) {
+                        offSet = String.valueOf(myPurchasesList.size());
+                        MyPurchaseApi(offSet);
+                    }
+                }
+            }
+
+            private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+                // Check if the adapter item count is greater than 0
+                if (recyclerView.getAdapter().getItemCount() != 0) {
+                    //get the last visible item on screen using the layout manager
+                    int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                    if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -116,15 +200,23 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void MyPurchaseApi() {
+    private void MyPurchaseApi(final String offSet) {
         String req = "req";
-        progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_PURCHASE,
+        if (offSet.equals("0")) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progress.setVisibility(View.VISIBLE);
+        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_PURCHASE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            progressBar.setVisibility(View.GONE);
+                            if (offSet.equals("0")) {
+                                progressBar.setVisibility(View.GONE);
+                            } else {
+                                progress.setVisibility(View.GONE);
+                            }
                             Log.e("RESPONSE", "" + APIConstant.getInstance().MY_PURCHASE + response);
                             JSONObject JsonMain = new JSONObject(response);
                             String HAS_ERROR = JsonMain.getString("has_error");
@@ -137,16 +229,18 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
                                 NoResponseLayout.setVisibility(View.VISIBLE);
                                 txtError.setText(ErrorMessage);
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                        Log.e("ERROR", "" + error.getMessage());
+                        if (offSet.equals("0")) {
+                            progressBar.setVisibility(View.GONE);
+                        } else {
+                            progress.setVisibility(View.GONE);
+                        }
                     }
                 }) {
 
@@ -163,6 +257,14 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
                 Log.e("HEADER", "" + APIConstant.getInstance().MY_PURCHASE + params);
                 return params;
             }
+
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"offset\":\"" + offSet + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().MY_PURCHASE + params);
+                return params.getBytes();
+            }
         };
 
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -171,6 +273,7 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
+    @SuppressLint("SetTextI18n")
     private void SetApiAdapter(JSONArray arrayData) {
         myPurchasesList.clear();
         try {
@@ -192,42 +295,55 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
                 itemModel.setItemIsNegotiable(arrayData.getJSONObject(i).getString("is_negotiable"));
                 itemModel.setItemImages(arrayData.getJSONObject(i).getString("images"));
                 itemModel.setItemStatusTitle(arrayData.getJSONObject(i).getString("status_title"));
+                itemModel.setItemFavouriteCount(arrayData.getJSONObject(i).getString("favourite_count"));
+                itemModel.setItemCommentCount(arrayData.getJSONObject(i).getString("commnet_count"));
                 myPurchasesList.add(itemModel);
             }
 
             if (myPurchasesList.size() > 0) {
-                MyPurchasesAdapter myPurchasesAdapter = new MyPurchasesAdapter(mContext, myPurchasesList);
+                /*MyPurchasesAdapter myPurchasesAdapter = new MyPurchasesAdapter(mContext, myPurchasesList);
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                 MyPurchasesView.setLayoutManager(mLayoutManager);
                 MyPurchasesView.setItemAnimator(new DefaultItemAnimator());
-                MyPurchasesView.setAdapter(myPurchasesAdapter);
+                MyPurchasesView.setAdapter(myPurchasesAdapter);*/
                 myPurchasesAdapter.notifyDataSetChanged();
             } else {
                 NoResponseLayout.setVisibility(View.VISIBLE);
                 txtError.setText("No Data Available...");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            progressBar.setVisibility(View.GONE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
-    public static class MyPurchasesAdapter extends RecyclerView.Adapter<MyPurchasesAdapter.MyViewHolder> {
+    public class MyPurchasesAdapter extends RecyclerView.Adapter<MyPurchasesAdapter.MyViewHolder> {
 
         Context mContext;
         ArrayList<ItemModel> arrayList;
+        String rupee;
 
-        public static class MyViewHolder extends RecyclerView.ViewHolder {
+        public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView txtItemName;
-            RelativeLayout OptionLayout, GoReviewLayout;
+            ImageView imgItem;
+            TextView txtItemName, txtItemPrice, txtCommentCount, txtLikeCount;
+            RelativeLayout GoReviewLayout, OptionLayout;
+            LinearLayout CommentLayout, FavouriteLayout;
 
             MyViewHolder(View view) {
                 super(view);
 
+                imgItem = view.findViewById(R.id.imgItem);
+
                 txtItemName = view.findViewById(R.id.txtItemName);
+                txtItemPrice = view.findViewById(R.id.txtItemPrice);
+                txtCommentCount = view.findViewById(R.id.txtCommentCount);
+                txtLikeCount = view.findViewById(R.id.txtLikeCount);
 
                 OptionLayout = view.findViewById(R.id.OptionLayout);
+
+                CommentLayout = view.findViewById(R.id.CommentLayout);
+                FavouriteLayout = view.findViewById(R.id.FavouriteLayout);
+
                 GoReviewLayout = view.findViewById(R.id.GoReviewLayout);
             }
         }
@@ -235,6 +351,7 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
         public MyPurchasesAdapter(Context mContext, ArrayList<ItemModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
+            this.rupee = mContext.getString(R.string.rupee);
         }
 
         @NotNull
@@ -244,24 +361,97 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
             return new MyViewHolder(itemView);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            ItemModel itemModel = arrayList.get(position);
+            final ItemModel itemModel = arrayList.get(position);
+
+            String Images = itemModel.getItemImages();
+            if (Images.equals("") || Images.equals("null") || Images.equals(null) || Images == null) {
+
+            } else {
+                String[] separated = Images.split(",");
+                Glide.with(mContext).load(separated[0]).into(holder.imgItem);
+            }
 
             holder.txtItemName.setText(itemModel.getItemName());
+            holder.txtItemPrice.setText(rupee + " " + itemModel.getItemPrice());
+            holder.txtCommentCount.setText(itemModel.getItemCommentCount());
+            holder.txtLikeCount.setText(itemModel.getItemFavouriteCount());
 
             holder.OptionLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // mQQPop.showAtAnchorView(view, YGravity.BELOW, XGravity.LEFT, 50, -55);
+                    OpenEasyPopup();
+                    mQQPop.showAtAnchorView(view, YGravity.BELOW, XGravity.LEFT, 0, 0);
+                }
+            });
+
+            holder.CommentLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog = new Dialog(mContext);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.add_comment_dialog);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    edtAddComment = dialog.findViewById(R.id.edtAddComment);
+                    dialog.findViewById(R.id.txtAdd).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String Comment = edtAddComment.getText().toString().trim();
+                            if (Comment.equals("")) {
+                                Toast.makeText(mContext, "Please Enter a comment.", Toast.LENGTH_LONG).show();
+                            } else {
+                                AddEditCommentApi(itemModel.getItemID(), edtAddComment.getText().toString().trim());
+                            }
+                        }
+                    });
+                    dialog.show();
+                }
+            });
+
+            holder.FavouriteLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AddEditFavoriteApi(itemModel.getItemID());
                 }
             });
 
             holder.GoReviewLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent Review = new Intent(mContext, ReviewActivity.class);
-                    mContext.startActivity(Review);
+                    String Images = itemModel.getItemImages();
+                    String[] separated = Images.split(",");
+                    Intent SelectBuyer = new Intent(mContext, SelectBuyerActivity.class);
+                    SelectBuyer.putExtra("ItemID", itemModel.getItemID());
+                    SelectBuyer.putExtra("ItemName", itemModel.getItemName());
+                    SelectBuyer.putExtra("ItemImage", separated[0]);
+                    mContext.startActivity(SelectBuyer);
+                }
+            });
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent SecondHandPost = new Intent(mContext, SecondHandPostActivity.class);
+                    SecondHandPost.putExtra("ID",itemModel.getItemID());
+                    SecondHandPost.putExtra("SellerID",itemModel.getItemSellerID());
+                    SecondHandPost.putExtra("BuyerID",itemModel.getItemBuyerID());
+                    SecondHandPost.putExtra("CategoryID",itemModel.getItemCategoryID());
+                    SecondHandPost.putExtra("CategoryTitle",itemModel.getItemCategoryTitle());
+                    SecondHandPost.putExtra("Name",itemModel.getItemName());
+                    SecondHandPost.putExtra("Description",itemModel.getItemDescription());
+                    SecondHandPost.putExtra("Status",itemModel.getItemStatus());
+                    SecondHandPost.putExtra("Type",itemModel.getItemType());
+                    SecondHandPost.putExtra("Price",itemModel.getItemPrice());
+                    SecondHandPost.putExtra("Latitude",itemModel.getItemLatitude());
+                    SecondHandPost.putExtra("Longitude",itemModel.getItemLongitude());
+                    SecondHandPost.putExtra("IsNegotiable",itemModel.getItemIsNegotiable());
+                    SecondHandPost.putExtra("Images",itemModel.getItemImages());
+                    SecondHandPost.putExtra("StatusTitle",itemModel.getItemStatusTitle());
+                    SecondHandPost.putExtra("FavouriteCount",itemModel.getItemFavouriteCount());
+                    SecondHandPost.putExtra("CommentCount",itemModel.getItemCommentCount());
+                    mContext.startActivity(SecondHandPost);
                 }
             });
         }
@@ -270,6 +460,125 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
         public int getItemCount() {
             return arrayList.size();
         }
+    }
+
+    private void AddEditFavoriteApi(final String ProductID) {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_FAVORITE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_FAVORITE + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            String Message = JsonMain.getString("msg");
+                            if (HAS_ERROR.equals("false")) {
+                                MyPurchaseApi(offSet);
+                            } else {
+                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                        Log.e("ERROR", "" + error.getMessage());
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().ADD_EDIT_FAVORITE + params);
+                return params;
+            }
+
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"product_id\":\"" + ProductID + "\",\"is_favorite\":\"" + "1" + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().ADD_EDIT_FAVORITE + params);
+                return params.getBytes();
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().ADD_EDIT_FAVORITE);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }
+
+    private void AddEditCommentApi(final String ProductID, final String Comment) {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_COMMENT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            dialog.dismiss();
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            String Message = JsonMain.getString("msg");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                dialog.dismiss();
+                                MyPurchaseApi(offSet);
+                            } else {
+                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + params);
+                return params;
+            }
+
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"product_id\":\"" + ProductID + "\",\"type\":\"" + "1" + "\",\"comment\":\"" + Comment + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + params);
+                return params.getBytes();
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().ADD_EDIT_COMMENT);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
     @Override

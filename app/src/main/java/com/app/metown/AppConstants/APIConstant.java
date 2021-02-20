@@ -1,5 +1,25 @@
 package com.app.metown.AppConstants;
 
+import android.content.SharedPreferences;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.app.metown.VolleySupport.AppController;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
+
 public class APIConstant {
 
     private static APIConstant apiConstant;
@@ -31,11 +51,12 @@ public class APIConstant {
     public final String EMAIL_VERIFY = BASE_URL + "api/email/verify";
     public final String POST_SALE = BASE_URL + "api/post-sale";
     public final String POST_STORE_SERVICE = BASE_URL + "api/post-store-services";
-    public final String MY_PURCHASE = BASE_URL + "api/mypurchase/1/1";
+    public final String MY_PURCHASE = BASE_URL + "api/mypurchase";
     public final String MY_ACTIVE_SALES = BASE_URL + "api/myActiveSales";
     public final String MY_SOLD_SALES = BASE_URL + "api/mySoldSales";
     public final String MY_HIDDEN_SALES = BASE_URL + "api/myHiddenSales";
     public final String MY_SALE_UPDATE_STATUS = BASE_URL + "api/mysales/update-status";
+    public final String MY_SALE_DELETE = BASE_URL + "api/mySalesDelete";
     public final String ADD_EDIT_FAVORITE = BASE_URL + "api/add-edit-favorite";
     public final String GET_FAVORITE_LIST = BASE_URL + "api/get-favorite-list";
     public final String GET_SALE_LIST = BASE_URL + "api/getSalesList";
@@ -69,14 +90,28 @@ public class APIConstant {
     public final String POST_HIRE_HELPER_LIST = BASE_URL + "api/posthire-helper-list";
     public final String GET_ORGANISE_MEET_UP = BASE_URL + "api/get-organise-meetup";
     public final String ADD_ORGANISE_MEET_UP = BASE_URL + "api/add-organise-meetup";
-
+    public final String APPLY_COMMUNITY = BASE_URL + "api/apply-community";
+    public final String FOLLOW_USER = BASE_URL + "api/follow-user";
+    public final String GET_FOLLOW_USER = BASE_URL + "api/get-follow-user";
+    public final String TOPIC_FOLLOW = BASE_URL + "api/topic-follow";
+    public final String GET_TOWN_WITH_USER_POST_SALE_COUNT = BASE_URL + "api/getTownWithUserPostsaleCount";
+    public final String POST_SALE_CHANGE_TOWN = BASE_URL + "api/postsaleChangeTown";//done
     public final String GET_SEARCH_SECOND_HAND = BASE_URL + "api/get-search-second-hand";
     public final String ADD_EDIT_COMMENT = BASE_URL + "api/add-edit-comment";
     public final String GET_COMMUNITY = BASE_URL + "api/get-community";
+    public final String TOWN_STATUS = BASE_URL + "api/town-status";
+    public final String OPEN_TOWN_LIST = BASE_URL + "api/open-town-list";
+    public final String COMMUNITY_TOWN_STATUS = BASE_URL + "api/community-town-status";
     public final String MY_COMMUNITY = BASE_URL + "api/mycommunity";
     public final String GET_COMMENT_LIST = BASE_URL + "api/get-comment-list";
     public final String DELETE_USER = BASE_URL + "api/deleteUser";
-
+    public final String GET_PROFILE = BASE_URL + "api/getprofile";
+    public final String INITIATE_CHAT = BASE_URL + "api/InitiateChat";
+    public final String SEND_MESSAGE = BASE_URL + "api/chat/send-message";
+    public final String GET_CONVERSATION_LIST = BASE_URL + "api/chat/get-conversation-list";
+    public final String GET_CONVERSATION_MESSAGE_LIST = BASE_URL + "api/chat/get-conversation-message-list";
+    public final String LEAVE_CHAT = BASE_URL + "api/chat/leave-chat";
+    public final String BLOCK_UNBLOCK = BASE_URL + "api/chat/block-unblock";
     public final String GET_SERVICE_NEARBY = BASE_URL + "api/get-service-nearby";
     public final String GET_BUSINESS_LIST_SEARCH = BASE_URL + "api/get-business-list-search";
 
@@ -94,4 +129,307 @@ public class APIConstant {
     public final String MY_COMMUNITY_COMMENT = BASE_URL + "api/myCommunityComment";
 
     public int ISConstant = 1;
+
+    /*private void MyAllSaleApi() {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_ALL_SALE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_ALL_SALE + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            progressBar.setVisibility(View.GONE);
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("PARAMETER", "" + APIConstant.getInstance().MY_ALL_SALE + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_ALL_SALE);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }*/
+
+    /*private void GetSaleListByLatLongApi() {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_SALE_LIST_BY_LAT_LONG,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_SALE_LIST_BY_LAT_LONG + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                            } else {
+                                String msg = JsonMain.getString("msg");
+                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                // params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().GET_SALE_LIST_BY_LAT_LONG + params);
+                return params;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String LocationLatitude = sharedPreferences.getString("LocationLatitude", "");
+                String LocationLongitude = sharedPreferences.getString("LocationLongitude", "");
+                String params = "{\"lats\":\"" + LocationLatitude + "\",\"longs\":\"" + LocationLongitude + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_SALE_LIST_BY_LAT_LONG + params);
+                return params.getBytes();
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_SALE_LIST_BY_LAT_LONG);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }*/
+
+    /*private void GetServiceListByLatLongApi(final String Latitude, final String Longitude) {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_SERVICE_LIST_BY_LAT_LONG,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_SERVICE_LIST_BY_LAT_LONG + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                            } else {
+                                String msg = JsonMain.getString("msg");
+                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                // params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().GET_SERVICE_LIST_BY_LAT_LONG + params);
+                return params;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"lats\":\"" + Latitude + "\",\"longs\":\"" + Longitude + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_SERVICE_LIST_BY_LAT_LONG + params);
+                return params.getBytes();
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_SERVICE_LIST_BY_LAT_LONG);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }*/
+
+    /*private void CommunityTownStatus() {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().COMMUNITY_TOWN_STATUS,
+                new Response.Listener<String>() {
+                    @SuppressLint("ApplySharedPref")
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().COMMUNITY_TOWN_STATUS + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                JSONArray jsonArray = JsonMain.getJSONArray("data");
+                                for (int i = 0; jsonArray.length() > i; i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String id = jsonObject.getString("id");
+                                    String name = jsonObject.getString("name");
+                                    String is_community_open = jsonObject.getString("is_community_open");
+                                    String peoples = jsonObject.getString("peoples");
+                                }
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().COMMUNITY_TOWN_STATUS + params);
+                return params;
+            }
+
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String LocationName = sharedPreferences.getString("LocationName", "");
+                String params = "{\"name\":\"" + LocationName + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().TOWN_STATUS + params);
+                return params.getBytes();
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().COMMUNITY_TOWN_STATUS);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }*/
+
+    /*private void communityOpenTownList() {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().COMMUNITY_OPEN_TOWN_LIST,
+                new Response.Listener<String>() {
+                    @SuppressLint("ApplySharedPref")
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().COMMUNITY_OPEN_TOWN_LIST + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                JSONArray jsonArray = JsonMain.getJSONArray("data");
+                                for (int i = 0; jsonArray.length() > i; i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    OpenTownLIstModel openTownLIstModel = new OpenTownLIstModel();
+                                    openTownLIstModel.setId(jsonObject.getString("id"));
+                                    openTownLIstModel.setName(jsonObject.getString("name"));
+                                    opentownList.add(openTownLIstModel);
+
+                                }
+                                if (opentownList.size() > 0) {
+                                    OpenTownListAdapter openTownListAdapter = new OpenTownListAdapter(mContext, opentownList);
+                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                                    rc_open_town_list.setLayoutManager(mLayoutManager);
+                                    rc_open_town_list.setItemAnimator(new DefaultItemAnimator());
+                                    rc_open_town_list.setAdapter(openTownListAdapter);
+                                    openTownListAdapter.notifyDataSetChanged();
+                                }
+
+
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            progressBar.setVisibility(View.GONE);
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().COMMUNITY_OPEN_TOWN_LIST + params);
+                return params;
+            }
+
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().COMMUNITY_OPEN_TOWN_LIST);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }*/
 }

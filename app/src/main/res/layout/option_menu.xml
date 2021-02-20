@@ -4,10 +4,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_square_bg"
-    android:gravity="left"
     android:elevation="10dp"
-    android:orientation="vertical"
-    tools:ignore="RtlHardcoded,UnusedAttribute">
+    android:gravity="left"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/txtManagePost"
@@ -15,12 +14,11 @@
         android:layout_height="42dp"
         android:fontFamily="@font/alte_haas_grotesk_bold"
         android:gravity="center"
-        android:text="Manage Post"
-        android:textColor="@color/black"
-        android:textSize="16sp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        tools:ignore="HardcodedText" />
+        android:text="Manage Post"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <View
         android:layout_width="match_parent"
@@ -37,8 +35,19 @@
         android:paddingRight="20dp"
         android:text="Edit"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txtHide"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:fontFamily="@font/louis_george_cafe"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Hide"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtUnHide"
@@ -50,8 +59,7 @@
         android:paddingRight="20dp"
         android:text="Unhide"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtDeletePost"
@@ -63,7 +71,6 @@
         android:paddingRight="20dp"
         android:text="Delete post"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+        android:textSize="14sp" />
 
 </LinearLayout>

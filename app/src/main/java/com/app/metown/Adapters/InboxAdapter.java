@@ -5,38 +5,45 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.StaticCategoryModel;
+import com.app.metown.Models.ConversationModel;
 import com.app.metown.R;
 import com.app.metown.UI.ChatCommercialActivity;
+import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder> {
 
     Context mContext;
-    ArrayList<StaticCategoryModel> arrayList;
+    ArrayList<ConversationModel> arrayList;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        // RadioButton btnSelect;
+        CircleImageView imgSender;
+        TextView txtSenderName, txtLastMessage;
 
         MyViewHolder(View view) {
             super(view);
 
-            // btnSelect = view.findViewById(R.id.btnSelect);
+            imgSender = view.findViewById(R.id.imgSender);
+
+            txtSenderName = view.findViewById(R.id.txtSenderName);
+            txtLastMessage = view.findViewById(R.id.txtLastMessage);
         }
     }
 
-    public InboxAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
+    public InboxAdapter(Context mContext, ArrayList<ConversationModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
     }
-
 
     @NotNull
     @Override
@@ -47,15 +54,27 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        StaticCategoryModel staticCategoryModel = arrayList.get(position);
+        final ConversationModel conversationModel = arrayList.get(position);
 
-        // holder.btnSelect.setText("  " + categoryModel.getCategoryName());
+        String SenderProfilePicture = conversationModel.getSenderProfilePicture();
+
+        if (SenderProfilePicture.equals("") || SenderProfilePicture.equals("null") ||
+                SenderProfilePicture.equals(null) || SenderProfilePicture == null) {
+
+        } else {
+            Glide.with(mContext).load(SenderProfilePicture).into(holder.imgSender);
+        }
+
+        holder.txtSenderName.setText(conversationModel.getSenderName());
+        holder.txtLastMessage.setText(conversationModel.getLastMessageBody());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, ChatCommercialActivity.class);
-                mContext.startActivity(intent);
+                Intent ChatCommercial = new Intent(mContext, ChatCommercialActivity.class);
+                ChatCommercial.putExtra("ConversationID", conversationModel.getConversationID());
+                ChatCommercial.putExtra("ToUserID", conversationModel.getSenderUserID());
+                mContext.startActivity(ChatCommercial);
             }
         });
     }

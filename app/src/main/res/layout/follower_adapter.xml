@@ -5,13 +5,12 @@
     android:layout_height="72dp"
     android:background="@color/white">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgFollower"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginLeft="12dp"
-        android:background="@drawable/circle_outer_border_bg"
-        tools:ignore="ContentDescription,RtlHardcoded" />
+        android:background="@drawable/circle_outer_border_bg" />
 
     <TextView
         android:id="@+id/txtNickName"
@@ -24,8 +23,7 @@
         android:singleLine="true"
         android:text="'nick name'"
         android:textColor="@color/darkGrey"
-        android:textSize="15sp"
-        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/txtAddress"
@@ -39,11 +37,10 @@
         android:singleLine="true"
         android:text="'address'"
         android:textColor="@color/grey"
-        android:textSize="15sp"
-        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+        android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/txtSelect"
+    <Button
+        android:id="@+id/btnSelect"
         android:layout_width="104dp"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
@@ -55,8 +52,8 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="Following"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="13sp"
-        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+        android:textSize="13sp" />
 
 </RelativeLayout>

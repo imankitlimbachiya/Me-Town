@@ -4,10 +4,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_square_bg"
-    android:gravity="left"
     android:elevation="10dp"
-    android:orientation="vertical"
-    tools:ignore="RtlHardcoded,UnusedAttribute">
+    android:gravity="left"
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
@@ -24,8 +23,7 @@
         android:paddingRight="20dp"
         android:text="Report"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtMute"
@@ -37,8 +35,7 @@
         android:paddingRight="20dp"
         android:text="Mute"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtComplement"
@@ -50,8 +47,7 @@
         android:paddingRight="20dp"
         android:text="Complement"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtDisappointment"
@@ -63,8 +59,7 @@
         android:paddingRight="20dp"
         android:text="Disappointment"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtBlock"
@@ -76,8 +71,7 @@
         android:paddingRight="20dp"
         android:text="Block"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtLeaveChat"
@@ -89,7 +83,6 @@
         android:paddingRight="20dp"
         android:text="Leave chat"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+        android:textSize="14sp" />
 
 </LinearLayout>

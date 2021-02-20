@@ -619,29 +619,9 @@ public class AdditionalInfoActivity extends AppCompatActivity implements View.On
                             Log.e("RESPONSE", "" + APIConstant.getInstance().REGISTER_MERCHANT + JsonMain.toString());
                             String HAS_ERROR = JsonMain.getString("has_error");
                             String Message = JsonMain.getString("msg");
+                            Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                             if (HAS_ERROR.equals("false")) {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-
-                                JSONObject objectData = JsonMain.getJSONObject("data");
-
-                                JSONObject objectUser = objectData.getJSONObject("user");
-
-                                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
-                                SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-                                sharedPreferencesEditor.putString("UserID", objectUser.getString("user_id"));
-                                sharedPreferencesEditor.putString("UniqueID", objectUser.getString("unique_id"));
-                                sharedPreferencesEditor.putString("NickName", objectUser.getString("nick_name"));
-                                sharedPreferencesEditor.putString("Email", objectUser.getString("email"));
-                                sharedPreferencesEditor.putString("SocialID", objectUser.getString("social_id"));
-                                sharedPreferencesEditor.putString("PhoneNumber", objectUser.getString("phone_number"));
-                                sharedPreferencesEditor.putString("InvitationCode", objectUser.getString("invitation_code"));
-                                sharedPreferencesEditor.putString("Status", objectUser.getString("status"));
-                                sharedPreferencesEditor.putString("EmailVerify", objectUser.getString("email_verify"));
-                                sharedPreferencesEditor.putString("ProfilePicture", objectUser.getString("profile_pic"));
-                                sharedPreferencesEditor.apply();
-                                sharedPreferencesEditor.commit();
-
-                                ViewSetText();
+                                finish();
                             } else {
                                 Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                             }
@@ -655,7 +635,6 @@ public class AdditionalInfoActivity extends AppCompatActivity implements View.On
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
                         Log.e("error", error.toString());
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
@@ -666,7 +645,7 @@ public class AdditionalInfoActivity extends AppCompatActivity implements View.On
                 SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Type", "application/json");
+                // params.put("Content-Type", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
                 Log.e("HEADER", "" + APIConstant.getInstance().REGISTER_MERCHANT + params);

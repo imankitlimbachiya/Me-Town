@@ -2,7 +2,7 @@ package com.app.metown.Models;
 
 public class PostModel {
 
-    String ID, Keyword, Description, Image, Distance;
+    String ID, Keyword, Description, Image, Distance, ProfilePicture, NickName;
 
     public String getID() {
         return ID;
@@ -42,5 +42,21 @@ public class PostModel {
 
     public void setDistance(String distance) {
         Distance = distance;
+    }
+
+    public String getProfilePicture() {
+        return ProfilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        ProfilePicture = profilePicture;
+    }
+
+    public String getNickName() {
+        return NickName;
+    }
+
+    public void setNickName(String nickName) {
+        NickName = nickName;
     }
 }

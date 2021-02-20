@@ -38,7 +38,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     Context mContext;
     ProgressBar progressBar;
     ImageView imgBack;
-    RelativeLayout OtherSettingLayout, LogoutLayout, DeleteLayout;
+    RelativeLayout FollowerLayout, ManageBlockUserLayout, ManageHiddenUserLayout, OtherSettingLayout, LogoutLayout, DeleteLayout;
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch PrimaryNotificationSwitch, OtherNotificationSwitch, DoNotDisturbSwitch, VibrationSwitch;
@@ -68,6 +68,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         imgBack = findViewById(R.id.imgBack);
 
+        FollowerLayout = findViewById(R.id.FollowerLayout);
+        ManageBlockUserLayout = findViewById(R.id.ManageBlockUserLayout);
+        ManageHiddenUserLayout = findViewById(R.id.ManageHiddenUserLayout);
         OtherSettingLayout = findViewById(R.id.OtherSettingLayout);
         LogoutLayout = findViewById(R.id.LogoutLayout);
         DeleteLayout = findViewById(R.id.DeleteLayout);
@@ -76,6 +79,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         OtherNotificationSwitch = findViewById(R.id.OtherNotificationSwitch);
         DoNotDisturbSwitch = findViewById(R.id.DoNotDisturbSwitch);
         VibrationSwitch = findViewById(R.id.VibrationSwitch);
+    }
+
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
+        FollowerLayout.setOnClickListener(this);
+        ManageBlockUserLayout.setOnClickListener(this);
+        ManageHiddenUserLayout.setOnClickListener(this);
+        OtherSettingLayout.setOnClickListener(this);
+        LogoutLayout.setOnClickListener(this);
+        DeleteLayout.setOnClickListener(this);
 
         PrimaryNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -126,19 +139,22 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    public void ViewOnClick() {
-        imgBack.setOnClickListener(this);
-        OtherSettingLayout.setOnClickListener(this);
-        LogoutLayout.setOnClickListener(this);
-        DeleteLayout.setOnClickListener(this);
-    }
-
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgBack:
                 finish();
+                break;
+            case R.id.FollowerLayout:
+                Intent Follower = new Intent(mContext, FollowerActivity.class);
+                startActivity(Follower);
+                break;
+            case R.id.ManageBlockUserLayout:
+                GoToManageUserActivity("Block");
+                break;
+            case R.id.ManageHiddenUserLayout:
+                GoToManageUserActivity("Hidden");
                 break;
             case R.id.OtherSettingLayout:
                 Intent intent = new Intent(mContext, OtherSettingActivity.class);
@@ -151,6 +167,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 DeleteUserApi();
                 break;
         }
+    }
+
+    public void GoToManageUserActivity(String WhichUser) {
+        Intent ManageUser = new Intent(mContext, ManageUserActivity.class);
+        ManageUser.putExtra("WhichUser", WhichUser);
+        startActivity(ManageUser);
     }
 
     private void LogoutApi() {
@@ -253,7 +275,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Type", "application/json");
+                // params.put("Content-Type", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
                 Log.e("HEADER", "" + APIConstant.getInstance().USER_SETTING + params);

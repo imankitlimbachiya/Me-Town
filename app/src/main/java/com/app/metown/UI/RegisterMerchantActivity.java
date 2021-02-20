@@ -57,8 +57,9 @@ public class RegisterMerchantActivity extends AppCompatActivity implements View.
                 finish();
                 break;
             case R.id.btnRegisterMerchant:
-                Intent intent = new Intent(mContext, RegisterMerchantMenuActivity.class);
-                startActivity(intent);
+                Intent RegisterMerchantMenu = new Intent(mContext, RegisterMerchantMenuActivity.class);
+                startActivity(RegisterMerchantMenu);
+                finish();
                 break;
         }
     }

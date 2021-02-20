@@ -51,8 +51,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -67,8 +66,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
                 android:layout_marginTop="-5dp"
+                android:layout_marginRight="25dp"
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="You can look around 'MeTown community'\nif you set your location to one of the\nopened towns!\n\nThe community will open when certain\namount of user apply for the location"
                 android:textColor="@color/veryDarkGrey"
@@ -77,84 +76,80 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#C9C9C9"
-                android:layout_marginTop="25dp"/>
+                android:layout_marginTop="25dp"
+                android:background="#C9C9C9" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="status of request to open"
                 android:textColor="@color/veryDarkGrey"
-                android:textSize="15sp"
-                tools:ignore="HardcodedText" />
+                android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/txtTownPeopleCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="137"
                 android:textColor="@color/yellow"
-                android:textSize="45sp"
-                tools:ignore="HardcodedText" />
+                android:textSize="45sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="People"
                 android:textColor="@color/veryDarkGrey"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
+                android:textSize="16sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#C9C9C9"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="15dp"/>
+                android:layout_marginBottom="15dp"
+                android:background="#C9C9C9" />
 
             <Button
                 android:id="@+id/btnApply"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Apply"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textColor="@color/lightRedPink"
-                android:background="@drawable/btn_gradient_bg"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                tools:ignore="HardcodedText"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"/>
-
-            <Button
-                android:id="@+id/btnInviteFriends"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Invite friends"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textColor="@color/veryLightSkyPink"
-                android:background="@drawable/edt_bg"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                tools:ignore="HardcodedText"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"/>
+                android:background="@drawable/btn_gradient_bg"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:text="Apply"
+                android:textAllCaps="false"
+                android:textColor="@color/lightRedPink"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btnInviteFriend"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/edt_bg"
+                android:fontFamily="@font/alte_haas_grotesk_regular"
+                android:text="Invite friends"
+                android:textAllCaps="false"
+                android:textColor="@color/veryLightSkyPink"
+                android:textSize="18sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#C9C9C9"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="25dp"/>
+                android:layout_marginBottom="25dp"
+                android:background="#C9C9C9" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -164,26 +159,24 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="The reason why we open service in the\ntown after recruiting applicants"
                 android:textColor="@color/veryDarkGrey"
-                android:textSize="17sp"
-                tools:ignore="HardcodedText" />
+                android:textSize="17sp" />
 
             <Button
                 android:id="@+id/btnGoToCheckGuide"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Go to check guide"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/round_after_medium_bg"
                 android:backgroundTint="@color/veryLightSkyPink"
                 android:fontFamily="@font/alte_haas_grotesk_regular"
-                tools:ignore="HardcodedText,UnusedAttribute"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"/>
+                android:text="Go to check guide"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -193,64 +186,15 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="community opened town list"
                 android:textColor="@color/black"
-                android:textSize="17sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="17sp" />
 
-            <TextView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/OpenTownView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:text="'location'"
-                android:textColor="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:text="'location'"
-                android:textColor="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:text="'location'"
-                android:textColor="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:text="'location'"
-                android:textColor="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:text="'location'"
-                android:textColor="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:layout_marginRight="25dp" />
 
         </LinearLayout>
 
@@ -264,7 +208,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>
