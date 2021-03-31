@@ -90,47 +90,45 @@ public class FAQActivity extends AppCompatActivity implements View.OnClickListen
         String req = "req";
         faqList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().FAQ_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().FAQ_LIST + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONArray arrayData = JsonMain.getJSONArray("data");
-                                for (int i = 0; i < arrayData.length(); i++) {
-                                    CategoryModel categoryModel = new CategoryModel();
-                                    categoryModel.setCategoryID(arrayData.getJSONObject(i).getString("id"));
-                                    categoryModel.setCategoryName(arrayData.getJSONObject(i).getString("category_name"));
-                                    categoryModel.setCategoryTitle(arrayData.getJSONObject(i).getString("title"));
-                                    faqList.add(categoryModel);
-                                }
-                                if (faqList.size() > 0) {
-                                    FAQAdapter faqAdapter = new FAQAdapter(mContext, faqList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                                    FAQView.setLayoutManager(mLayoutManager);
-                                    FAQView.setItemAnimator(new DefaultItemAnimator());
-                                    FAQView.setAdapter(faqAdapter);
-                                    faqAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().FAQ_LIST, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().FAQ_LIST + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        JSONArray arrayData = JsonMain.getJSONArray("data");
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            CategoryModel categoryModel = new CategoryModel();
+                            categoryModel.setCategoryID(arrayData.getJSONObject(i).getString("id"));
+                            categoryModel.setCategoryName(arrayData.getJSONObject(i).getString("category_name"));
+                            categoryModel.setCategoryTitle(arrayData.getJSONObject(i).getString("title"));
+                            faqList.add(categoryModel);
                         }
+                        if (faqList.size() > 0) {
+                            FAQAdapter faqAdapter = new FAQAdapter(mContext, faqList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                            FAQView.setLayoutManager(mLayoutManager);
+                            FAQView.setItemAnimator(new DefaultItemAnimator());
+                            FAQView.setAdapter(faqAdapter);
+                            faqAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

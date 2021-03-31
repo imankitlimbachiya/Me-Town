@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_square_bg"
@@ -15,7 +14,7 @@
 
     <TextView
         android:id="@+id/txtReport"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
         android:fontFamily="@font/louis_george_cafe"
         android:gravity="center_vertical"
@@ -26,8 +25,20 @@
         android:textSize="14sp" />
 
     <TextView
+        android:id="@+id/txtSold"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:fontFamily="@font/louis_george_cafe"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Sold"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
         android:id="@+id/txtMute"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
         android:fontFamily="@font/louis_george_cafe"
         android:gravity="center_vertical"
@@ -39,7 +50,7 @@
 
     <TextView
         android:id="@+id/txtComplement"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
         android:fontFamily="@font/louis_george_cafe"
         android:gravity="center_vertical"
@@ -63,7 +74,7 @@
 
     <TextView
         android:id="@+id/txtBlock"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
         android:fontFamily="@font/louis_george_cafe"
         android:gravity="center_vertical"
@@ -75,13 +86,25 @@
 
     <TextView
         android:id="@+id/txtLeaveChat"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
         android:fontFamily="@font/louis_george_cafe"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="Leave chat"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txtHideThisUser"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:fontFamily="@font/louis_george_cafe"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Hide this user"
         android:textColor="@color/black"
         android:textSize="14sp" />
 

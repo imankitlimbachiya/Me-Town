@@ -33,7 +33,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.app.metown.AppConstants.APIConstant;
 import com.app.metown.Models.JobKeywordModel;
 import com.app.metown.Models.StaticCategoryModel;
-import com.app.metown.Models.ItemMainModel;
 import com.app.metown.Models.ItemModel;
 import com.app.metown.R;
 import com.app.metown.VolleySupport.AppController;

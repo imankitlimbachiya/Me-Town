@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:singleLine="true"
         android:fontFamily="@font/alte_haas_grotesk_regular"
         android:text="Item name"
         android:textColor="@color/black"

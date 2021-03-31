@@ -15,11 +15,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Adapters.ServiceNearbyCategoryAdapter;
 import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.Models.ItemMainModel;
 import com.app.metown.R;

@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Models.PostHireHelperModel;
-import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
+import com.app.metown.UI.BusinessStoreActivity;
 import com.app.metown.UI.CheckSiteMapActivity;
 import com.app.metown.UI.ProfileOfStoreActivity;
 
@@ -26,12 +26,14 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.MyView
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtBusinessName, txtCheckTheSiteOnMap;
+        TextView txtBusinessName, txtSalary, txtWorkingTime, txtCheckTheSiteOnMap;
 
         MyViewHolder(View view) {
             super(view);
 
             txtBusinessName = view.findViewById(R.id.txtBusinessName);
+            txtSalary = view.findViewById(R.id.txtSalary);
+            txtWorkingTime = view.findViewById(R.id.txtWorkingTime);
             txtCheckTheSiteOnMap = view.findViewById(R.id.txtCheckTheSiteOnMap);
         }
     }
@@ -50,14 +52,18 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        PostHireHelperModel postHireHelperModel = arrayList.get(position);
+        final PostHireHelperModel postHireHelperModel = arrayList.get(position);
 
-        // holder.txtBusinessName.setText(postHireHelperModel.getKeyword());
+        holder.txtBusinessName.setText(postHireHelperModel.getName());
+        holder.txtSalary.setText(postHireHelperModel.getSalary());
+        holder.txtWorkingTime.setText(postHireHelperModel.getStartWorkingTime());
 
         holder.txtCheckTheSiteOnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent Report = new Intent(mContext, CheckSiteMapActivity.class);
+                Report.putExtra("Latitude", postHireHelperModel.getLatitude());
+                Report.putExtra("Longitude", postHireHelperModel.getLongitude());
                 mContext.startActivity(Report);
             }
         });
@@ -65,8 +71,10 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.MyView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent Report = new Intent(mContext, ProfileOfStoreActivity.class);
-                mContext.startActivity(Report);
+                Intent BusinessStore = new Intent(mContext, BusinessStoreActivity.class);
+                BusinessStore.putExtra("UserID", postHireHelperModel.getUserID());
+                BusinessStore.putExtra("HelperID", postHireHelperModel.getID());
+                mContext.startActivity(BusinessStore);
             }
         });
     }

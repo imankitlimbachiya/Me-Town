@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PhoneVerify.putExtra("Type", Type);
         PhoneVerify.putExtra("NickName", "");
         startActivity(PhoneVerify);
+        finish();
     }
 
     private void FacebookLogin() {

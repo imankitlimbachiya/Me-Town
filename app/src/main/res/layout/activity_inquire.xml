@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,8 +10,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -21,8 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +29,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Inquire"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
     </RelativeLayout>
 
@@ -52,8 +48,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -61,6 +56,7 @@
                 android:background="@drawable/rounded_square_light_bg">
 
                 <TextView
+                    android:id="@+id/txtInquiryCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -68,21 +64,34 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Inquiry categories"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
-                <!--<ImageView
+                <TextView
+                    android:id="@+id/txtSelectedInquiryCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/bottom_arrow_white"
-                    tools:ignore="ContentDescription,RtlHardcoded" />-->
+                    android:layout_toRightOf="@id/txtInquiryCategory"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/imgOpenCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_centerVertical="true"
+                    android:padding="7dp"
+                    android:src="@drawable/down_arrow" />
 
             </RelativeLayout>
 
             <EditText
-                android:id="@+id/edtApply"
+                android:id="@+id/edtSubject"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="15dp"
@@ -91,7 +100,7 @@
                 android:background="@drawable/btn_gradient_bg"
                 android:fontFamily="@font/louis_george_cafe"
                 android:hint="Subject"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:inputType="text"
                 android:paddingLeft="13dp"
                 android:paddingRight="13dp"
@@ -99,8 +108,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="Autofill,HardcodedText" />
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/edtDescription"
@@ -114,35 +122,55 @@
                 android:gravity="left"
                 android:hint="Description"
                 android:imeOptions="actionDone"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:paddingLeft="13dp"
                 android:paddingTop="13dp"
                 android:paddingRight="13dp"
                 android:paddingBottom="13dp"
-                android:singleLine="true"
+                android:singleLine="false"
                 android:textAllCaps="false"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="Autofill,HardcodedText,RtlHardcoded" />
+                android:textSize="14sp" />
 
-            <ImageView
-                android:layout_width="33dp"
-                android:layout_height="27dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/photo"
-                tools:ignore="ContentDescription,RtlHardcoded" />
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
-                android:fontFamily="@font/louis_george_cafe"
-                android:text="0/10"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imgPhoto"
+                        android:layout_width="33dp"
+                        android:layout_height="27dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="15dp"
+                        android:src="@drawable/photo" />
+
+                    <TextView
+                        android:id="@+id/txtImageCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:fontFamily="@font/louis_george_cafe"
+                        android:text="0/10"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/PhotoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnApply"
@@ -158,8 +186,7 @@
                 android:text="Apply"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="19sp"
-                tools:ignore="HardcodedText" />
+                android:textSize="19sp" />
 
         </LinearLayout>
 
@@ -173,7 +200,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

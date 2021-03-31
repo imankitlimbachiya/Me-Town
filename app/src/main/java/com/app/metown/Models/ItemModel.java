@@ -4,7 +4,16 @@ public class ItemModel {
 
     String ItemID, ItemSellerID, ItemBuyerID, ItemCategoryID, ItemCategoryTitle, ItemName, ItemDescription, ItemStatus, ItemType, ItemPrice,
             ItemLatitude, ItemLongitude, ItemUpdatedAt, ItemIsNegotiable, ItemImages, ItemStatusTitle, ItemTypeTitle, ItemFavouriteCount,
-            ItemCommentCount;
+            ItemCommentCount, Address, Distance, IsFavourite;
+
+    public ItemModel() {
+
+    }
+
+    public ItemModel(String ItemID, String ItemName) {
+        this.ItemID = ItemID;
+        this.ItemName = ItemName;
+    }
 
     public String getItemID() {
         return ItemID;
@@ -156,5 +165,29 @@ public class ItemModel {
 
     public void setItemCommentCount(String itemCommentCount) {
         ItemCommentCount = itemCommentCount;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    public String getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(String distance) {
+        Distance = distance;
+    }
+
+    public String getIsFavourite() {
+        return IsFavourite;
+    }
+
+    public void setIsFavourite(String isFavourite) {
+        IsFavourite = isFavourite;
     }
 }

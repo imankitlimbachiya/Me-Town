@@ -79,66 +79,45 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
         String req = "req";
         categoryList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_CATEGORY,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_CATEGORY + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equals("false")) {
-                                JSONObject objectData = JsonMain.getJSONObject("data");
-                                JSONArray arrayCategoryList = objectData.getJSONArray("category_list");
-                                for (int i = 0; i < arrayCategoryList.length(); i++) {
-                                    CategoryModel categoryModel = new CategoryModel();
-                                    categoryModel.setCategoryID(arrayCategoryList.getJSONObject(i).getString("id"));
-                                    categoryModel.setCategoryTitle(arrayCategoryList.getJSONObject(i).getString("category_title"));
-                                    categoryList.add(categoryModel);
-                                }
-                                if (categoryList.size() > 0) {
-                                    CategoryAdapter categoryAdapter = new CategoryAdapter(mContext, categoryList);
-                                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
-                                    CategoryView.setLayoutManager(mLayoutManager);
-                                    CategoryView.setItemAnimator(new DefaultItemAnimator());
-                                    CategoryView.setAdapter(categoryAdapter);
-                                    categoryAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_CATEGORY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().GET_CATEGORY + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equals("false")) {
+                        JSONObject objectData = JsonMain.getJSONObject("data");
+                        JSONArray arrayCategoryList = objectData.getJSONArray("category_list");
+                        for (int i = 0; i < arrayCategoryList.length(); i++) {
+                            CategoryModel categoryModel = new CategoryModel();
+                            categoryModel.setCategoryID(arrayCategoryList.getJSONObject(i).getString("id"));
+                            categoryModel.setCategoryTitle(arrayCategoryList.getJSONObject(i).getString("category_title"));
+                            categoryList.add(categoryModel);
                         }
+                        if (categoryList.size() > 0) {
+                            CategoryAdapter categoryAdapter = new CategoryAdapter(mContext, categoryList);
+                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
+                            CategoryView.setLayoutManager(mLayoutManager);
+                            CategoryView.setItemAnimator(new DefaultItemAnimator());
+                            CategoryView.setAdapter(categoryAdapter);
+                            categoryAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
-
-            // Header data passing
-            /*@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer N1QwNDNINDBQZVk0S1VycWMzWWRhY29Ba3pyeWpW5f4552c2ae884");
-                params.put("Content-Type", "application/json");
-                return params;
-            }*/
-
-            // Form data passing
-            /*protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                // params.put("email", edtEmail.getText().toString());
-                // params.put("password", edtPassword.getText().toString());
-                // params.put("secretkey", APIConstant.getInstance().ApiSecretsKey);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().SIGN_UP + params);
-                return params;
-            }*/
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Raw data passing
             @Override

@@ -1,32 +1,20 @@
-package com.app.metown.notification;
+package com.app.metown.Notification;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.app.metown.AppConstants.APIConstant;
 import com.app.metown.R;
 import com.app.metown.UI.BaseActivity;
 import com.app.metown.UI.HomeActivity;
-import com.app.metown.VolleySupport.AppController;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MyFireBaseMessagingService extends FirebaseMessagingService {
 

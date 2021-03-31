@@ -52,16 +52,15 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edtSearchYourLocationHere"
+            <TextView
+                android:id="@+id/txtSearchYourLocationHere"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="15dp"
                 android:background="@drawable/edt_bg"
+                android:gravity="center_vertical"
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:hint="Search your location here"
-                android:imeOptions="actionDone"
-                android:inputType="text"
                 android:paddingLeft="13dp"
                 android:paddingRight="13dp"
                 android:singleLine="true"

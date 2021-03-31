@@ -231,6 +231,7 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Content-Type", "application/json");
+                // params.put("Accept", "application/json");
                 Log.e("HEADER", "" + APIConstant.getInstance().OTP + params);
                 return params;
             }
@@ -315,6 +316,7 @@ public class PhoneVerifyActivity extends AppCompatActivity implements View.OnCli
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Content-Type", "application/json");
+                params.put("Accept", "application/json");
                 Log.e("HEADER", "" + APIConstant.getInstance().SIGN_UP + params);
                 return params;
             }

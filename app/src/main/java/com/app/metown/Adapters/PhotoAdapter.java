@@ -1,54 +1,54 @@
 package com.app.metown.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.ItemModel;
 import com.app.metown.R;
+import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class SecondHandItemAdapter extends RecyclerView.Adapter<SecondHandItemAdapter.MyViewHolder> {
+public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder> {
 
     Context mContext;
-    ArrayList<ItemModel> arrayList;
+    ArrayList<Bitmap> arrayList;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtItemName;
+        ImageView imgPhoto;
 
         MyViewHolder(View view) {
             super(view);
 
-            txtItemName = view.findViewById(R.id.txtItemName);
+            imgPhoto = view.findViewById(R.id.imgPhoto);
         }
     }
 
-    public SecondHandItemAdapter(Context mContext, ArrayList<ItemModel> arrayList) {
+    public PhotoAdapter(Context mContext, ArrayList<Bitmap> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
     }
 
-
     @NotNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.second_hand_item_adapter, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_adapter, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        ItemModel itemModel = arrayList.get(position);
+        final Bitmap bitmap = arrayList.get(position);
 
-       // holder.txtItemName.setText(itemModel.getItemName());
+        Glide.with(mContext).load(bitmap).into(holder.imgPhoto);
     }
 
     @Override

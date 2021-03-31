@@ -30,7 +30,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.metown.AppConstants.APIConstant;
 import com.app.metown.Models.CommentModel;
-import com.app.metown.Models.ItemMainModel;
 import com.app.metown.Models.PostModel;
 import com.app.metown.R;
 import com.app.metown.VolleySupport.AppController;
@@ -49,8 +48,9 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
     Context mContext;
     ProgressBar progressBar;
     ImageView imgBack;
-    LinearLayout MyPostLayout, MyCommentLayout;
-    TextView txtMyPost, txtMyComment;
+    LinearLayout MyPostLayout, MyCommentLayout, ResponseLayout;
+    RelativeLayout NoResponseLayout;
+    TextView txtMyPost, txtMyComment, txtError;
     View MyPostView, MyCommentView;
     RecyclerView PostView, CommentView;
     ArrayList<PostModel> postList = new ArrayList<>();
@@ -87,14 +87,12 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
 
         MyPostLayout = findViewById(R.id.MyPostLayout);
         MyCommentLayout = findViewById(R.id.MyCommentLayout);
+        ResponseLayout = findViewById(R.id.ResponseLayout);
+        NoResponseLayout = findViewById(R.id.NoResponseLayout);
 
         txtMyPost = findViewById(R.id.txtMyPost);
         txtMyComment = findViewById(R.id.txtMyComment);
-
-        txtMyPost.setTextColor(getResources().getColor(R.color.black));
-        MyPostView.setBackgroundColor(getResources().getColor(R.color.black));
-        txtMyComment.setTextColor(getResources().getColor(R.color.grey));
-        MyCommentView.setBackgroundColor(getResources().getColor(R.color.grey));
+        txtError = findViewById(R.id.txtError);
 
         PostView = findViewById(R.id.PostView);
         CommentView = findViewById(R.id.CommentView);
@@ -106,7 +104,6 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
         MyCommentLayout.setOnClickListener(this);
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -114,69 +111,70 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.MyPostLayout:
-                txtMyPost.setTextColor(getResources().getColor(R.color.black));
-                MyPostView.setBackgroundColor(getResources().getColor(R.color.black));
-                txtMyComment.setTextColor(getResources().getColor(R.color.grey));
-                MyCommentView.setBackgroundColor(getResources().getColor(R.color.grey));
+                MyCommunity();
                 break;
             case R.id.MyCommentLayout:
-                txtMyComment.setTextColor(getResources().getColor(R.color.black));
-                MyCommentView.setBackgroundColor(getResources().getColor(R.color.black));
-                txtMyPost.setTextColor(getResources().getColor(R.color.grey));
-                MyPostView.setBackgroundColor(getResources().getColor(R.color.grey));
                 MyCommunityCommentApi(offSet);
                 break;
         }
     }
 
     private void MyCommunity() {
+        txtMyPost.setTextColor(getResources().getColor(R.color.black));
+        MyPostView.setBackgroundColor(getResources().getColor(R.color.black));
+        txtMyComment.setTextColor(getResources().getColor(R.color.grey));
+        MyCommentView.setBackgroundColor(getResources().getColor(R.color.grey));
+
         String req = "req";
         postList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_COMMUNITY,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_COMMUNITY + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONArray jsonArray = JsonMain.getJSONArray("data");
-                                for (int i = 0; jsonArray.length() > i; i++) {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    PostModel postModel = new PostModel();
-                                    postModel.setID(jsonObject.getString("id"));
-                                    postModel.setKeyword(jsonObject.getString("keyword"));
-                                    postModel.setDescription(jsonObject.getString("description"));
-                                    postModel.setImage(jsonObject.getString("image"));
-                                    postList.add(postModel);
-                                }
-                                if (postList.size() > 0) {
-                                    CommentView.setVisibility(View.GONE);
-                                    PostView.setVisibility(View.VISIBLE);
-                                    PostAdapter postAdapter = new PostAdapter(mContext, postList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                                    PostView.setLayoutManager(mLayoutManager);
-                                    PostView.setItemAnimator(new DefaultItemAnimator());
-                                    PostView.setAdapter(postAdapter);
-                                    postAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_COMMUNITY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().MY_COMMUNITY + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        JSONArray jsonArray = JsonMain.getJSONArray("data");
+                        for (int i = 0; jsonArray.length() > i; i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            PostModel postModel = new PostModel();
+                            postModel.setID(jsonObject.getString("id"));
+                            postModel.setKeyword(jsonObject.getString("keyword"));
+                            postModel.setDescription(jsonObject.getString("description"));
+                            postModel.setImage(jsonObject.getString("image"));
+                            postList.add(postModel);
                         }
+                        if (postList.size() > 0) {
+                            NoResponseLayout.setVisibility(View.GONE);
+                            ResponseLayout.setVisibility(View.VISIBLE);
+                            CommentView.setVisibility(View.GONE);
+                            PostView.setVisibility(View.VISIBLE);
+                            PostAdapter postAdapter = new PostAdapter(mContext, postList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                            PostView.setLayoutManager(mLayoutManager);
+                            PostView.setItemAnimator(new DefaultItemAnimator());
+                            PostView.setAdapter(postAdapter);
+                            postAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                        ResponseLayout.setVisibility(View.GONE);
+                        NoResponseLayout.setVisibility(View.VISIBLE);
+                        txtError.setText(ErrorMessage);
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
@@ -249,66 +247,74 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void MyCommunityCommentApi(final String offSet) {
+        txtMyComment.setTextColor(getResources().getColor(R.color.black));
+        MyCommentView.setBackgroundColor(getResources().getColor(R.color.black));
+        txtMyPost.setTextColor(getResources().getColor(R.color.grey));
+        MyPostView.setBackgroundColor(getResources().getColor(R.color.grey));
+
         String req = "req";
         commentList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_COMMUNITY_COMMENT,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_COMMUNITY_COMMENT + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONArray arrayData = JsonMain.getJSONArray("data");
-                                for (int i = 0; i < arrayData.length(); i++) {
-                                    CommentModel commentModel = new CommentModel();
-                                    commentModel.setCommunityID(arrayData.getJSONObject(i).getString("community_id"));
-                                    commentModel.setCommentID(arrayData.getJSONObject(i).getString("comments_id"));
-                                    commentModel.setComment(arrayData.getJSONObject(i).getString("comment"));
-                                    commentModel.setProductID(arrayData.getJSONObject(i).getString("product_id"));
-                                    commentModel.setTopicID(arrayData.getJSONObject(i).getString("topic_id"));
-                                    commentModel.setUserID(arrayData.getJSONObject(i).getString("user_id"));
-                                    commentModel.setKeyword(arrayData.getJSONObject(i).getString("keyword"));
-                                    commentModel.setDescription(arrayData.getJSONObject(i).getString("description"));
-                                    commentModel.setLongitude(arrayData.getJSONObject(i).getString("longs"));
-                                    commentModel.setLatitude(arrayData.getJSONObject(i).getString("lat"));
-                                    commentModel.setLocationName(arrayData.getJSONObject(i).getString("location_name"));
-                                    commentModel.setImage(arrayData.getJSONObject(i).getString("image"));
-                                    commentList.add(commentModel);
-                                }
-                                if (commentList.size() > 0) {
-                                    PostView.setVisibility(View.GONE);
-                                    CommentView.setVisibility(View.VISIBLE);
-                                    CommentAdapter commentAdapter = new CommentAdapter(mContext, commentList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                                    CommentView.setLayoutManager(mLayoutManager);
-                                    CommentView.setItemAnimator(new DefaultItemAnimator());
-                                    CommentView.setAdapter(commentAdapter);
-                                    commentAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_COMMUNITY_COMMENT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().MY_COMMUNITY_COMMENT + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        JSONArray arrayData = JsonMain.getJSONArray("data");
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            CommentModel commentModel = new CommentModel();
+                            commentModel.setCommunityID(arrayData.getJSONObject(i).getString("community_id"));
+                            commentModel.setCommentID(arrayData.getJSONObject(i).getString("comments_id"));
+                            commentModel.setComment(arrayData.getJSONObject(i).getString("comment"));
+                            commentModel.setProductID(arrayData.getJSONObject(i).getString("product_id"));
+                            commentModel.setTopicID(arrayData.getJSONObject(i).getString("topic_id"));
+                            commentModel.setUserID(arrayData.getJSONObject(i).getString("user_id"));
+                            commentModel.setKeyword(arrayData.getJSONObject(i).getString("keyword"));
+                            commentModel.setDescription(arrayData.getJSONObject(i).getString("description"));
+                            commentModel.setLongitude(arrayData.getJSONObject(i).getString("longs"));
+                            commentModel.setLatitude(arrayData.getJSONObject(i).getString("lat"));
+                            commentModel.setLocationName(arrayData.getJSONObject(i).getString("location_name"));
+                            commentModel.setImage(arrayData.getJSONObject(i).getString("image"));
+                            commentList.add(commentModel);
                         }
+                        if (commentList.size() > 0) {
+                            NoResponseLayout.setVisibility(View.GONE);
+                            ResponseLayout.setVisibility(View.VISIBLE);
+                            PostView.setVisibility(View.GONE);
+                            CommentView.setVisibility(View.VISIBLE);
+                            CommentAdapter commentAdapter = new CommentAdapter(mContext, commentList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                            CommentView.setLayoutManager(mLayoutManager);
+                            CommentView.setItemAnimator(new DefaultItemAnimator());
+                            CommentView.setAdapter(commentAdapter);
+                            commentAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                        ResponseLayout.setVisibility(View.GONE);
+                        NoResponseLayout.setVisibility(View.VISIBLE);
+                        txtError.setText(ErrorMessage);
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
                 params.put("Content-Type", "application/json");
@@ -330,89 +336,6 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_COMMUNITY_COMMENT);
-        AppController.getInstance().addToRequestQueue(stringRequest, req);
-    }
-
-    private void GetCommentListApi(final String Type, final String ProductID) {
-        String req = "req";
-        commentList.clear();
-        progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_COMMENT_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_COMMENT_LIST + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONArray jsonArray = JsonMain.getJSONArray("data");
-                                for (int i = 0; jsonArray.length() > i; i++) {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    CommentModel commentModel = new CommentModel();
-                                    commentModel.setProductID(jsonObject.getString("product_id"));
-                                    commentModel.setName(jsonObject.getString("name"));
-                                    commentModel.setAddress(jsonObject.getString("address"));
-                                    commentModel.setImages(jsonObject.getString("images"));
-                                    commentModel.setCreatedAt(jsonObject.getString("created_at"));
-                                    commentModel.setType(jsonObject.getString("type"));
-                                    commentModel.setFavoriteCount(jsonObject.getString("Favorite_count"));
-                                    commentModel.setCommentCount(jsonObject.getString("commnet_count"));
-                                    commentModel.setComment(jsonObject.getString("comment"));
-                                    commentList.add(commentModel);
-                                }
-                                if (commentList.size() > 0) {
-                                    PostView.setVisibility(View.GONE);
-                                    CommentView.setVisibility(View.VISIBLE);
-                                    CommentAdapter commentAdapter = new CommentAdapter(mContext, commentList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                                    CommentView.setLayoutManager(mLayoutManager);
-                                    CommentView.setItemAnimator(new DefaultItemAnimator());
-                                    CommentView.setAdapter(commentAdapter);
-                                    commentAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
-
-            // Header data passing
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
-                String Token = sharedPreferences.getString("Token", "");
-                String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Type", "application/json");
-                params.put("Authorization", Type + " " + Token);
-                params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().GET_COMMENT_LIST + params);
-                return params;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                String params = "{\"type\":\"" + Type + "\",\"product_id\":\"" + ProductID + "\"}";
-                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_COMMENT_LIST + params);
-                return params.getBytes();
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_COMMENT_LIST);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
@@ -470,6 +393,88 @@ public class MyCommunityActivity extends AppCompatActivity implements View.OnCli
         public int getItemCount() {
             return arrayList.size();
         }
+    }
+
+    private void GetCommentListApi(final String Type, final String ProductID) {
+        String req = "req";
+        commentList.clear();
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_COMMENT_LIST, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().GET_COMMENT_LIST + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        JSONArray jsonArray = JsonMain.getJSONArray("data");
+                        for (int i = 0; jsonArray.length() > i; i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            CommentModel commentModel = new CommentModel();
+                            commentModel.setProductID(jsonObject.getString("product_id"));
+                            commentModel.setName(jsonObject.getString("name"));
+                            commentModel.setAddress(jsonObject.getString("address"));
+                            commentModel.setImages(jsonObject.getString("images"));
+                            commentModel.setCreatedAt(jsonObject.getString("created_at"));
+                            commentModel.setType(jsonObject.getString("type"));
+                            commentModel.setFavoriteCount(jsonObject.getString("Favorite_count"));
+                            commentModel.setCommentCount(jsonObject.getString("commnet_count"));
+                            commentModel.setComment(jsonObject.getString("comment"));
+                            commentList.add(commentModel);
+                        }
+                        if (commentList.size() > 0) {
+                            PostView.setVisibility(View.GONE);
+                            CommentView.setVisibility(View.VISIBLE);
+                            CommentAdapter commentAdapter = new CommentAdapter(mContext, commentList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                            CommentView.setLayoutManager(mLayoutManager);
+                            CommentView.setItemAnimator(new DefaultItemAnimator());
+                            CommentView.setAdapter(commentAdapter);
+                            commentAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    e.printStackTrace();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().GET_COMMENT_LIST + params);
+                return params;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"type\":\"" + Type + "\",\"product_id\":\"" + ProductID + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_COMMENT_LIST + params);
+                return params.getBytes();
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_COMMENT_LIST);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
     @Override

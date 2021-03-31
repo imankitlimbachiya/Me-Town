@@ -1,15 +1,20 @@
 package com.app.metown.UI;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,9 +34,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.app.metown.Adapters.InboxAdapter;
-import com.app.metown.Adapters.ReviewOptionAdapter;
 import com.app.metown.AppConstants.APIConstant;
+import com.app.metown.AppConstants.DateUtil;
 import com.app.metown.Models.ConversationModel;
 import com.app.metown.R;
 import com.app.metown.VolleySupport.AppController;
@@ -53,11 +58,14 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
 
     Context mContext;
     ProgressBar progressBar;
-    ImageView imgBack, imgCalendar;
-    TextView txtUserName;
+    ImageView imgBack, imgCalendar, imgEnter, imgProductOrStore;
+    TextView txtUserName, txtProductOrStoreName;
+    EditText edtMessage;
     RelativeLayout CheckCouponLayout, SeeReviewLayout, OptionLayout;
     EasyPopup mQQPop;
-    String ToUserID = "", ConversationID = "";
+    ConversationAdapter adapter;
+    String ToUserID = "", ToUserName = "", ConversationID = "", ProductID = "", ProductName = "", ProductImages = "", ProductPrice = "",
+            ToUserProfilePicture = "", ISBlock;
     RecyclerView ConversationMessageView;
     ArrayList<ConversationModel> conversationMessageList = new ArrayList<>();
 
@@ -72,7 +80,8 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
 
         getSupportActionBar().hide();
 
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         GetIntentData();
 
@@ -80,14 +89,22 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
 
         ViewOnClick();
 
+        ViewSetText();
+
         OpenEasyPopup();
 
-        GetConversationMessageListApi(ToUserID, ConversationID);
+        GetConversationMessageListApi(ToUserID, ConversationID, "FirstTime");
     }
 
     public void GetIntentData() {
         ConversationID = getIntent().getStringExtra("ConversationID");
         ToUserID = getIntent().getStringExtra("ToUserID");
+        ToUserName = getIntent().getStringExtra("ToUserName");
+        ToUserProfilePicture = getIntent().getStringExtra("ToUserProfilePicture");
+        ProductID = getIntent().getStringExtra("ProductID");
+        ProductName = getIntent().getStringExtra("ProductName");
+        ProductImages = getIntent().getStringExtra("ProductImages");
+        ProductPrice = getIntent().getStringExtra("ProductPrice");
     }
 
     public void ViewInitialization() {
@@ -95,22 +112,71 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
 
         imgBack = findViewById(R.id.imgBack);
         imgCalendar = findViewById(R.id.imgCalendar);
+        imgEnter = findViewById(R.id.imgEnter);
+        imgProductOrStore = findViewById(R.id.imgProductOrStore);
+
+        edtMessage = findViewById(R.id.edtMessage);
 
         txtUserName = findViewById(R.id.txtUserName);
+        txtProductOrStoreName = findViewById(R.id.txtProductOrStoreName);
 
         CheckCouponLayout = findViewById(R.id.CheckCouponLayout);
         SeeReviewLayout = findViewById(R.id.SeeReviewLayout);
         OptionLayout = findViewById(R.id.OptionLayout);
 
         ConversationMessageView = findViewById(R.id.ConversationMessageView);
+
+        SetAdapter();
+    }
+
+    public void SetAdapter() {
+        adapter = new ConversationAdapter(mContext, conversationMessageList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+        ConversationMessageView.setLayoutManager(mLayoutManager);
+        ConversationMessageView.setItemAnimator(new DefaultItemAnimator());
+        ConversationMessageView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public void ViewOnClick() {
         imgBack.setOnClickListener(this);
         imgCalendar.setOnClickListener(this);
+        imgEnter.setOnClickListener(this);
         txtUserName.setOnClickListener(this);
         SeeReviewLayout.setOnClickListener(this);
         OptionLayout.setOnClickListener(this);
+    }
+
+    public void ViewSetText() {
+        txtUserName.setText(ToUserName);
+        txtProductOrStoreName.setText(ProductName);
+        Glide.with(mContext).load(ProductImages).into(imgProductOrStore);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imgBack:
+                finish();
+                break;
+            case R.id.imgCalendar:
+                GoToNextActivity("OrganiseMeet");
+                break;
+            case R.id.imgEnter:
+                String Message = edtMessage.getText().toString().trim();
+                if (Message.equals("")) {
+                    Toast.makeText(mContext, "Please enter message.", Toast.LENGTH_LONG).show();
+                } else {
+                    SendMessageApi(ToUserID, Message, ProductID, ConversationID);
+                }
+                break;
+            case R.id.SeeReviewLayout:
+                GoToNextActivity("Review");
+                break;
+            case R.id.OptionLayout:
+                mQQPop.showAtAnchorView(view, YGravity.ABOVE, XGravity.RIGHT, 0, 0);
+                break;
+        }
     }
 
     public void OpenEasyPopup() {
@@ -126,8 +192,15 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
                             @Override
                             public void onClick(View v) {
                                 mQQPop.dismiss();
-                                Intent Report = new Intent(mContext, ReportActivity.class);
-                                startActivity(Report);
+                                GoToNextActivity("Report");
+                            }
+                        });
+                        TextView txtSold = view.findViewById(R.id.txtSold);
+                        txtSold.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mQQPop.dismiss();
+                                SoldItemApi(ToUserID, ProductID);
                             }
                         });
                         TextView txtComplement = view.findViewById(R.id.txtComplement);
@@ -135,8 +208,7 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
                             @Override
                             public void onClick(View v) {
                                 mQQPop.dismiss();
-                                Intent Compliment = new Intent(mContext, ComplimentActivity.class);
-                                startActivity(Compliment);
+                                GoToNextActivity("Compliment");
                             }
                         });
                         TextView txtDisappointment = view.findViewById(R.id.txtDisappointment);
@@ -144,8 +216,7 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
                             @Override
                             public void onClick(View v) {
                                 mQQPop.dismiss();
-                                Intent Disappointment = new Intent(mContext, DisappointmentActivity.class);
-                                startActivity(Disappointment);
+                                GoToNextActivity("Disappointment");
                             }
                         });
                         TextView txtBlock = view.findViewById(R.id.txtBlock);
@@ -153,7 +224,8 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
                             @Override
                             public void onClick(View v) {
                                 mQQPop.dismiss();
-                                BlockUnblockApi(ConversationID, "1");
+                                ISBlock = "1";
+                                BlockUnblockApi(ConversationID, ISBlock);
                             }
                         });
                         TextView txtLeaveChat = view.findViewById(R.id.txtLeaveChat);
@@ -172,6 +244,268 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
                 // .setDimColor(Color.RED)
                 // .setDimView(mTitleBar)
                 .apply();
+    }
+
+    public void GoToNextActivity(final String Where) {
+        Intent intent = null;
+        switch (Where) {
+            case "Report":
+                intent = new Intent(mContext, ReportActivity.class);
+                break;
+            case "Compliment":
+                intent = new Intent(mContext, ComplimentActivity.class);
+                break;
+            case "Disappointment":
+                intent = new Intent(mContext, DisappointmentActivity.class);
+                break;
+            case "OrganiseMeet":
+                intent = new Intent(mContext, OrganiseMeetUpActivity.class);
+                break;
+            case "Review":
+                intent = new Intent(mContext, ReviewActivity.class);
+                break;
+        }
+        intent.putExtra("ConversationID", ConversationID);
+        intent.putExtra("ToUserID", ToUserID);
+        intent.putExtra("ToUserName", ToUserName);
+        intent.putExtra("ToUserProfilePicture", ToUserProfilePicture);
+        intent.putExtra("ProductID", ProductID);
+        startActivity(intent);
+    }
+
+    private void GetConversationMessageListApi(final String ToUserID, final String ConversationID, final String Time) {
+        String req = "req";
+        conversationMessageList.clear();
+        if (Time.equals("FirstTime")) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        try {
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST + response);
+                            JSONObject JsonMain = new JSONObject(response);
+                            String HAS_ERROR = JsonMain.getString("has_error");
+                            if (HAS_ERROR.equalsIgnoreCase("false")) {
+                                JSONObject jsonObject = JsonMain.getJSONObject("data");
+                                JSONArray arrayMessageList = jsonObject.getJSONArray("message_list");
+                                for (int i = 0; i < arrayMessageList.length(); i++) {
+                                    ConversationModel conversationModel = new ConversationModel();
+                                    conversationModel.setLastMessageType(arrayMessageList.getJSONObject(i).getString("type"));
+                                    conversationModel.setLastMessageBody(arrayMessageList.getJSONObject(i).getString("body"));
+                                    conversationModel.setLastMessageCreatedAt(arrayMessageList.getJSONObject(i).getString("created_at"));
+                                    conversationModel.setSenderUserID(arrayMessageList.getJSONObject(i).getJSONObject("sender").getString("user_id"));
+                                    conversationModel.setSenderProfilePicture(arrayMessageList.getJSONObject(i).getJSONObject("sender").getString("profile_pic"));
+                                    conversationMessageList.add(conversationModel);
+                                }
+                                if (conversationMessageList.size() > 0) {
+                                    // adapter.notifyDataSetChanged();
+                                    ConversationMessageView.scrollToPosition(conversationMessageList.size() - 1);
+                                    /*new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ConversationMessageView.scrollToPosition(conversationMessageList.size() - 1);
+                                        }
+                                    }, 1000);*/
+                                }
+                                /*JSONObject ObjectOtherUserDetail = jsonObject.getJSONObject("other_user_detail");
+                                String UserID = ObjectOtherUserDetail.getString("user_id");
+                                String Name = ObjectOtherUserDetail.getString("name");
+                                String profilePicture = ObjectOtherUserDetail.getString("profile_pic");
+                                String UserRating = ObjectOtherUserDetail.getString("user_rating");
+                                txtUserName.setText(Name);*/
+                            } else {
+                                String ErrorMessage = JsonMain.getString("msg");
+                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                // params.put("Content-Type", "application/json");
+                params.put("Content-Transfer-Encoding", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST + params);
+                return params;
+            }
+
+            // Form data passing
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("conversation_id", ConversationID);
+                params.put("touser_id", ToUserID);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }
+
+    public static class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.MyViewHolder> {
+
+        Context mContext;
+        ArrayList<ConversationModel> arrayList;
+
+        public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+            CircleImageView imgReceiverText;
+            TextView txtReceiverText, txtReceiverTime, txtSenderText, txtSenderTime;
+            LinearLayout CouponLayout, ContactLayout;
+            RelativeLayout TextLayout, ReceiverTextLayout, SenderTextLayout;
+
+            MyViewHolder(View view) {
+                super(view);
+
+                imgReceiverText = view.findViewById(R.id.imgReceiverText);
+
+                txtReceiverText = view.findViewById(R.id.txtReceiverText);
+                txtReceiverTime = view.findViewById(R.id.txtReceiverTime);
+                txtSenderText = view.findViewById(R.id.txtSenderText);
+                txtSenderTime = view.findViewById(R.id.txtSenderTime);
+
+                CouponLayout = view.findViewById(R.id.CouponLayout);
+                ContactLayout = view.findViewById(R.id.ContactLayout);
+
+                TextLayout = view.findViewById(R.id.TextLayout);
+                ReceiverTextLayout = view.findViewById(R.id.ReceiverTextLayout);
+                SenderTextLayout = view.findViewById(R.id.SenderTextLayout);
+            }
+        }
+
+        public ConversationAdapter(Context mContext, ArrayList<ConversationModel> arrayList) {
+            this.mContext = mContext;
+            this.arrayList = arrayList;
+        }
+
+        @NotNull
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.conversation_adapter, parent, false);
+            return new MyViewHolder(itemView);
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
+            final ConversationModel conversationModel = arrayList.get(position);
+
+            SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+            String UserID = sharedPreferences.getString("UserID", "");
+            String LastMessageType = conversationModel.getLastMessageType();
+            if (LastMessageType.equals("text")) {
+                holder.TextLayout.setVisibility(View.VISIBLE);
+                String SenderUserID = conversationModel.getSenderUserID();
+                if (SenderUserID.equals(UserID)) {
+                    holder.ReceiverTextLayout.setVisibility(View.GONE);
+                    holder.SenderTextLayout.setVisibility(View.VISIBLE);
+                    holder.txtSenderText.setText(conversationModel.getLastMessageBody());
+                    holder.txtSenderTime.setText(DateUtil.getTodayTime(conversationModel.getLastMessageCreatedAt()));
+                } else {
+                    holder.SenderTextLayout.setVisibility(View.GONE);
+                    holder.ReceiverTextLayout.setVisibility(View.VISIBLE);
+                    String SenderProfilePicture = conversationModel.getSenderProfilePicture();
+                    if (SenderProfilePicture.equals("") || SenderProfilePicture.equals("null") ||
+                            SenderProfilePicture.equals(null) || SenderProfilePicture == null) {
+                    } else {
+                        Glide.with(mContext).load(SenderProfilePicture).into(holder.imgReceiverText);
+                    }
+                    holder.txtReceiverText.setText(conversationModel.getLastMessageBody());
+                    holder.txtReceiverTime.setText(DateUtil.getTodayTime(conversationModel.getLastMessageCreatedAt()));
+                }
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return arrayList.size();
+        }
+    }
+
+    private void SendMessageApi(final String ToUserID, final String Body, final String ProductID, final String ConversationID) {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().SEND_MESSAGE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().SEND_MESSAGE + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        // String SuccessMessage = JsonMain.getString("msg");
+                        // Toast.makeText(mContext, SuccessMessage, Toast.LENGTH_LONG).show();
+                        GetConversationMessageListApi(ToUserID, ConversationID, "SecondTime");
+                        edtMessage.setText("");
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                // params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().SEND_MESSAGE + params);
+                return params;
+            }
+
+            // Form data passing
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("touser_id", ToUserID);
+                params.put("type", "text");
+                params.put("body", Body);
+                params.put("product_id", ProductID);
+                params.put("conversation_id", ConversationID);
+                params.put("image", "");
+                Log.e("PARAMETER", "" + APIConstant.getInstance().SEND_MESSAGE + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().SEND_MESSAGE);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
     private void BlockUnblockApi(final String ConversationID, final String ISBlock) {
@@ -212,7 +546,7 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
                 SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Type", "application/json");
+                params.put("Content-Transfer-Encoding", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
                 Log.e("HEADER", "" + APIConstant.getInstance().BLOCK_UNBLOCK + params);
@@ -270,10 +604,10 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Type", "application/json");
+                params.put("Content-Transfer-Encoding", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
                 Log.e("HEADER", "" + APIConstant.getInstance().LEAVE_CHAT + params);
@@ -295,186 +629,82 @@ public class ChatCommercialActivity extends AppCompatActivity implements View.On
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.imgBack:
-                finish();
-                break;
-            case R.id.imgCalendar:
-                Intent OrganiseMeetUp = new Intent(mContext, OrganiseMeetUpActivity.class);
-                startActivity(OrganiseMeetUp);
-                break;
-            /*case R.id.CheckCouponLayout:
-                Intent ReceivedCoupon = new Intent(mContext, ReceivedCouponActivity.class);
-                startActivity(ReceivedCoupon);
-                break;*/
-            case R.id.SeeReviewLayout:
-                Intent Review = new Intent(mContext, ReviewActivity.class);
-                startActivity(Review);
-                break;
-            case R.id.OptionLayout:
-                mQQPop.showAtAnchorView(view, YGravity.BELOW, XGravity.LEFT, 50, -55);
-                break;
-        }
-    }
-
-    private void GetConversationMessageListApi(final String ToUserID, final String ConversationID) {
+    private void SoldItemApi(final String BuyerID, final String ProductID) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONObject jsonObject = JsonMain.getJSONObject("data");
-                                JSONArray arrayMessageList = jsonObject.getJSONArray("message_list");
-                                for (int i = 0; i < arrayMessageList.length(); i++) {
-                                    ConversationModel conversationModel = new ConversationModel();
-                                    conversationModel.setLastMessageType(arrayMessageList.getJSONObject(i).getString("type"));
-                                    conversationMessageList.add(conversationModel);
-                                }
-                                if (conversationMessageList.size() > 0) {
-                                    ConversationAdapter adapter = new ConversationAdapter(mContext, conversationMessageList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                                    ConversationMessageView.setLayoutManager(mLayoutManager);
-                                    ConversationMessageView.setItemAnimator(new DefaultItemAnimator());
-                                    ConversationMessageView.setAdapter(adapter);
-                                    adapter.notifyDataSetChanged();
-                                }
-                                JSONObject ObjectOtherUserDetail = jsonObject.getJSONObject("other_user_detail");
-                                String UserID = ObjectOtherUserDetail.getString("user_id");
-                                String Name = ObjectOtherUserDetail.getString("name");
-                                String profilePicture = ObjectOtherUserDetail.getString("profile_pic");
-                                String UserRating = ObjectOtherUserDetail.getString("user_rating");
-                                txtUserName.setText(Name);
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().SOLD_ITEM, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().SOLD_ITEM + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        finish();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                Map<String, String> params = new HashMap<>();
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
                 params.put("Content-Type", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST + params);
+                Log.e("HEADER", "" + APIConstant.getInstance().SOLD_ITEM + params);
                 return params;
             }
 
-            // Form data passing
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("conversation_id", ConversationID);
-                params.put("touser_id", ToUserID);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST + params);
-                return params;
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"buyer_id\":\"" + BuyerID + "\",\"product_id\":\"" + ProductID + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().SOLD_ITEM + params);
+                return params.getBytes();
             }
         };
 
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_CONVERSATION_MESSAGE_LIST);
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().SOLD_ITEM);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
-    public static class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.MyViewHolder> {
+    /*Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 2 * 1000;
 
-        Context mContext;
-        ArrayList<ConversationModel> arrayList;
-
-        public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-            // CircleImageView imgSender;
-            // TextView txtSenderName, txtLastMessage;
-            LinearLayout CouponLayout, ContactLayout, TextLayout;
-
-            MyViewHolder(View view) {
-                super(view);
-
-                // imgSender = view.findViewById(R.id.imgSender);
-
-                // txtSenderName = view.findViewById(R.id.txtSenderName);
-                // txtLastMessage = view.findViewById(R.id.txtLastMessage);
-
-                CouponLayout = view.findViewById(R.id.CouponLayout);
-                ContactLayout = view.findViewById(R.id.ContactLayout);
-                TextLayout = view.findViewById(R.id.TextLayout);
+    @Override
+    protected void onResume() {
+        handler.postDelayed(runnable = new Runnable() {
+            public void run() {
+                //do something
+                GetConversationMessageListApi(ToUserID, ConversationID, "SecondTime");
+                handler.postDelayed(runnable, delay);
             }
-        }
-
-        public ConversationAdapter(Context mContext, ArrayList<ConversationModel> arrayList) {
-            this.mContext = mContext;
-            this.arrayList = arrayList;
-        }
-
-        @NotNull
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.conversation_adapter, parent, false);
-            return new MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            final ConversationModel conversationModel = arrayList.get(position);
-
-            Log.e("LastMessageType","" + conversationModel.getLastMessageType());
-
-            if (conversationModel.getLastMessageType().equals("text")) {
-                holder.TextLayout.setVisibility(View.VISIBLE);
-            } else {
-
-            }
-
-            /*String SenderProfilePicture = conversationModel.getSenderProfilePicture();
-
-            if (SenderProfilePicture.equals("") || SenderProfilePicture.equals("null") ||
-                    SenderProfilePicture.equals(null) || SenderProfilePicture == null) {
-
-            } else {
-                Glide.with(mContext).load(SenderProfilePicture).into(holder.imgSender);
-            }
-
-            holder.txtSenderName.setText(conversationModel.getSenderName());
-            holder.txtLastMessage.setText(conversationModel.getLastMessageBody());
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent ChatCommercial = new Intent(mContext, ChatCommercialActivity.class);
-                    ChatCommercial.putExtra("ConversationID", conversationModel.getConversationID());
-                    mContext.startActivity(ChatCommercial);
-                }
-            });*/
-        }
-
-        @Override
-        public int getItemCount() {
-            return arrayList.size();
-        }
+        }, delay);
+        super.onResume();
     }
+
+    @Override
+    protected void onPause() {
+        handler.removeCallbacks(runnable);
+        super.onPause();
+    }*/
 
     @Override
     public void onBackPressed() {

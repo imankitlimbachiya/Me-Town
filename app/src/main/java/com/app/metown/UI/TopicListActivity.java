@@ -1,6 +1,5 @@
 package com.app.metown.UI;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,7 +27,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.metown.AppConstants.APIConstant;
-import com.app.metown.Models.ItemMainModel;
 import com.app.metown.Models.TopicKeywordModel;
 import com.app.metown.R;
 import com.app.metown.VolleySupport.AppController;
@@ -85,7 +83,6 @@ public class TopicListActivity extends AppCompatActivity implements View.OnClick
         btnTopicLookingFor.setOnClickListener(this);
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -103,52 +100,50 @@ public class TopicListActivity extends AppCompatActivity implements View.OnClick
         String req = "req";
         topicList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().GET_TOPIC,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_TOPIC + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONArray arrayData = JsonMain.getJSONArray("data");
-                                for (int i = 0; i < arrayData.length(); i++) {
-                                    TopicKeywordModel topicKeywordModel = new TopicKeywordModel();
-                                    topicKeywordModel.setTopicID(arrayData.getJSONObject(i).getString("id"));
-                                    topicKeywordModel.setTopic(arrayData.getJSONObject(i).getString("title"));
-                                    topicList.add(topicKeywordModel);
-                                }
-                                if (topicList.size() > 0) {
-                                    TopicItemAdapter topicItemAdapter = new TopicItemAdapter(mContext, topicList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                                    TopicItemView.setLayoutManager(mLayoutManager);
-                                    TopicItemView.setItemAnimator(new DefaultItemAnimator());
-                                    TopicItemView.setAdapter(topicItemAdapter);
-                                    topicItemAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().GET_TOPIC, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().GET_TOPIC + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        JSONArray arrayData = JsonMain.getJSONArray("data");
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            TopicKeywordModel topicKeywordModel = new TopicKeywordModel();
+                            topicKeywordModel.setTopicID(arrayData.getJSONObject(i).getString("id"));
+                            topicKeywordModel.setTopic(arrayData.getJSONObject(i).getString("title"));
+                            topicList.add(topicKeywordModel);
                         }
+                        if (topicList.size() > 0) {
+                            TopicItemAdapter topicItemAdapter = new TopicItemAdapter(mContext, topicList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                            TopicItemView.setLayoutManager(mLayoutManager);
+                            TopicItemView.setItemAnimator(new DefaultItemAnimator());
+                            TopicItemView.setAdapter(topicItemAdapter);
+                            topicItemAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
                 params.put("Content-Type", "application/json");
@@ -218,37 +213,32 @@ public class TopicListActivity extends AppCompatActivity implements View.OnClick
 
     private void TopicFollowApi(final String ID) {
         String req = "req";
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().TOPIC_FOLLOW,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().TOPIC_FOLLOW + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                /*String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();*/
-                                GetTopicApi();
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().TOPIC_FOLLOW, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().TOPIC_FOLLOW + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        GetTopicApi();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                }) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
 
             // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
                 // params.put("Content-Type", "application/json");

@@ -1,43 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:focusableInTouchMode="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/TitleLayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            tools:ignore="UselessLeaf">
+            android:layout_height="?attr/actionBarSize">
 
             <ImageView
                 android:id="@+id/imgBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/left_arrow"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:padding="12dp"
-                tools:ignore="ContentDescription,RtlHardcoded"/>
+                android:src="@drawable/left_arrow" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Filter"
-                android:textSize="17sp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/louis_george_cafe"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/imgBack"
-                tools:ignore="HardcodedText,RtlHardcoded"/>
+                android:fontFamily="@font/louis_george_cafe"
+                android:text="Filter"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -46,23 +41,20 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                tools:ignore="RtlHardcoded">
+                android:paddingRight="20dp">
 
                 <ImageView
                     android:id="@+id/imgSearch"
                     android:layout_width="21dp"
                     android:layout_height="21dp"
                     android:layout_marginRight="16dp"
-                    android:src="@drawable/search"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
+                    android:src="@drawable/search" />
 
                 <ImageView
                     android:id="@+id/imgAlert"
                     android:layout_width="19dp"
                     android:layout_height="21dp"
-                    android:src="@drawable/alert"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
+                    android:src="@drawable/alert" />
 
             </LinearLayout>
 
@@ -73,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/TitleLayout"
-            android:background="@color/grey"/>
+            android:background="@color/grey" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -83,8 +75,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:ignore="UselessParent">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,74 +84,70 @@
                     android:fontFamily="@font/alte_haas_grotesk_bold"
                     android:text="My town services"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/MyTownServiceView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp" />
 
                 <TextView
                     android:id="@+id/txtFindMoreService"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_margin="15dp"
                     android:fontFamily="@font/alte_haas_grotesk_bold"
                     android:text="Find more services"
                     android:textColor="@color/lightSkyPink"
-                    android:textSize="15sp"
-                    android:layout_gravity="center"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/grey"/>
+                    android:background="@color/grey" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginTop="25dp"
                     android:fontFamily="@font/alte_haas_grotesk_bold"
                     android:text="Second hand"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/SecondHandServiceView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="25dp"/>
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="5dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/grey"/>
+                    android:background="@color/grey" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginTop="25dp"
                     android:fontFamily="@font/alte_haas_grotesk_bold"
                     android:text="Store &amp; Services"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/StoreServiceView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="25dp"/>
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="5dp" />
 
             </LinearLayout>
 
@@ -172,10 +159,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:indeterminate="true"
-            android:indeterminateTintMode="src_atop"
             android:indeterminateTint="@color/colorAccent"
-            android:visibility="gone"
-            tools:ignore="UnusedAttribute" />
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

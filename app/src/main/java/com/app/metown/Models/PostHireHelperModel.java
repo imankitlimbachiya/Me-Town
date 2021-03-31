@@ -2,7 +2,8 @@ package com.app.metown.Models;
 
 public class PostHireHelperModel {
 
-    String ID, UserID, KeywordID, Salary, StartWorkingTime, EndWorkingTime, Description, DeletedAt, CreatedAt, UpdatedAt, Keyword;
+    String ID, UserID, KeywordID, Salary, StartWorkingTime, EndWorkingTime, Description, DeletedAt, CreatedAt, UpdatedAt,
+            Keyword, LocationName, Latitude, Longitude, UserRange, BusinessesID, Name;
 
     public String getID() {
         return ID;
@@ -90,5 +91,53 @@ public class PostHireHelperModel {
 
     public void setKeyword(String keyword) {
         Keyword = keyword;
+    }
+
+    public String getLocationName() {
+        return LocationName;
+    }
+
+    public void setLocationName(String locationName) {
+        LocationName = locationName;
+    }
+
+    public String getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        Latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        Longitude = longitude;
+    }
+
+    public String getUserRange() {
+        return UserRange;
+    }
+
+    public void setUserRange(String userRange) {
+        UserRange = userRange;
+    }
+
+    public String getBusinessesID() {
+        return BusinessesID;
+    }
+
+    public void setBusinessesID(String businessesID) {
+        BusinessesID = businessesID;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 }

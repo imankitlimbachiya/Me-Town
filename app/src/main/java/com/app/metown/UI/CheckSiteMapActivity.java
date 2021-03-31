@@ -34,6 +34,7 @@ public class CheckSiteMapActivity extends AppCompatActivity implements OnMapRead
     GoogleMap mMap;
     LatLng latLng;
     SupportMapFragment supportMapFragment;
+    String Latitude = "", Longitude = "";
     int FINE_LOCATION_ACCESS_REQUEST_CODE = 10001, BACKGROUND_LOCATION_ACCESS_REQUEST_CODE = 10002;
 
     @Override
@@ -41,7 +42,7 @@ public class CheckSiteMapActivity extends AppCompatActivity implements OnMapRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_site_map);
 
-        Log.e("Activity","CheckSiteMapActivity");
+        Log.e("Activity", "CheckSiteMapActivity");
 
         mContext = this;
 
@@ -49,7 +50,16 @@ public class CheckSiteMapActivity extends AppCompatActivity implements OnMapRead
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        GetIntentData();
+
         ViewInitialization();
+
+        ViewOnClick();
+    }
+
+    public void GetIntentData() {
+        Latitude = getIntent().getStringExtra("Latitude");
+        Longitude = getIntent().getStringExtra("Longitude");
     }
 
     public void ViewInitialization() {
@@ -57,11 +67,22 @@ public class CheckSiteMapActivity extends AppCompatActivity implements OnMapRead
 
         imgBack = findViewById(R.id.imgBack);
 
-        imgBack.setOnClickListener(this);
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
+    }
+
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imgBack:
+                finish();
+                break;
+        }
     }
 
     @Override
@@ -69,10 +90,18 @@ public class CheckSiteMapActivity extends AppCompatActivity implements OnMapRead
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         mMap.getUiSettings().setMapToolbarEnabled(false);
-        latLng = new LatLng(24.18075674085109, 72.40220561385833);
+        latLng = new LatLng(Float.parseFloat(Latitude), Float.parseFloat(Longitude));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         EnableUserLocation();
         mMap.setOnMapLongClickListener(this);
+
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+        mMap.clear();
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.addMarker(markerOptions);
     }
 
     private void EnableUserLocation() {
@@ -87,7 +116,7 @@ public class CheckSiteMapActivity extends AppCompatActivity implements OnMapRead
     public void onMapLongClick(LatLng latLng) {
         if (Build.VERSION.SDK_INT >= 29) {
             //We need background permission
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 HandleMapLongClick(latLng);
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_ACCESS_REQUEST_CODE);
@@ -116,16 +145,6 @@ public class CheckSiteMapActivity extends AppCompatActivity implements OnMapRead
         circleOptions.fillColor(Color.argb(0, 255, 255, 255));
         circleOptions.strokeWidth(4);
         mMap.addCircle(circleOptions);
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.imgBack:
-                finish();
-                break;
-        }
     }
 
     @Override

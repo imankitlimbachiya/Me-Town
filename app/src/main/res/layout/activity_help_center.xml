@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,8 +10,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -21,8 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +29,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Help Center"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
         <ImageView
             android:id="@+id/imgShare"
@@ -42,8 +38,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
-            android:src="@drawable/share"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/share" />
 
     </RelativeLayout>
 
@@ -62,8 +57,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <EditText
                 android:layout_width="match_parent"
@@ -84,8 +78,7 @@
                 android:src="@drawable/achievement"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
-                android:textSize="11sp"
-                tools:ignore="Autofill,ContentDescription,HardcodedText,SmallSp" />
+                android:textSize="11sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/AttributeView"
@@ -104,13 +97,12 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/louis_george_cafe"
-                android:text="These are the Frequesntly Asked Question"
+                android:text="These are the Frequently Asked Question"
                 android:textColor="@color/grey"
-                android:textSize="11sp"
-                tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                android:textSize="11sp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/QuestionView"
+                android:id="@+id/FAQView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -118,8 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_square_light_bg"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,8 +120,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Still can't solve your problem?"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/txtInquire"
@@ -145,8 +135,7 @@
                     android:text="Inquire"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -156,8 +145,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Operation Policy"
                     android:textColor="@color/grey"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -168,8 +156,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Privacy Policy"
                     android:textColor="@color/grey"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -185,7 +172,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

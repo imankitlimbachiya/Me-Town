@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,8 +10,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -21,10 +19,10 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/left_arrow" />
 
         <TextView
+            android:id="@+id/txtBusinessName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="'business name'"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -41,8 +38,7 @@
             android:layout_alignParentRight="true"
             android:orientation="horizontal"
             android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            tools:ignore="RtlHardcoded,RtlSymmetry">
+            android:paddingRight="8dp">
 
             <ImageView
                 android:id="@+id/imgShare"
@@ -50,8 +46,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="15dp"
-                android:src="@drawable/share"
-                tools:ignore="ContentDescription" />
+                android:src="@drawable/share" />
 
             <RelativeLayout
                 android:id="@+id/OptionLayout"
@@ -61,15 +56,13 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
                 android:paddingRight="10dp"
-                android:paddingBottom="5dp"
-                tools:ignore="UselessParent">
+                android:paddingBottom="5dp">
 
                 <ImageView
                     android:id="@+id/imgOption"
                     android:layout_width="6dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/option"
-                    tools:ignore="ContentDescription" />
+                    android:src="@drawable/option" />
 
             </RelativeLayout>
 
@@ -92,16 +85,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables,UselessLeaf">
+            android:orientation="vertical">
 
-            <ImageView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/PostView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/rounded_square_light_bg"
-                tools:ignore="ContentDescription" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_square_light_bg" />
 
             <TextView
+                android:id="@+id/txtStoreName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -109,8 +102,7 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="'Name of store'"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -120,14 +112,14 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/txtAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="25dp"
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="simple address"
                     android:textColor="@color/grey"
-                    android:textSize="10sp"
-                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -136,8 +128,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="'#' reviews"
                     android:textColor="@color/grey"
-                    android:textSize="10sp"
-                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                    android:textSize="10sp" />
 
             </LinearLayout>
 
@@ -161,25 +152,21 @@
                     android:text="Manage business info"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="17sp"
-                    tools:ignore="HardcodedText,InefficientWeight" />
+                    android:textSize="17sp" />
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
-                    android:src="@drawable/share"
-                    tools:ignore="ContentDescription,RtlHardcoded" />
+                    android:src="@drawable/share" />
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/StoreItemView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:ignore="UnusedAttribute" />
+                android:layout_height="wrap_content" />
 
             <View
                 android:layout_width="match_parent"
@@ -196,8 +183,7 @@
                 android:gravity="center"
                 android:text="Are you looking for way to advertise\nyour business?"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/btnAdvertiseYourBusinessInYourTown"
@@ -213,8 +199,7 @@
                 android:text="Advertise your business in your town"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText,InefficientWeight" />
+                android:textSize="16sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -235,10 +220,10 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Price"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/txtAddPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="22dp"
@@ -246,8 +231,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Add"
                     android:textColor="@color/redPink"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -269,8 +253,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_bold"
                     android:text="Kind of service"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -280,10 +263,10 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Price"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/txtEditServiceKindPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
@@ -291,8 +274,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Edit"
                     android:textColor="@color/redPink"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -314,10 +296,10 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Benefit for MeTown member"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/txtAddBenefit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="22dp"
@@ -325,8 +307,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Add"
                     android:textColor="@color/redPink"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -348,8 +329,7 @@
                     android:fontFamily="@font/alte_haas_grotesk_regular"
                     android:text="Review 0"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -359,8 +339,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="There is no review yet"
                     android:textColor="@color/grey"
-                    android:textSize="10sp"
-                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -370,10 +349,10 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Introduction"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/txtDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="27dp"
@@ -382,8 +361,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="'Introduction'"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -393,17 +371,18 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Where to find"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
-                <ImageView
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:background="@drawable/rounded_square_light_bg"
-                    tools:ignore="ContentDescription"
-                    android:layout_margin="15dp"/>
+                    android:layout_height="200dp"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/rounded_square_light_bg" />
 
                 <TextView
+                    android:id="@+id/txtLocationAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
@@ -411,8 +390,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Address  'address'"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -422,32 +400,30 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/round_normal_corner_dark_grey_bg"
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="Share store information"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText,UnusedAttribute" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/btnSeeAllStoreNearMe"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
                 android:background="@drawable/gradient_normal_ltr"
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="See all store near me"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="17sp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="15dp"
-                tools:ignore="HardcodedText,InefficientWeight" />
+                android:textSize="17sp" />
 
         </LinearLayout>
 
@@ -461,7 +437,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

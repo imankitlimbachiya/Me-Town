@@ -16,7 +16,7 @@ public class SplashActivity extends AppCompatActivity {
 
     Context mContext;
     int SPLASH_TIME_OUT = 1000;
-    String UserID;
+    String UserID, IsLocation, LocationID;
     SharedPreferences sharedPreferences;
 
     @Override
@@ -37,6 +37,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onResume() {
         sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
         UserID = sharedPreferences.getString("UserID", "");
+        LocationID = sharedPreferences.getString("LocationID", "");
+        IsLocation = sharedPreferences.getString("IsLocation", "");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -44,15 +46,18 @@ public class SplashActivity extends AppCompatActivity {
                 if (UserID.equals("")) {
                     intent = new Intent(mContext, MainActivity.class);
                 } else {
-                    intent = new Intent(mContext, HomeActivity.class);
+                    if (LocationID.equals("")) {
+                        intent = new Intent(mContext, SetLocationActivity.class);
+                    } else {
+                        if (IsLocation.equals("1")) {
+                            intent = new Intent(mContext, HomeActivity.class);
+                        } else {
+                            intent = new Intent(mContext, LocationActivity.class);
+                        }
+                    }
                 }
                 startActivity(intent);
                 finish();
-
-                /*Intent intent = new Intent(mContext, OrganiseMeetUpActivity.class);
-                startActivity(intent);
-                finish();*/
-
             }
         }, SPLASH_TIME_OUT);
         super.onResume();

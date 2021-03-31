@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -61,23 +60,17 @@
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
-            <EditText
-                android:id="@+id/edtKindOfService"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:layout_below="@id/txtDetailTypeOfBusiness"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@color/transparent"
-                android:fontFamily="@font/louis_george_cafe"
-                android:hint="Highly recommended to be searched by user"
-                android:imeOptions="actionNext"
-                android:inputType="text"
                 android:paddingLeft="10dp"
+                android:gravity="center_vertical"
                 android:paddingRight="10dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="@color/grey"
+                android:fontFamily="@font/louis_george_cafe"
+                android:text="Highly recommended to be searched by user"
+                android:textColor="@color/grey"
                 android:textSize="12sp" />
 
             <View
@@ -96,39 +89,21 @@
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
-            <EditText
-                android:id="@+id/edtServiceName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@color/transparent"
-                android:fontFamily="@font/louis_george_cafe"
-                android:hint="Max. 8 services\n\nCorrect example:\nEx. Aircon cleaning, Nail art, Truck delivery\n\nWrong example:\nService with location name\nEx. Nail art Makati, Malate Aircon"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:maxLines="8"
-                android:minLines="1"
-                android:singleLine="false"
-                android:textColor="@color/black"
-                android:textColorHint="@color/grey"
-                android:textSize="12sp" />
-
             <TextView
-                android:id="@+id/txtAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/round_very_normal_grey_bg"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:paddingLeft="20dp"
-                android:paddingTop="3dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="3dp"
-                android:text="+ Add"
-                android:textColor="@color/black"
+                android:layout_margin="20dp"
+                android:fontFamily="@font/louis_george_cafe"
+                android:text="Max. 8 services\n\nCorrect example:\nEx. Aircon cleaning, Nail art, Truck delivery\n\nWrong example:\nService with location name\nEx. Nail art Makati, Malate Aircon"
+                android:textColor="@color/grey"
                 android:textSize="12sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ServiceKindView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"/>
 
         </LinearLayout>
 

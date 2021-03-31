@@ -3,6 +3,7 @@ package com.app.metown.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -18,18 +20,34 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.app.metown.Adapters.SecondHandServiceCategoryAdapter;
 import com.app.metown.Adapters.ServiceNearbyCategoryAdapter;
-import com.app.metown.Models.StaticCategoryModel;
+import com.app.metown.AppConstants.APIConstant;
+import com.app.metown.Models.CategoryModel;
 import com.app.metown.R;
 import com.app.metown.UI.HiringHelperActivity;
 import com.app.metown.UI.NotificationActivity;
+import com.app.metown.UI.SearchAroundYourLocationActivity;
 import com.app.metown.UI.StoreAndServiceNearYouActivity;
-import com.app.metown.UI.UserItemReferenceActivity;
+import com.app.metown.UI.StoreAndServiceSearchActivity;
+import com.app.metown.VolleySupport.AppController;
+import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class ServiceFilter extends Fragment implements View.OnClickListener {
 
@@ -39,12 +57,13 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
 
     Context mContext;
     ProgressBar progressBar;
-    ImageView imgAlert;
+    ImageView imgAlert, imgSearch;
     TextView txtFindMoreService;
     RecyclerView MyTownServiceView, SecondHandServiceView, StoreServiceView;
-    ArrayList<StaticCategoryModel> myTownServiceList = new ArrayList<>();
-    ArrayList<StaticCategoryModel> secondHandServiceList = new ArrayList<>();
-    ArrayList<StaticCategoryModel> storeServiceList = new ArrayList<>();
+    ArrayList<CategoryModel> myTownServiceList = new ArrayList<>();
+    ArrayList<CategoryModel> secondHandServiceList = new ArrayList<>();
+    ArrayList<CategoryModel> storeServiceList = new ArrayList<>();
+    String CategoryType = "1", ParentID = "0";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,26 +73,32 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
 
         mContext = getActivity();
 
+        ViewInitialization(view);
+
+        ViewOnClick();
+
+        GetFilterApi(CategoryType, ParentID);
+
+        return view;
+    }
+
+    public void ViewInitialization(View view) {
         progressBar = view.findViewById(R.id.progressBar);
 
         txtFindMoreService = view.findViewById(R.id.txtFindMoreService);
 
         imgAlert = view.findViewById(R.id.imgAlert);
-
-        imgAlert.setOnClickListener(this);
-        txtFindMoreService.setOnClickListener(this);
+        imgSearch = view.findViewById(R.id.imgSearch);
 
         MyTownServiceView = view.findViewById(R.id.MyTownServiceView);
         SecondHandServiceView = view.findViewById(R.id.SecondHandServiceView);
         StoreServiceView = view.findViewById(R.id.StoreServiceView);
+    }
 
-        AddMyTownServiceItems();
-
-        AddSecondHandServiceItems();
-
-        AddStoreServiceItems();
-
-        return view;
+    public void ViewOnClick() {
+        imgAlert.setOnClickListener(this);
+        imgSearch.setOnClickListener(this);
+        txtFindMoreService.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -84,6 +109,10 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
                 Intent notification = new Intent(mContext, NotificationActivity.class);
                 startActivity(notification);
                 break;
+            case R.id.imgSearch:
+                Intent SearchAroundYourLocation = new Intent(mContext, SearchAroundYourLocationActivity.class);
+                startActivity(SearchAroundYourLocation);
+                break;
             case R.id.txtFindMoreService:
                 Intent StoreAndServiceNearYou = new Intent(mContext, StoreAndServiceNearYouActivity.class);
                 startActivity(StoreAndServiceNearYou);
@@ -91,152 +120,142 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void AddMyTownServiceItems() {
+    private void GetFilterApi(final String CategoryType, final String ParentID) {
+        String req = "req";
         myTownServiceList.clear();
-        for (int i = 1; i <= 12; i++) {
-            StaticCategoryModel staticCategoryModel = new StaticCategoryModel(String.valueOf(i), "Item name");
-            myTownServiceList.add(staticCategoryModel);
-        }
-
-        /*if (myTownServiceList.size() > 0) {
-            ServiceNearbyCategoryAdapter serviceNearbyCategoryAdapter = new ServiceNearbyCategoryAdapter(mContext, myTownServiceList);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 4, RecyclerView.VERTICAL, false);
-            MyTownServiceView.setLayoutManager(mLayoutManager);
-            MyTownServiceView.setItemAnimator(new DefaultItemAnimator());
-            MyTownServiceView.setAdapter(serviceNearbyCategoryAdapter);
-            serviceNearbyCategoryAdapter.notifyDataSetChanged();
-        }*/
-    }
-
-    public void AddSecondHandServiceItems() {
         secondHandServiceList.clear();
-        StaticCategoryModel staticCategoryModel;
-
-        staticCategoryModel = new StaticCategoryModel("1", "Popular");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("2", "Digital/Gadget");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("3", "Furniture");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("4", "Baby&Kids");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("5", "Living");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("6", "Sports");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("7", "Women's");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("8", "Men's");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("9", "Game&Hobby");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("10", "Beauty");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("11", "Pets");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("12", "Books");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("13", "Etc.");
-        secondHandServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("14", "Request to buy");
-        secondHandServiceList.add(staticCategoryModel);
-
-        if (secondHandServiceList.size() > 0) {
-            SecondHandServiceCategoryAdapter secondHandServiceCategoryAdapter = new SecondHandServiceCategoryAdapter(mContext, secondHandServiceList);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
-            SecondHandServiceView.setLayoutManager(mLayoutManager);
-            SecondHandServiceView.setItemAnimator(new DefaultItemAnimator());
-            SecondHandServiceView.setAdapter(secondHandServiceCategoryAdapter);
-            secondHandServiceCategoryAdapter.notifyDataSetChanged();
-        }
-    }
-
-    public void AddStoreServiceItems() {
         storeServiceList.clear();
-        StaticCategoryModel staticCategoryModel;
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().FILTER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().FILTER + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        JSONObject objectData = JsonMain.getJSONObject("data");
+                        JSONArray arrayCategoryList = objectData.getJSONArray("category_list");
+                        for (int i = 0; i < arrayCategoryList.length(); i++) {
+                            CategoryModel categoryModel = new CategoryModel();
+                            categoryModel.setCategoryID(arrayCategoryList.getJSONObject(i).getString("id"));
+                            categoryModel.setCategoryTitle(arrayCategoryList.getJSONObject(i).getString("name"));
+                            myTownServiceList.add(categoryModel);
+                        }
+                        if (myTownServiceList.size() > 0) {
+                            ServiceNearbyCategoryAdapter serviceNearbyCategoryAdapter = new ServiceNearbyCategoryAdapter(mContext, myTownServiceList);
+                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 4, RecyclerView.VERTICAL, false);
+                            MyTownServiceView.setLayoutManager(mLayoutManager);
+                            MyTownServiceView.setItemAnimator(new DefaultItemAnimator());
+                            MyTownServiceView.setAdapter(serviceNearbyCategoryAdapter);
+                            serviceNearbyCategoryAdapter.notifyDataSetChanged();
+                        }
 
-        staticCategoryModel = new StaticCategoryModel("1", "All");
-        storeServiceList.add(staticCategoryModel);
+                        JSONArray arraySecondCategoryList = objectData.getJSONArray("second_category_list");
+                        for (int i = 0; i < arraySecondCategoryList.length(); i++) {
+                            CategoryModel categoryModel = new CategoryModel();
+                            categoryModel.setCategoryID(arraySecondCategoryList.getJSONObject(i).getString("id"));
+                            categoryModel.setCategoryImage(arraySecondCategoryList.getJSONObject(i).getString("image"));
+                            categoryModel.setCategoryTitle(arraySecondCategoryList.getJSONObject(i).getString("category_title"));
+                            categoryModel.setCategoryParentID(arraySecondCategoryList.getJSONObject(i).getString("parent_id"));
+                            categoryModel.setCategoryParentCategoryTitle(arraySecondCategoryList.getJSONObject(i).getString("parent_category_title"));
+                            categoryModel.setCategoryType(arraySecondCategoryList.getJSONObject(i).getString("category_type"));
+                            categoryModel.setCategoryStatus(arraySecondCategoryList.getJSONObject(i).getString("status"));
+                            secondHandServiceList.add(categoryModel);
+                        }
+                        if (secondHandServiceList.size() > 0) {
+                            SecondHandServiceCategoryAdapter secondHandServiceCategoryAdapter = new SecondHandServiceCategoryAdapter(mContext, secondHandServiceList);
+                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
+                            SecondHandServiceView.setLayoutManager(mLayoutManager);
+                            SecondHandServiceView.setItemAnimator(new DefaultItemAnimator());
+                            SecondHandServiceView.setAdapter(secondHandServiceCategoryAdapter);
+                            secondHandServiceCategoryAdapter.notifyDataSetChanged();
+                        }
 
-        staticCategoryModel = new StaticCategoryModel("2", "Car & Motor");
-        storeServiceList.add(staticCategoryModel);
+                        JSONArray arrayStoreServiceList = objectData.getJSONArray("store_service_list");
+                        for (int i = 0; i < arrayStoreServiceList.length(); i++) {
+                            CategoryModel categoryModel = new CategoryModel();
+                            categoryModel.setCategoryID(arrayStoreServiceList.getJSONObject(i).getString("id"));
+                            categoryModel.setCategoryImage(arrayStoreServiceList.getJSONObject(i).getString("image"));
+                            categoryModel.setCategoryTitle(arrayStoreServiceList.getJSONObject(i).getString("category_title"));
+                            categoryModel.setCategoryParentID(arrayStoreServiceList.getJSONObject(i).getString("parent_id"));
+                            categoryModel.setCategoryParentCategoryTitle(arrayStoreServiceList.getJSONObject(i).getString("parent_category_title"));
+                            categoryModel.setCategoryType(arrayStoreServiceList.getJSONObject(i).getString("category_type"));
+                            categoryModel.setCategoryStatus(arrayStoreServiceList.getJSONObject(i).getString("status"));
+                            storeServiceList.add(categoryModel);
+                        }
+                        if (storeServiceList.size() > 0) {
+                            StoreServiceAdapter storeServiceAdapter = new StoreServiceAdapter(mContext, storeServiceList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                            StoreServiceView.setLayoutManager(mLayoutManager);
+                            StoreServiceView.setItemAnimator(new DefaultItemAnimator());
+                            StoreServiceView.setAdapter(storeServiceAdapter);
+                            storeServiceAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
-        staticCategoryModel = new StaticCategoryModel("3", "Groceries");
-        storeServiceList.add(staticCategoryModel);
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().MY_HIDDEN_SALES + params);
+                return params;
+            }
 
-        staticCategoryModel = new StaticCategoryModel("4", "Water Dispenser");
-        secondHandServiceList.add(staticCategoryModel);
+            // Raw data passing
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String params = "{\"category_type\":\"" + CategoryType + "\",\"parent_id\":\"" + ParentID + "\"}";
+                Log.e("PARAMETER", "" + APIConstant.getInstance().FILTER + params);
+                return params.getBytes();
+            }
+        };
 
-        staticCategoryModel = new StaticCategoryModel("5", "Laundry, Cleaning, Pest control");
-        storeServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("6", "Furniture, Kitchen");
-        storeServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("7", "Exhibit, Event, Concert");
-        storeServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("8", "Hiring helper");
-        storeServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("9", "Real estate");
-        storeServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("10", "Restaurant");
-        storeServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("11", "Hardware, key, Plumbing");
-        storeServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("12", "Gadget, Computer");
-        storeServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("13", "Massage");
-        storeServiceList.add(staticCategoryModel);
-
-        staticCategoryModel = new StaticCategoryModel("14", "Etc.");
-        storeServiceList.add(staticCategoryModel);
-
-        if (storeServiceList.size() > 0) {
-            StoreServiceAdapter storeServiceAdapter = new StoreServiceAdapter(mContext, storeServiceList);
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-            StoreServiceView.setLayoutManager(mLayoutManager);
-            StoreServiceView.setItemAnimator(new DefaultItemAnimator());
-            StoreServiceView.setAdapter(storeServiceAdapter);
-            storeServiceAdapter.notifyDataSetChanged();
-        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().FILTER);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
     public static class StoreServiceAdapter extends RecyclerView.Adapter<StoreServiceAdapter.MyViewHolder> {
 
         Context mContext;
-        ArrayList<StaticCategoryModel> arrayList;
+        ArrayList<CategoryModel> arrayList;
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView txtStoreService;
+            ImageView imgCategory;
+            TextView txtCategoryTitle;
 
             MyViewHolder(View view) {
                 super(view);
 
-                txtStoreService = view.findViewById(R.id.txtStoreService);
+                imgCategory = view.findViewById(R.id.imgCategory);
+
+                txtCategoryTitle = view.findViewById(R.id.txtCategoryTitle);
             }
         }
 
-        public StoreServiceAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
+        public StoreServiceAdapter(Context mContext, ArrayList<CategoryModel> arrayList) {
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
@@ -250,21 +269,29 @@ public class ServiceFilter extends Fragment implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-            final StaticCategoryModel staticCategoryModel = arrayList.get(position);
+            final CategoryModel categoryModel = arrayList.get(position);
 
-            holder.txtStoreService.setText(staticCategoryModel.getCategoryName());
+            String Image = categoryModel.getCategoryImage();
+            if (Image.equals("") || Image.equals("null") || Image.equals(null) || Image == null) {
+
+            } else {
+                Glide.with(mContext).load(Image).into(holder.imgCategory);
+            }
+
+            holder.txtCategoryTitle.setText(categoryModel.getCategoryTitle());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent;
-                    if (staticCategoryModel.getCategoryName().equals("Hiring helper")) {
+                    if (categoryModel.getCategoryTitle().equals("Hiring helper")) {
                         intent = new Intent(mContext, HiringHelperActivity.class);
+                        intent.putExtra("WhereFrom", "Service");
                     } else {
-                        intent = new Intent(mContext, UserItemReferenceActivity.class);
+                        intent = new Intent(mContext, StoreAndServiceSearchActivity.class);
+                        intent.putExtra("Keyword", categoryModel.getCategoryTitle());
                     }
                     mContext.startActivity(intent);
-
                 }
             });
         }

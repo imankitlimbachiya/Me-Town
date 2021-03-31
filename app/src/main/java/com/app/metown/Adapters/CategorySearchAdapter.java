@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.metown.Models.CategoryModel;
 import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
+import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,19 +53,17 @@ public class CategorySearchAdapter extends RecyclerView.Adapter<CategorySearchAd
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
         CategoryModel categoryModel = arrayList.get(position);
 
+        String CategoryImage = categoryModel.getCategoryImage();
+        if (CategoryImage.equals("") || CategoryImage.equals(null)) {
+
+        } else {
+            Glide.with(mContext).load(CategoryImage).into(holder.imgCategory);
+        }
         holder.txtCategoryName.setText(categoryModel.getCategoryTitle());
     }
 
     @Override
     public int getItemCount() {
         return arrayList.size();
-    }
-
-    private void setMargins(View view, int left, int top, int right, int bottom) {
-        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            p.setMargins(left, top, right, bottom);
-            view.requestLayout();
-        }
     }
 }

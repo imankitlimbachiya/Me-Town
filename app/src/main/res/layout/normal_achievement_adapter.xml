@@ -6,24 +6,26 @@
     android:background="@color/white">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/txtAchievementTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_toLeftOf="@id/imgAchievement"
         android:fontFamily="@font/louis_george_cafe"
         android:text="Got 15 compliment from other users"
         android:textColor="@color/black"
-        android:textSize="13sp"
-        tools:ignore="HardcodedText,RtlHardcoded" />
+        android:textSize="13sp" />
 
     <ImageView
+        android:id="@+id/imgAchievement"
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
-        android:src="@drawable/normal_achievement"
-        tools:ignore="ContentDescription,RtlHardcoded" />
+        android:src="@drawable/normal_achievement" />
 
     <View
         android:layout_width="match_parent"

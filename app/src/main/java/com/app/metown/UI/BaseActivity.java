@@ -1,20 +1,14 @@
 package com.app.metown.UI;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -35,8 +29,6 @@ import com.app.metown.Fragment.MyPage;
 import com.app.metown.Fragment.ServiceFilter;
 import com.app.metown.R;
 import com.app.metown.VolleySupport.AppController;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -159,23 +151,123 @@ public class BaseActivity extends AppCompatActivity {
         return false;
     }
 
-    /*@Override
+    private void GetProfileApi(final String UserID) {
+        String req = "req";
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_PROFILE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().GET_PROFILE + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        JSONObject objectData = JsonMain.getJSONObject("data");
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+                        sharedPreferencesEditor.putString("UserID", objectData.getString("id"));
+                        sharedPreferencesEditor.putString("UniqueID", objectData.getString("unique_id"));
+                        sharedPreferencesEditor.putString("SocialID", objectData.getString("social_id"));
+                        sharedPreferencesEditor.putString("FullName", objectData.getString("full_name"));
+                        sharedPreferencesEditor.putString("NickName", objectData.getString("nick_name"));
+                        sharedPreferencesEditor.putString("Email", objectData.getString("email"));
+                        sharedPreferencesEditor.putString("VerificationCode", objectData.getString("verification_code"));
+                        sharedPreferencesEditor.putString("Verified", objectData.getString("verified"));
+                        sharedPreferencesEditor.putString("PhoneNumber", objectData.getString("phone_number"));
+                        sharedPreferencesEditor.putString("ProfilePicture", objectData.getString("profile_pic"));
+                        sharedPreferencesEditor.putString("Otp", objectData.getString("otp"));
+                        sharedPreferencesEditor.putString("InvitationCode", objectData.getString("invitation_code"));
+                        sharedPreferencesEditor.putString("ReferralCode", objectData.getString("referral_code"));
+                        sharedPreferencesEditor.putString("Status", objectData.getString("status"));
+                        sharedPreferencesEditor.putString("PrimaryNotification", objectData.getString("primary_notification"));
+                        sharedPreferencesEditor.putString("OtherNotification", objectData.getString("other_notification"));
+                        sharedPreferencesEditor.putString("DoNotDisturb", objectData.getString("do_not_disturb"));
+                        sharedPreferencesEditor.putString("ApproveSearchEngine", objectData.getString("approve_search_engine"));
+                        sharedPreferencesEditor.putString("Vibration", objectData.getString("vibration"));
+                        sharedPreferencesEditor.putString("UserRange", objectData.getString("user_range"));
+                        sharedPreferencesEditor.putString("CreatedAt", objectData.getString("created_at"));
+                        sharedPreferencesEditor.putString("UpdatedAt", objectData.getString("updated_at"));
+                        sharedPreferencesEditor.putString("DeletedAt", objectData.getString("deleted_at"));
+                        sharedPreferencesEditor.putString("AchievementCount", objectData.getString("achivementcount"));
+                        sharedPreferencesEditor.putString("SecondaryCount", objectData.getString("secondarycount"));
+                        sharedPreferencesEditor.putString("IsMerchant", objectData.getString("is_merchant"));
+                        JSONObject objectMerchantDetail = objectData.getJSONObject("merchant_detail");
+                        sharedPreferencesEditor.putString("MerchantID", objectMerchantDetail.getString("id"));
+                        sharedPreferencesEditor.putString("MerchantCategoryID", objectMerchantDetail.getString("category_id"));
+                        sharedPreferencesEditor.putString("MerchantStoreName", objectMerchantDetail.getString("name"));
+                        sharedPreferencesEditor.putString("MerchantStoreAddress", objectMerchantDetail.getString("address"));
+                        sharedPreferencesEditor.putString("MerchantStoreDetailAddress", objectMerchantDetail.getString("detailed_addr"));
+                        sharedPreferencesEditor.putString("MerchantStoreImages", objectMerchantDetail.getString("images"));
+                        sharedPreferencesEditor.putString("MerchantStoreDescription", objectMerchantDetail.getString("images"));
+                        sharedPreferencesEditor.putString("MerchantStoreBusinessStartTime", objectMerchantDetail.getString("business_start"));
+                        sharedPreferencesEditor.putString("MerchantStoreBusinessEndTime", objectMerchantDetail.getString("business_end"));
+                        sharedPreferencesEditor.putString("MerchantStoreDayOff", objectMerchantDetail.getString("day_off"));
+                        sharedPreferencesEditor.putString("MerchantStoreBenefits", objectMerchantDetail.getString("benefits"));
+                        sharedPreferencesEditor.putString("MerchantStoreWebPage", objectMerchantDetail.getString("webpage"));
+                        sharedPreferencesEditor.putString("MerchantStorePermit", objectMerchantDetail.getString("permit"));
+                        sharedPreferencesEditor.putString("MerchantStoreLatitude", objectMerchantDetail.getString("lats"));
+                        sharedPreferencesEditor.putString("MerchantStoreLongitude", objectMerchantDetail.getString("longs"));
+                        sharedPreferencesEditor.putString("MerchantStoreLocationName", objectMerchantDetail.getString("location_name"));
+                        sharedPreferencesEditor.putString("MerchantStoreCreatedAt", objectMerchantDetail.getString("created_at"));
+                        sharedPreferencesEditor.putString("MerchantStoreUpdatedAt", objectMerchantDetail.getString("updated_at"));
+                        sharedPreferencesEditor.putString("MerchantStoreDeletedAt", objectMerchantDetail.getString("deleted_at"));
+                        sharedPreferencesEditor.apply();
+                        sharedPreferencesEditor.commit();
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().GET_PROFILE + params);
+                return params;
+            }
+
+            // Form data passing
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("user_id", UserID);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_PROFILE + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_PROFILE);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
-        Log.e("UserID","" + sharedPreferences.getString("UserID", ""));
-        Log.e("UniqueID","" + sharedPreferences.getString("UniqueID", ""));
-        Log.e("NickName","" + sharedPreferences.getString("NickName", ""));
-        Log.e("Email","" + sharedPreferences.getString("Email", ""));
-        Log.e("SocialID","" + sharedPreferences.getString("SocialID", ""));
-        Log.e("PhoneNumber","" + sharedPreferences.getString("PhoneNumber", ""));
-        Log.e("InvitationCode","" + sharedPreferences.getString("InvitationCode", ""));
-        Log.e("Status","" + sharedPreferences.getString("Status", ""));
-        Log.e("EmailVerify","" + sharedPreferences.getString("EmailVerify", ""));
-        Log.e("ProfilePicture","" + sharedPreferences.getString("ProfilePicture", ""));
-        Log.e("Token","" + sharedPreferences.getString("Token", ""));
-        Log.e("Type","" + sharedPreferences.getString("Type", ""));
-    }*/
+        SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+        String UserID = sharedPreferences.getString("UserID", "");
+        GetProfileApi(UserID);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+        String UserID = sharedPreferences.getString("UserID", "");
+        GetProfileApi(UserID);
+    }
 
     @Override
     public void onBackPressed() {

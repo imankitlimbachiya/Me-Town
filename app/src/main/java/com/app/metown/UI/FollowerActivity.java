@@ -136,13 +136,12 @@ public class FollowerActivity extends AppCompatActivity implements View.OnClickL
                                     FollowerView.setItemAnimator(new DefaultItemAnimator());
                                     FollowerView.setAdapter(followerAdapter);
                                     followerAdapter.notifyDataSetChanged();
-                                } else {
-                                    ResponseLayout.setVisibility(View.GONE);
-                                    NoResponseLayout.setVisibility(View.VISIBLE);
                                 }
                             } else {
                                 String ErrorMessage = JsonMain.getString("msg");
                                 Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                                ResponseLayout.setVisibility(View.GONE);
+                                NoResponseLayout.setVisibility(View.VISIBLE);
                             }
                         } catch (Exception exception) {
                             exception.printStackTrace();

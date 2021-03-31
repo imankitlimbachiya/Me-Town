@@ -43,7 +43,8 @@ public class OrganiseMeetUpActivity extends AppCompatActivity implements View.On
     Switch AlarmSwitch;
     TextView txtAppointmentTime, txtDone;
     EditText edtDateAndTime, edtMinuteBefore, edtMeetUpAddress, edtName, edtContact, edtDetails;
-    String Alarm = "0";
+    String Alarm = "0", ToUserID = "", ToUserName = "", ToUserProfilePicture = "",
+            ConversationID = "", ProductID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +59,21 @@ public class OrganiseMeetUpActivity extends AppCompatActivity implements View.On
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        GetIntentData();
+
         ViewInitialization();
 
         ViewOnClick();
 
         ViewSetText();
+    }
+
+    public void GetIntentData() {
+        ConversationID = getIntent().getStringExtra("ConversationID");
+        ToUserID = getIntent().getStringExtra("ToUserID");
+        ToUserName = getIntent().getStringExtra("ToUserName");
+        ToUserProfilePicture = getIntent().getStringExtra("ToUserProfilePicture");
+        ProductID = getIntent().getStringExtra("ProductID");
     }
 
     public void ViewInitialization() {
@@ -133,49 +144,45 @@ public class OrganiseMeetUpActivity extends AppCompatActivity implements View.On
                 } else if (Details.equals("")) {
                     Toast.makeText(mContext, "Please Enter your Appointment Details.", Toast.LENGTH_LONG).show();
                 } else {
-                   AddOrganiseMeetUpApi(AppointmentTime, Alarm, MinuteBefore, Name, MeetUpAddress, Contact, Details, "24.18074693156234","72.40220123313713");
+                    AddOrganiseMeetUpApi(AppointmentTime, Alarm, MinuteBefore, Name, MeetUpAddress, Contact, Details, ToUserID, ConversationID);
                 }
                 break;
         }
     }
 
     private void AddOrganiseMeetUpApi(final String AppointmentTime, final String Alarm, final String SetBefore, final String Name,
-                                      final String MeetUpAddress, final String Contact, final String Details, final String Latitude,
-                                      final String Longitude) {
+                                      final String MeetUpAddress, final String Contact, final String Details, final String ToUserID,
+                                      final String ConversationID) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_ORGANISE_MEET_UP,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_ORGANISE_MEET_UP + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                String SuccessMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, SuccessMessage, Toast.LENGTH_LONG).show();
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_ORGANISE_MEET_UP, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_ORGANISE_MEET_UP + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        finish();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
                 params.put("Authorization", Type + " " + Token);
@@ -187,6 +194,9 @@ public class OrganiseMeetUpActivity extends AppCompatActivity implements View.On
             // Form data passing
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                String Latitude = sharedPreferences.getString("Latitude", "");
+                String Longitude = sharedPreferences.getString("Longitude", "");
                 params.put("appointment_time", AppointmentTime);
                 params.put("alarm", Alarm);
                 params.put("set_before", SetBefore);
@@ -196,6 +206,8 @@ public class OrganiseMeetUpActivity extends AppCompatActivity implements View.On
                 params.put("details", Details);
                 params.put("lat", Latitude);
                 params.put("longi", Longitude);
+                params.put("to_user_id", ToUserID);
+                params.put("conversation_id", ConversationID);
                 Log.e("PARAMETER", "" + APIConstant.getInstance().ADD_ORGANISE_MEET_UP + params);
                 return params;
             }

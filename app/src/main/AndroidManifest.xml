@@ -10,9 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -34,7 +32,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.HomeActivity" />
-        <activity android:name=".UI.HomeSecondActivity" />
         <activity android:name=".UI.MainActivity" />
         <activity android:name=".UI.PhoneVerifyActivity" />
         <activity android:name=".UI.CheckAccountActivity" />
@@ -49,6 +46,7 @@
         <activity android:name=".UI.StoreAndServiceSearchActivity" />
         <activity android:name=".UI.RegisterMyBusinessActivity" />
         <activity android:name=".UI.MySaleActivity" />
+        <activity android:name=".UI.MyItemSaleActivity" />
         <activity android:name=".UI.SelectBuyerActivity" />
         <activity android:name=".UI.ReviewByMeActivity" />
         <activity android:name=".UI.LeaveReviewActivity" />
@@ -75,7 +73,9 @@
         <activity android:name=".UI.ReviewAllActivity" />
         <activity android:name=".UI.WriteReviewReplyActivity" />
         <activity android:name=".UI.AchievementActivity" />
-        <activity android:name=".UI.ChatCommercialActivity" />
+        <activity
+            android:name=".UI.ChatCommercialActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity android:name=".UI.LocationActivity" />
         <activity android:name=".UI.ReviewFromBuyerAndSellerActivity" />
         <activity android:name=".UI.FavouriteActivity" />
@@ -109,7 +109,6 @@
         <activity android:name=".UI.ManageBusinessInfoActivity" />
         <activity android:name=".UI.PriceActivity" />
         <activity android:name=".UI.AddPriceActivity" />
-        <activity android:name=".UI.EditPriceActivity" />
         <activity android:name=".UI.AdvertisementActivity" />
         <activity android:name=".UI.SelectAdvertisingCategoryActivity" />
         <activity android:name=".UI.ServiceKindActivity" />
@@ -120,7 +119,10 @@
         <activity android:name=".UI.BusinessInfoActivity" />
         <activity android:name=".UI.EmailVerifyActivity" />
         <activity android:name=".UI.UserItemReferenceActivity" />
+        <activity android:name=".UI.BusinessStoreActivity" />
+        <activity android:name=".UI.BusinessStoreProfileActivity" />
         <activity android:name=".UI.SetRangeActivity" />
+        <activity android:name=".UI.RangeSettingActivity" />
         <activity android:name=".UI.LocationVerifyActivity" />
         <activity android:name=".UI.ProfileOfStoreActivity" />
         <activity android:name=".UI.ManageUserActivity" />

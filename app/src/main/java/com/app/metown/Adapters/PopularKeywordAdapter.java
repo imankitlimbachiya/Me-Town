@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.StaticCategoryModel;
+import com.app.metown.Models.JobKeywordModel;
 import com.app.metown.R;
 import com.app.metown.UI.StoreAndServiceSearchActivity;
 
@@ -19,24 +20,24 @@ import java.util.ArrayList;
 public class PopularKeywordAdapter extends RecyclerView.Adapter<PopularKeywordAdapter.MyViewHolder> {
 
     Context mContext;
-    ArrayList<StaticCategoryModel> arrayList;
+    ArrayList<JobKeywordModel> arrayList;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        // RadioButton btnSelect;
+        TextView txtKeywordCount, txtKeyword;
 
         MyViewHolder(View view) {
             super(view);
 
-            // btnSelect = view.findViewById(R.id.btnSelect);
+            txtKeywordCount = view.findViewById(R.id.txtKeywordCount);
+            txtKeyword = view.findViewById(R.id.txtKeyword);
         }
     }
 
-    public PopularKeywordAdapter(Context mContext, ArrayList<StaticCategoryModel> arrayList) {
+    public PopularKeywordAdapter(Context mContext, ArrayList<JobKeywordModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
     }
-
 
     @NotNull
     @Override
@@ -47,9 +48,10 @@ public class PopularKeywordAdapter extends RecyclerView.Adapter<PopularKeywordAd
 
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        StaticCategoryModel staticCategoryModel = arrayList.get(position);
+        JobKeywordModel jobKeywordModel = arrayList.get(position);
 
-        // holder.btnSelect.setText("  " + categoryModel.getCategoryName());
+        holder.txtKeywordCount.setText(jobKeywordModel.getSearchCount());
+        holder.txtKeyword.setText(jobKeywordModel.getJobKeyword());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

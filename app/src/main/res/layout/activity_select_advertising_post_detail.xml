@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,8 +10,7 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -21,8 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="ContentDescription,RtlHardcoded" />
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +29,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Select advertising post"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
     </RelativeLayout>
 
@@ -53,8 +49,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -64,31 +59,29 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="Select post where you will issue coupon"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="30dp"
-                android:orientation="horizontal"
-                tools:ignore="DisableBaselineAlignment,UselessParent">
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imgItem"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="14dp"
-                    android:background="@drawable/round_normal_corner_bg"
-                    tools:ignore="RtlHardcoded" />
+                    android:background="@drawable/round_normal_corner_bg" />
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    tools:ignore="InefficientWeight,RtlHardcoded,RtlSymmetry">
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:id="@+id/txtItemName"
@@ -99,8 +92,7 @@
                         android:singleLine="true"
                         android:text="Item name"
                         android:textColor="@color/black"
-                        android:textSize="15sp"
-                        tools:ignore="HardcodedText" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -111,8 +103,7 @@
                         android:singleLine="true"
                         android:text="address / time posted"
                         android:textColor="@color/black"
-                        android:textSize="10sp"
-                        tools:ignore="HardcodedText,SmallSp" />
+                        android:textSize="10sp" />
 
                 </RelativeLayout>
 
@@ -126,20 +117,34 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtTitleOfCoupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Title of coupon"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtTitleOfCoupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/txtTitleOfCoupon"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -150,20 +155,34 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtPeriod"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Period"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtPeriod"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/txtPeriod"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -174,21 +193,38 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtCouponCountTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="How many coupons will you issue?"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtCouponCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/txtCouponCountTitle"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toLeftOf="@id/txtCoupon"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/louis_george_cafe"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/txtCoupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -198,8 +234,7 @@
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="coupons"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
             </RelativeLayout>
 
@@ -210,32 +245,38 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtDetailOfCoupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/louis_george_cafe"
                     android:text="Details of coupon (optional)"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    tools:ignore="HardcodedText,RtlHardcoded" />
+                    android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <EditText
+                    android:id="@+id/edtDetailOfCoupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
                     android:layout_below="@id/txtDetailOfCoupon"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/transparent"
                     android:fontFamily="@font/louis_george_cafe"
-                    android:text="This detail is sent to chatting room"
-                    android:textColor="@color/grey"
-                    android:textSize="11sp"
-                    tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:hint="This detail is sent to chatting room"
+                    android:textColorHint="@color/grey"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -263,8 +304,7 @@
         android:text="Issue Coupon"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="19sp"
-        tools:ignore="HardcodedText" />
+        android:textSize="19sp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -274,7 +314,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

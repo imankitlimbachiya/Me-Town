@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="52dp"
     android:layout_marginTop="15dp"
@@ -15,10 +14,10 @@
         android:fontFamily="@font/louis_george_cafe"
         android:text="0 Day Ago"
         android:textColor="@color/grey"
-        android:textSize="11sp"
-        tools:ignore="HardcodedText,RtlHardcoded,SmallSp" />
+        android:textSize="11sp" />
 
     <TextView
+        android:id="@+id/txtAnnouncementTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtTimeAgo"
@@ -27,8 +26,7 @@
         android:fontFamily="@font/alte_haas_grotesk_regular"
         android:text="Notification comes here"
         android:textColor="@color/black"
-        android:textSize="15sp"
-        tools:ignore="HardcodedText,RtlHardcoded" />
+        android:textSize="15sp" />
 
     <View
         android:layout_width="match_parent"

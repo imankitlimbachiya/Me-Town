@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -136,16 +135,22 @@
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txtSelectAdvertisingPrice"
+                <EditText
+                    android:id="@+id/edtAdvertisePrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@id/txtSelectAdvertisingPrice"
+                    android:background="@color/transparent"
                     android:fontFamily="@font/louis_george_cafe"
-                    android:text="It will take 3 to 4 hours to review your advertising\nrequest (working days only)"
-                    android:textColor="@color/grey"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="@color/grey"
+                    android:hint="It will take 3 to 4 hours to review your advertising\nRequest (working days only)"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
             </RelativeLayout>
@@ -171,16 +176,22 @@
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txtHowManyViewerInRadius"
+                <EditText
+                    android:id="@+id/edtUserInRadius"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@id/txtHowManyViewerInRadius"
+                    android:background="@color/transparent"
                     android:fontFamily="@font/louis_george_cafe"
-                    android:text="(per person)\nHow many user in your radius"
-                    android:textColor="@color/grey"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:textColorHint="@color/grey"
+                    android:hint="(per person)\nHow many user in your radius"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
             </RelativeLayout>
@@ -206,16 +217,22 @@
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txtHowManyWillViewYourAd"
+                <EditText
+                    android:id="@+id/edtUserViewAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@id/txtHowManyWillViewYourAd"
+                    android:background="@color/transparent"
                     android:fontFamily="@font/louis_george_cafe"
-                    android:text="(per person)\nHow many user in your radius"
-                    android:textColor="@color/grey"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:textColorHint="@color/grey"
+                    android:hint="(per person)\nHow many user in your radius"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
 
             </RelativeLayout>

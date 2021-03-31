@@ -36,6 +36,8 @@ public class InquireInformationActivity extends AppCompatActivity implements Vie
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
     }
 
     public void ViewInitialization() {
@@ -44,12 +46,13 @@ public class InquireInformationActivity extends AppCompatActivity implements Vie
         imgBack = findViewById(R.id.imgBack);
 
         btnVerifyEmail = findViewById(R.id.btnVerifyEmail);
+    }
 
+    public void ViewOnClick() {
         imgBack.setOnClickListener(this);
         btnVerifyEmail.setOnClickListener(this);
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -57,8 +60,9 @@ public class InquireInformationActivity extends AppCompatActivity implements Vie
                 finish();
                 break;
             case R.id.btnVerifyEmail:
-                Intent intent = new Intent(mContext, InquireActivity.class);
+                Intent intent = new Intent(mContext, EmailVerifyActivity.class);
                 startActivity(intent);
+                finish();
                 break;
         }
     }

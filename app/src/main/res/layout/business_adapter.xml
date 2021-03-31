@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="188dp"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp"
     android:layout_marginBottom="20dp"
-    android:background="@drawable/round_before_full_corner_dark_bg"
-    android:orientation="horizontal">
+    android:background="@drawable/round_before_full_corner_dark_bg">
 
     <TextView
         android:id="@+id/txtBusinessName"
@@ -18,8 +16,7 @@
         android:fontFamily="@font/alte_haas_grotesk_bold"
         android:text="'Business name'"
         android:textColor="@color/black"
-        android:textSize="17sp"
-        tools:ignore="HardcodedText,RtlHardcoded" />
+        android:textSize="17sp" />
 
     <View
         android:id="@+id/TopView"
@@ -34,18 +31,16 @@
         android:layout_height="match_parent"
         android:layout_above="@id/BottomView"
         android:layout_below="@id/TopView"
-        android:orientation="horizontal"
-        tools:ignore="DisableBaselineAlignment,UselessLeaf">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:paddingLeft="12dp"
-            android:paddingRight="10dp"
             android:orientation="vertical"
-            tools:ignore="RtlHardcoded">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/txtPosition"
@@ -54,8 +49,44 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="Position"
                 android:textColor="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/louis_george_cafe"
+                android:text="Salary"
+                android:textColor="@color/grey"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/louis_george_cafe"
+                android:text="Working time"
+                android:textColor="@color/grey"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/louis_george_cafe"
+                android:text="Position"
+                android:textColor="@color/veryDarkGrey"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtSalary"
@@ -64,9 +95,8 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="Salary"
-                android:textColor="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textColor="@color/veryDarkGrey"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtWorkingTime"
@@ -75,52 +105,24 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="Working time"
-                android:textColor="@color/grey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textColor="@color/veryDarkGrey"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            android:gravity="center_vertical"
-            android:paddingLeft="12dp"
-            android:paddingRight="10dp"
-            android:orientation="vertical"
-            tools:ignore="RtlHardcoded">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/louis_george_cafe"
-                android:text="Position"
-                android:textColor="@color/veryDarkGrey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/louis_george_cafe"
-                android:text="Salary"
-                android:textColor="@color/veryDarkGrey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/louis_george_cafe"
-                android:text="Working time"
-                android:textColor="@color/veryDarkGrey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnComplete"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_medium_corner_red_pink_bg"
+            android:fontFamily="@font/alte_haas_grotesk_regular"
+            android:gravity="center"
+            android:text="Complete"
+            android:textAllCaps="false"
+            android:textColor="@color/redPink"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -141,7 +143,6 @@
         android:fontFamily="@font/alte_haas_grotesk_regular"
         android:text="check the site on map"
         android:textColor="@color/yellow"
-        android:textSize="14sp"
-        tools:ignore="HardcodedText,RtlHardcoded" />
+        android:textSize="14sp" />
 
 </RelativeLayout>

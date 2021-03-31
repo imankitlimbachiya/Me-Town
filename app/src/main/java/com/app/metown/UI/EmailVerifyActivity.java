@@ -1,8 +1,6 @@
 package com.app.metown.UI;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -42,7 +40,6 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
     EditText edtEnterYourEmail, edtEnterCode;
     TextView txtPrivacyPolicy;
     Button btnSendCode, btnAgreeToGetStarted;
-
     String code = "";
 
     @Override
@@ -59,6 +56,8 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
     }
 
     public void ViewInitialization() {
@@ -72,10 +71,6 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
         edtEnterYourEmail = findViewById(R.id.edtEnterYourEmail);
         edtEnterCode = findViewById(R.id.edtEnterCode);
 
-        imgBack.setOnClickListener(this);
-        btnSendCode.setOnClickListener(this);
-        btnAgreeToGetStarted.setOnClickListener(this);
-
         txtPrivacyPolicy = findViewById(R.id.txtPrivacyPolicy);
         txtPrivacyPolicy.setPaintFlags(txtPrivacyPolicy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -84,7 +79,12 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    @SuppressLint("NonConstantResourceId")
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
+        btnSendCode.setOnClickListener(this);
+        btnAgreeToGetStarted.setOnClickListener(this);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -128,21 +128,20 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
     private void SendEmailVerificationCodeApi(final String Email) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().SEND_EMAIL_VERIFICATION_CODE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().SEND_EMAIL_VERIFICATION_CODE + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            String Message = JsonMain.getString("msg");
-                            Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                            code = JsonMain.getString("code");
-                            edtEnterCode.setText(code);
-                            btnAgreeToGetStarted.setEnabled(true);
-                            // Log.e("HAS_ERROR", " " + HAS_ERROR);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().SEND_EMAIL_VERIFICATION_CODE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().SEND_EMAIL_VERIFICATION_CODE + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                    code = JsonMain.getString("code");
+                    edtEnterCode.setText(code);
+                    btnAgreeToGetStarted.setEnabled(true);
+                    // Log.e("HAS_ERROR", " " + HAS_ERROR);
                             /*if (HAS_ERROR.equalsIgnoreCase("false")) {
                                 code = JsonMain.getString("code");
                                 Toast.makeText(mContext, code, Toast.LENGTH_LONG).show();
@@ -151,18 +150,18 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
                             } else {
                                 Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                             }*/
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
+            // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -183,6 +182,7 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
                 return params;
             }*/
 
+            // Raw data passing
             @Override
             public byte[] getBody() throws AuthFailureError {
                 String params = "{\"email\":\"" + Email + "\"}";
@@ -200,33 +200,28 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
     private void EmailVerifyApi(final String Email, final String Code) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().EMAIL_VERIFY,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().EMAIL_VERIFY + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            String msg = JsonMain.getString("msg");
-                            // Log.e("HAS_ERROR", " " + HAS_ERROR);
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
-                        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().EMAIL_VERIFY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().EMAIL_VERIFY + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String msg = JsonMain.getString("msg");
+                    Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        finish();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -239,14 +234,6 @@ public class EmailVerifyActivity extends AppCompatActivity implements View.OnCli
                 params.put("Accept", "application/json");
                 return params;
             }
-
-            /*protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("mobile", MobileNumber);
-                params.put("type", Type);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().CHANGE_MOBILE + params);
-                return params;
-            }*/
 
             @Override
             public byte[] getBody() throws AuthFailureError {

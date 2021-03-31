@@ -1,4 +1,4 @@
-package com.app.metown.notification;
+package com.app.metown.Notification;
 
 public class NotificationConfig {
 

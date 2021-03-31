@@ -69,6 +69,7 @@
                         android:src="@drawable/profile_default" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgCamera"
                         android:layout_width="21dp"
                         android:layout_height="21dp"
                         android:layout_alignParentRight="true"

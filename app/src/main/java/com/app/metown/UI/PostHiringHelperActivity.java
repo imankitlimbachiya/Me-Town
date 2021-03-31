@@ -4,7 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentUris;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,14 +13,11 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
@@ -52,15 +49,14 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.app.metown.Adapters.SelectCategoryMainAdapter;
+import com.app.metown.Adapters.PhotoAdapter;
 import com.app.metown.AppConstants.APIConstant;
 import com.app.metown.AppConstants.Utility;
-import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.Models.TopicKeywordModel;
 import com.app.metown.R;
 import com.app.metown.VolleySupport.AppController;
 import com.app.metown.VolleySupport.VolleyMultipartRequest;
-import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -72,7 +68,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,20 +78,17 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
     ProgressBar progressBar;
     ImageView imgBack, imgPhoto;
     EditText edtSalary, edtDescription;
-    TextView txtJobKeyword, txtSelectedJobKeyword, txtSalary, txtPhoto, txtWorkingTime, txtDescription, txtSetTime, txtDone;
+    TextView txtJobKeyword, txtSelectedJobKeyword, txtImageCount, txtSalary, txtPhoto, txtWorkingTime, txtDescription, txtSetTime, txtDone;
     LinearLayout SelectJobKeywordLayout;
-    RecyclerView SelectCategoryView;
+    RecyclerView SelectCategoryView, PhotoView;
     ArrayList<TopicKeywordModel> keywordList = new ArrayList<>();
     Dialog dialog;
-
-    String KeywordID = "", Description = "", Salary = "", StartWorkingTime = "", EndWorkingTime = "";
-
-    String mPath = "";
+    String KeywordID = "", Description = "", Salary = "", StartWorkingTime = "", EndWorkingTime = "", UserRange = "";
     private static final int SELECT_IMAGE = 4;
     private int MY_REQUEST_CODE, REQUEST_CODE;
-    File photo;
-    Bitmap mBitmap;
-    private ArrayList<Bitmap> mTempBitmapArray = new ArrayList<Bitmap>();
+    ArrayList<Uri> uriList = new ArrayList<>();
+    ArrayList<String> pathList = new ArrayList<>();
+    ArrayList<Bitmap> photoList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,11 +124,14 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
         txtPhoto = findViewById(R.id.txtPhoto);
         txtWorkingTime = findViewById(R.id.txtWorkingTime);
         txtDescription = findViewById(R.id.txtDescription);
+        txtImageCount = findViewById(R.id.txtImageCount);
 
         edtSalary = findViewById(R.id.edtSalary);
         edtDescription = findViewById(R.id.edtDescription);
 
         SelectJobKeywordLayout = findViewById(R.id.SelectJobKeywordLayout);
+
+        PhotoView = findViewById(R.id.PhotoView);
     }
 
     public void ViewOnClick() {
@@ -177,11 +172,12 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
             case R.id.txtDone:
                 Salary = edtSalary.getText().toString().trim();
                 Description = edtDescription.getText().toString().trim();
+                UserRange = RangeSettingActivity.UserRange;
                 if (KeywordID.equals("")) {
                     Toast.makeText(mContext, "Please Select your Keyword.", Toast.LENGTH_LONG).show();
                 } else if (Salary.equals("")) {
                     Toast.makeText(mContext, "Please Enter your Salary.", Toast.LENGTH_LONG).show();
-                } else if (mBitmap == null) {
+                } else if (photoList.size() == 0) {
                     Toast.makeText(mContext, "Please Select your image.", Toast.LENGTH_LONG).show();
                 } else if (StartWorkingTime.equals("")) {
                     Toast.makeText(mContext, "Please Select your working time.", Toast.LENGTH_LONG).show();
@@ -189,8 +185,10 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
                     Toast.makeText(mContext, "Please Select your working time.", Toast.LENGTH_LONG).show();
                 } else if (Description.equals("")) {
                     Toast.makeText(mContext, "Please Enter Description.", Toast.LENGTH_LONG).show();
+                } else if (UserRange.equals("")) {
+                    Toast.makeText(mContext, "Please Select Your Range.", Toast.LENGTH_LONG).show();
                 } else {
-                    AddPostHireHelperApi(KeywordID, Description, Salary, StartWorkingTime, EndWorkingTime, mBitmap);
+                    AddPostHireHelperApi(KeywordID, Description, Salary, StartWorkingTime, EndWorkingTime, UserRange);
                 }
                 break;
             case R.id.SelectJobKeywordLayout:
@@ -199,7 +197,7 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
                 dialog.setContentView(R.layout.select_category_dialog);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 SelectCategoryView = dialog.findViewById(R.id.SelectCategoryView);
-                GetTopicTypeKeywordApi("0");
+                GetJobKeywordListApi();
                 break;
             case R.id.txtSetTime:
                 dialog = new Dialog(mContext);
@@ -233,77 +231,68 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
         }
     }
 
-    private void GetTopicTypeKeywordApi(final String type) {
+    private void GetJobKeywordListApi() {
         String req = "req";
         keywordList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_TOPIC_TYPE_KEYWORD,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_TOPIC_TYPE_KEYWORD + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                dialog.show();
-                                JSONArray arrayData = JsonMain.getJSONArray("data");
-                                for (int i = 0; i < arrayData.length(); i++) {
-                                    TopicKeywordModel topicKeywordModel = new TopicKeywordModel();
-                                    topicKeywordModel.setKeywordID(arrayData.getJSONObject(i).getString("id"));
-                                    topicKeywordModel.setKeyword(arrayData.getJSONObject(i).getString("keyword"));
-                                    keywordList.add(topicKeywordModel);
-                                }
-                                if (keywordList.size() > 0) {
-                                    SelectCategoryAdapter selectCategoryAdapter = new SelectCategoryAdapter(mContext, keywordList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                                    SelectCategoryView.setLayoutManager(mLayoutManager);
-                                    SelectCategoryView.setItemAnimator(new DefaultItemAnimator());
-                                    SelectCategoryView.setAdapter(selectCategoryAdapter);
-                                    selectCategoryAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().GET_JOB_KEYWORD, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().GET_JOB_KEYWORD + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        dialog.show();
+                        JSONArray arrayData = JsonMain.getJSONArray("data");
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            TopicKeywordModel topicKeywordModel = new TopicKeywordModel();
+                            topicKeywordModel.setKeywordID(arrayData.getJSONObject(i).getString("id"));
+                            topicKeywordModel.setKeyword(arrayData.getJSONObject(i).getString("keyword"));
+                            keywordList.add(topicKeywordModel);
                         }
+                        if (keywordList.size() > 0) {
+                            SelectCategoryAdapter selectCategoryAdapter = new SelectCategoryAdapter(mContext, keywordList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                            SelectCategoryView.setLayoutManager(mLayoutManager);
+                            SelectCategoryView.setItemAnimator(new DefaultItemAnimator());
+                            SelectCategoryView.setAdapter(selectCategoryAdapter);
+                            selectCategoryAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        String msg = JsonMain.getString("msg");
+                        Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                Map<String, String> params = new HashMap<>();
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
-                // params.put("Content-Type", "application/json");
+                params.put("Content-Type", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().GET_TOPIC_TYPE_KEYWORD + params);
-                return params;
-            }
-
-            // Form data passing
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("type", type);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_TOPIC_TYPE_KEYWORD + params);
+                Log.e("HEADER", "" + APIConstant.getInstance().GET_JOB_KEYWORD + params);
                 return params;
             }
         };
 
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_TOPIC_TYPE_KEYWORD);
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_JOB_KEYWORD);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
@@ -327,7 +316,6 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
             this.mContext = mContext;
             this.arrayList = arrayList;
         }
-
 
         @NotNull
         @Override
@@ -361,7 +349,7 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
     }
 
     private void SelectImage() {
-        String[] str = {"Choose from gallery", "Open Camera", "cancel"};
+        String[] str = {"Choose from Gallery", "Open Camera", "Cancel"};
         AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
         alert.setItems(str, new DialogInterface.OnClickListener() {
             @SuppressLint("NewApi")
@@ -396,27 +384,21 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
         alert.show();
     }
 
-    @SuppressLint("NewApi")
-    private void PhotoCameraPerm() {
-        REQUEST_CODE = 50;
-        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            PhotoCamera();
-        } else {
-            requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-        }
-    }
-
     private void PhotoGallery() {
         // TODO Auto-generated method stub
         if (Build.VERSION.SDK_INT < 19) {
             Intent intent = new Intent();
-            intent.setType("image/jpeg");
+            intent.setType("image/*");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            }
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Image"), 11);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 11);
         } else {
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK);
-            galleryIntent.setType("image/jpeg");
-            startActivityForResult(galleryIntent, 33);
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            startActivityForResult(intent, 33);
         }
     }
 
@@ -426,120 +408,43 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
         startActivityForResult(intent, 1);
     }
 
+    private void PhotoCameraPerm() {
+        REQUEST_CODE = 50;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                PhotoCamera();
+            } else {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+            }
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 11:
                 if (resultCode == RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String path = getPath(mContext, selectedImage);
-                    if (path != null) {
-                        mPath = path;
-                        try {
-                            mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
-                            ExifInterface exif = new ExifInterface(photo.toString());
-                            if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("6")) {
-                                mBitmap = rotate(mBitmap, 90);
-                            } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("8")) {
-                                mBitmap = rotate(mBitmap, 270);
-                            } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("3")) {
-                                mBitmap = rotate(mBitmap, 180);
-                            } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("0")) {
-                                mBitmap = rotate(mBitmap, 90);
-                            }
-                            Glide.with(mContext).load(mBitmap).into(imgPhoto);
-                        } catch (IOException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }
-                    }
+                    GetPhotoIntentData(data);
                 }
                 break;
             case 33:
                 if (resultCode == RESULT_OK) {
-                    mTempBitmapArray.clear();
-                    mPath = "";
-                    Uri selectedImageUri = data.getData();
-                    try {
-                        mPath = getImagePath(selectedImageUri);
-                        try {
-                            mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
-                            Glide.with(mContext).load(mBitmap).into(imgPhoto);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (URISyntaxException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    GetPhotoIntentData(data);
                 } else if (resultCode == SELECT_IMAGE) {
-                    Uri selectedImage = data.getData();
-                    String path = getPath(mContext, selectedImage);
-                    if (path != null) {
-                        mPath = path;
-                        try {
-                            mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
-                            Glide.with(mContext).load(mBitmap).into(imgPhoto);
-                        } catch (IOException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }
-                    }
+                    GetPhotoIntentData(data);
                 }
                 break;
             case 1:
                 if (resultCode == RESULT_OK) {
-                    mTempBitmapArray.clear();
                     onCaptureImageResult(data);
                 }
                 break;
         }
     }
 
-    public int getOrientation(Uri selectedImage) {
-        int orientation = 0;
-        final String[] projection = new String[]{MediaStore.Images.Media.ORIENTATION};
-        final Cursor cursor = mContext.getContentResolver().query(selectedImage, projection, null, null, null);
-        if (cursor != null) {
-            final int orientationColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION);
-            if (cursor.moveToFirst()) {
-                orientation = cursor.isNull(orientationColumnIndex) ? 0 : cursor.getInt(orientationColumnIndex);
-            }
-            cursor.close();
-        }
-        return orientation;
-    }
-
-    private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        mPath = "";
-        File destination = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".jpg");
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mPath = destination.getAbsolutePath();
-        try {
-            mBitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(mPath)));
-            Glide.with(mContext).load(mBitmap).into(imgPhoto);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressLint("NewApi")
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_REQUEST_CODE || requestCode == REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -554,178 +459,198 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
         }
     }
 
-    public static Bitmap rotate(Bitmap bitmap, int degree) {
-        int w = bitmap.getWidth();
-        int h = bitmap.getHeight();
-        Matrix mtx = new Matrix();
-        mtx.setRotate(degree);
-        return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
-    }
-
-    @SuppressLint("NewApi")
-    public static String getPath(final Context context, final Uri uri) {
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/"
-                            + split[1];
-                }
-                // TODO handle non-primary volumes
-            }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"),
-                        Long.valueOf(id));
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{split[1]};
-                return getDataColumn(context, contentUri, selection,
-                        selectionArgs);
-            }
-        }
-        // MediaStore (and general)
-
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-        return null;
-    }
-
-    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
-        Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {column};
+    private void onCaptureImageResult(Intent data) {
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        File destination = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".jpg");
+        FileOutputStream fo;
         try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return null;
-    }
-
-    private String getImagePath(Uri selectedImageUri) throws URISyntaxException {
-        if ("content".equalsIgnoreCase(selectedImageUri.getScheme())) {
-            String[] projection = {"_data"};
-            Cursor cursor = null;
+        String path = destination.getAbsolutePath();
+        if (path.equals("") || path.equals("null") || path.equals(null) || path == null) {
+            Toast.makeText(mContext, "Please capture again.", Toast.LENGTH_LONG).show();
+        } else {
             try {
-                cursor = mContext.getContentResolver().query(selectedImageUri, projection, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow("_data");
-                if (cursor.moveToFirst()) {
-                    return cursor.getString(column_index);
+                Bitmap bitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(path)));
+                photoList.add(bitmap);
+                if (photoList.size() > 0) {
+                    SetPhotoAdapter();
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if ("file".equalsIgnoreCase(selectedImageUri.getScheme())) {
-            //return selectedImageUri.getImagePath();
         }
-        return null;
     }
 
-    public static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    public void GetPhotoIntentData(Intent data) {
+        uriList.clear();
+        pathList.clear();
+        photoList.clear();
+        if (data.getClipData().getItemCount() > 10) {
+            Snackbar snackbar = Snackbar
+                    .make(findViewById(R.id.imgPhoto), "You can not select more than 10 images.", Snackbar.LENGTH_LONG)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                REQUEST_CODE = 70;
+                            }
+                            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+                            } else {
+                                PhotoGallery();
+                            }
+                        }
+                    });
+            snackbar.setActionTextColor(Color.WHITE);
+            View view = snackbar.getView();
+            TextView textView = view.findViewById(R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+        } else {
+            txtImageCount.setText(data.getClipData().getItemCount() + "/10");
+            if (data.getClipData() != null) {
+                ClipData mClipData = data.getClipData();
+                for (int i = 0; i < mClipData.getItemCount(); i++) {
+                    ClipData.Item item = mClipData.getItemAt(i);
+                    Uri uri = item.getUri();
+                    uriList.add(uri);
+                    String path = getRealPathFromURI(uri);
+                    pathList.add(path);
+                    try {
+                        Bitmap bitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(path)));
+                        photoList.add(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (data.getData() != null) {
+                Uri uri = data.getData();
+                uriList.add(uri);
+                String path = getRealPathFromURI(uri);
+                pathList.add(path);
+                try {
+                    Bitmap bitmap = Utility.decodeSampledBitmap(mContext, Uri.fromFile(new File(path)));
+                    photoList.add(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (photoList.size() > 0) {
+                SetPhotoAdapter();
+            }
+        }
     }
 
-    public static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 
-    public static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    public void SetPhotoAdapter() {
+        PhotoAdapter photoAdapter = new PhotoAdapter(mContext, photoList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+        PhotoView.setLayoutManager(mLayoutManager);
+        PhotoView.setItemAnimator(new DefaultItemAnimator());
+        PhotoView.setAdapter(photoAdapter);
+        photoAdapter.notifyDataSetChanged();
     }
 
-    private void AddPostHireHelperApi(final String KeywordID, final String Description, final String Salary, final String StartWorkingTime, final String EndWorkingTime, final Bitmap mBitmap) {
+    private void AddPostHireHelperApi(final String KeywordID, final String Description, final String Salary, final String StartWorkingTime,
+                                      final String EndWorkingTime, final String UserRange) {
         progressBar.setVisibility(View.VISIBLE);
         // our custom volley request
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, APIConstant.getInstance().ADD_POST_HIRE_HELPER,
-                new Response.Listener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        progressBar.setVisibility(View.GONE);
-                        try {
-                            Log.e("RESPONSE ", "" + APIConstant.getInstance().ADD_POST_HIRE_HELPER + response);
-                            JSONObject JsonMain = new JSONObject(new String(response.data));
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            String Message = JsonMain.getString("msg");
-                            if (HAS_ERROR.equals("false")) {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                                finish();
-                            } else {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                        Log.e("error", error.toString());
-                    }
-                }) {
-
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, APIConstant.getInstance().ADD_POST_HIRE_HELPER, new Response.Listener<NetworkResponse>() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("keyword_id", KeywordID);
-                params.put("description", Description);
-                params.put("salary", Salary);
-                params.put("start_working_time", StartWorkingTime);
-                params.put("end_working_time", EndWorkingTime);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().ADD_POST_HIRE_HELPER + params);
-                Log.e("param", params.toString());
-                return params;
+            public void onResponse(NetworkResponse response) {
+                progressBar.setVisibility(View.GONE);
+                try {
+                    JSONObject JsonMain = new JSONObject(new String(response.data));
+                    Log.e("RESPONSE ", "" + APIConstant.getInstance().ADD_POST_HIRE_HELPER + JsonMain);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                        RangeSettingActivity.UserRange = "";
+                        finish();
+                    } else {
+                        Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
+            // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Transfer-Encoding", "application/json");
                 params.put("Authorization", Type + " " + Token);
                 params.put("Accept", "application/json");
                 Log.e("HEADER", "" + APIConstant.getInstance().ADD_POST_HIRE_HELPER + params);
                 return params;
             }
 
+            // Form data passing
             @Override
-            protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> params = new HashMap<>();
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                String Latitude = sharedPreferences.getString("Latitude", "");
+                String Longitude = sharedPreferences.getString("Longitude", "");
+                String LocationName = sharedPreferences.getString("LocationName", "");
+                params.put("keyword_id", KeywordID);
+                params.put("description", Description);
+                params.put("salary", Salary);
+                params.put("start_working_time", StartWorkingTime);
+                params.put("end_working_time", EndWorkingTime);
+                params.put("lats", Latitude);
+                params.put("longs", Longitude);
+                params.put("location_name", LocationName);
+                params.put("user_range", UserRange);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().ADD_POST_HIRE_HELPER + params);
+                return params;
+            }
+
+            // Form data passing
+            @Override
+            protected Map<String, ArrayList<DataPart>> getByteDataArray() {
+                Map<String, ArrayList<DataPart>> params = new HashMap<>();
+                ArrayList<DataPart> dataPart = new ArrayList<>();
                 long ImageName = System.currentTimeMillis();
-                params.put("photos[]", new DataPart(ImageName + ".png", getFileDataFromDrawable(mBitmap)));
-                Log.e("PARAMETER Image", "" + APIConstant.getInstance().ADD_POST_HIRE_HELPER + params);
+                for (int i = 0; i < photoList.size(); i++) {
+                    VolleyMultipartRequest.DataPart dp = new VolleyMultipartRequest.DataPart(ImageName + ".png", getFileDataFromDrawable(photoList.get(i)));
+                    dataPart.add(dp);
+                }
+                params.put("photos[]", dataPart);
+                Log.e("PARAMETER Image", "" + APIConstant.getInstance().POST_SALE + params);
                 return params;
             }
         };
@@ -744,7 +669,6 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
             @Override
             public void retry(VolleyError error) throws VolleyError {
                 progressBar.setVisibility(View.GONE);
-                Log.e("ErrorVolley", error.toString());
             }
         });
 
@@ -757,71 +681,6 @@ public class PostHiringHelperActivity extends AppCompatActivity implements View.
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-
-    /*private void AddPostHireHelperApi(final String KeywordID, final String Description, final String Salary, final String StartWorkingTime, final String EndWorkingTime) {
-        String req = "req";
-        progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_POST_HIRE_HELPER,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_POST_HIRE_HELPER + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                String SuccessMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, SuccessMessage, Toast.LENGTH_LONG).show();
-                                finish();
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
-
-            // Header data passing
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
-                String Token = sharedPreferences.getString("Token", "");
-                String Type = sharedPreferences.getString("Type", "");
-                params.put("Content-Type", "application/json");
-                params.put("Authorization", Type + " " + Token);
-                params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().ADD_POST_HIRE_HELPER + params);
-                return params;
-            }
-
-            // Form data passing
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("keyword_id", KeywordID);
-                params.put("description", Description);
-                params.put("salary", Salary);
-                params.put("start_working_time", StartWorkingTime);
-                params.put("end_working_time", EndWorkingTime);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().ADD_POST_HIRE_HELPER + params);
-                return params;
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().ADD_POST_HIRE_HELPER);
-        AppController.getInstance().addToRequestQueue(stringRequest, req);
-    }*/
 
     @Override
     public void onBackPressed() {

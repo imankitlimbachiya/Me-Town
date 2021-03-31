@@ -2,7 +2,7 @@ package com.app.metown.Models;
 
 public class PostModel {
 
-    String ID, Keyword, Description, Image, Distance, ProfilePicture, NickName;
+    String ID, Keyword, Description, Image, Distance, ProfilePicture, NickName, Topic, CreatedAt;
 
     public String getID() {
         return ID;
@@ -58,5 +58,21 @@ public class PostModel {
 
     public void setNickName(String nickName) {
         NickName = nickName;
+    }
+
+    public String getTopic() {
+        return Topic;
+    }
+
+    public void setTopic(String topic) {
+        Topic = topic;
+    }
+
+    public String getCreatedAt() {
+        return CreatedAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        CreatedAt = createdAt;
     }
 }

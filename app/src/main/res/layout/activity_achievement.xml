@@ -11,18 +11,16 @@
     <RelativeLayout
         android:id="@+id/TitleLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        tools:ignore="UselessLeaf">
+        android:layout_height="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/left_arrow"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="12dp"
-            tools:ignore="ContentDescription,RtlHardcoded"/>
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,8 +30,7 @@
             android:fontFamily="@font/louis_george_cafe"
             android:text="Achievement"
             android:textColor="@color/black"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+            android:textSize="17sp" />
 
     </RelativeLayout>
 
@@ -52,15 +49,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="105dp"
                 android:layout_height="128dp"
                 android:layout_gravity="center"
-                android:src="@drawable/achievement"
-                tools:ignore="ContentDescription" />
+                android:src="@drawable/achievement" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,8 +66,7 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="Try to get\n'Super Achievement'!"
                 android:textColor="@color/veryDarkGrey"
-                android:textSize="22sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/txtAchievementDescription"
@@ -84,8 +78,7 @@
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="You don't have 'Super Achievement' yet.\nIf you get 'Super Achievement', it will be\non your profile."
                 android:textColor="@color/veryDarkGrey"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtGoToKnowMore"
@@ -97,8 +90,7 @@
                 android:fontFamily="@font/alte_haas_grotesk_regular"
                 android:text="Go to know more"
                 android:textColor="@color/redPink"
-                android:textSize="14sp"
-                tools:ignore="HardcodedText,RtlHardcoded" />
+                android:textSize="14sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -121,8 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@drawable/round_before_full_super_achievement_bg"
-                    android:backgroundTint="@color/yellow"
-                    tools:ignore="UnusedAttribute">
+                    android:backgroundTint="@color/yellow">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -131,8 +122,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Super Achievement"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:id="@+id/imgSuperAchievement"
@@ -141,8 +131,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="30dp"
-                        android:src="@drawable/bottom_arrow_white"
-                        tools:ignore="ContentDescription,RtlHardcoded" />
+                        android:src="@drawable/bottom_arrow_white" />
 
                 </RelativeLayout>
 
@@ -154,8 +143,7 @@
                     android:layout_marginRight="1dp"
                     android:layout_marginBottom="20dp"
                     android:nestedScrollingEnabled="false"
-                    android:visibility="gone"
-                    tools:ignore="UnusedAttribute" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -175,8 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@drawable/round_before_full_normal_achievement_bg"
-                    android:backgroundTint="#B8B8B8"
-                    tools:ignore="UnusedAttribute">
+                    android:backgroundTint="#B8B8B8">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -185,8 +172,7 @@
                         android:fontFamily="@font/louis_george_cafe"
                         android:text="Normal Achievement"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:ignore="HardcodedText,RtlHardcoded" />
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:id="@+id/imgNormalAchievement"
@@ -195,8 +181,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="30dp"
-                        android:src="@drawable/bottom_arrow_white"
-                        tools:ignore="ContentDescription,RtlHardcoded" />
+                        android:src="@drawable/bottom_arrow_white" />
 
                 </RelativeLayout>
 
@@ -208,8 +193,7 @@
                     android:layout_marginRight="1dp"
                     android:layout_marginBottom="20dp"
                     android:nestedScrollingEnabled="false"
-                    android:visibility="gone"
-                    tools:ignore="UnusedAttribute" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -225,7 +209,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/colorAccent"
         android:indeterminateTintMode="src_atop"
-        android:visibility="gone"
-        tools:ignore="UnusedAttribute" />
+        android:visibility="gone" />
 
 </RelativeLayout>

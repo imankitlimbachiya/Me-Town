@@ -106,7 +106,12 @@ public class KeywordAlertActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.txtAdd:
-                SetKeywordApi(edtKeyword.getText().toString());
+                String Keyword = edtKeyword.getText().toString();
+                if (Keyword.equals("")) {
+                    Toast.makeText(mContext, "Please enter keyword.", Toast.LENGTH_LONG).show();
+                } else {
+                    SetKeywordApi(Keyword);
+                }
                 break;
         }
     }
@@ -114,33 +119,31 @@ public class KeywordAlertActivity extends AppCompatActivity implements View.OnCl
     private void SetKeywordApi(final String KeyWord) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().SET_KEYWORD,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().SET_KEYWORD + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                Toast.makeText(mContext, "Keyword Added", Toast.LENGTH_LONG).show();
-                                finish();
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
-                        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().SET_KEYWORD, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().SET_KEYWORD + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        Toast.makeText(mContext, "Keyword Added", Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override

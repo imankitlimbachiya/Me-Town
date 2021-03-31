@@ -287,7 +287,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             public byte[] getBody() throws AuthFailureError {
                 SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
                 String UserID = sharedPreferences.getString("UserID", "");
-                // Log.e("UserID ","" + UserID);
                 String params = "{\"id\":\"" + UserID + "\",\"primary_notification\":\"" + PrimaryNotification +
                         "\",\"vibration\":\"" + Vibration + "\",\"do_not_disturb\":\"" + DoNotDisturb
                         + "\",\"other_notification\":\"" + OtherNotification + "\"}";

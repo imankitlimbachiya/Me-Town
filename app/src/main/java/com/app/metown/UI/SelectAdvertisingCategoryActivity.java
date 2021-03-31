@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -37,8 +38,8 @@ public class SelectAdvertisingCategoryActivity extends AppCompatActivity impleme
     ProgressBar progressBar;
     ImageView imgBack;
     Button btnConfirm;
-
-    String BusinessID = "4", Price = "100", ViewInRadius = "10", ViewYourAdd = "10";
+    EditText edtAdvertisePrice, edtUserInRadius, edtUserViewAdd;
+    String BusinessID = "4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +57,16 @@ public class SelectAdvertisingCategoryActivity extends AppCompatActivity impleme
         ViewInitialization();
 
         ViewOnClick();
-
-        AddAdvertisingApi(BusinessID, Price, ViewInRadius, ViewYourAdd);
     }
 
     public void ViewInitialization() {
         progressBar = findViewById(R.id.progressBar);
 
         imgBack = findViewById(R.id.imgBack);
+
+        edtAdvertisePrice = findViewById(R.id.edtAdvertisePrice);
+        edtUserInRadius = findViewById(R.id.edtUserInRadius);
+        edtUserViewAdd = findViewById(R.id.edtUserViewAdd);
 
         btnConfirm = findViewById(R.id.btnConfirm);
     }
@@ -73,7 +76,6 @@ public class SelectAdvertisingCategoryActivity extends AppCompatActivity impleme
         btnConfirm.setOnClickListener(this);
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -81,8 +83,18 @@ public class SelectAdvertisingCategoryActivity extends AppCompatActivity impleme
                 finish();
                 break;
             case R.id.btnConfirm:
-                Intent ServiceKind = new Intent(mContext, ServiceKindActivity.class);
-                startActivity(ServiceKind);
+                String AdvertisePrice = edtAdvertisePrice.getText().toString().trim();
+                String UserInRadius = edtUserInRadius.getText().toString().trim();
+                String UserViewAdd = edtUserViewAdd.getText().toString().trim();
+                if (AdvertisePrice.equals("")) {
+                    Toast.makeText(mContext, "Please enter your advertise price.", Toast.LENGTH_LONG).show();
+                } else if (UserInRadius.equals("")) {
+                    Toast.makeText(mContext, "Please enter your user in your radius.", Toast.LENGTH_LONG).show();
+                } else if (UserViewAdd.equals("")) {
+                    Toast.makeText(mContext, "Please enter your user that view your add.", Toast.LENGTH_LONG).show();
+                } else {
+                    AddAdvertisingApi(BusinessID, AdvertisePrice, UserInRadius, UserViewAdd);
+                }
                 break;
         }
     }
@@ -90,40 +102,35 @@ public class SelectAdvertisingCategoryActivity extends AppCompatActivity impleme
     private void AddAdvertisingApi(final String BusinessID, final String Price, final String ViewInRadius, final String ViewYourAdd) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_ADVERTISING,
-                new Response.Listener<String>() {
-                    @SuppressLint("ApplySharedPref")
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_ADVERTISING + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                String SuccessMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, SuccessMessage, Toast.LENGTH_LONG).show();
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            e.printStackTrace();
-                        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_ADVERTISING, new Response.Listener<String>() {
+            @SuppressLint("ApplySharedPref")
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_ADVERTISING + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        finish();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
                 params.put("Content-Type", "application/json");

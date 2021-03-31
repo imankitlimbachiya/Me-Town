@@ -1,4 +1,4 @@
-package com.app.metown.notification;
+package com.app.metown.Notification;
 
 import android.app.ActivityManager;
 import android.app.Notification;

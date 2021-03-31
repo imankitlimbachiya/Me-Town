@@ -265,35 +265,81 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/TextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical"
         android:visibility="gone">
 
         <RelativeLayout
+            android:id="@+id/ReceiverTextLayout"
             android:layout_width="match_parent"
-            android:layout_height="46dp">
+            android:layout_height="40dp"
+            android:visibility="gone">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgReceiverText"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/profile_default" />
 
             <TextView
+                android:id="@+id/txtReceiverText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/imgReceiverText"
+                android:background="@drawable/round_normal_corner_dark_blue_bg"
+                android:fontFamily="@font/segoe_ui"
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="Okay thanks!"
+                android:textColor="@color/veryDarkGrey"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtReceiverTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@id/txtReceiverText"
+                android:fontFamily="@font/louis_george_cafe"
+                android:text="'time'"
+                android:textColor="@color/grey"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/SenderTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txtSenderTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_toLeftOf="@id/txtOkayThanks"
+                android:layout_toLeftOf="@id/txtSenderText"
                 android:fontFamily="@font/louis_george_cafe"
                 android:text="'time'"
                 android:textColor="@color/grey"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/txtOkayThanks"
+                android:id="@+id/txtSenderText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
                 android:background="@drawable/round_normal_corner_dark_blue_bg"
                 android:fontFamily="@font/segoe_ui"
                 android:gravity="center"
@@ -305,6 +351,6 @@
 
         </RelativeLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

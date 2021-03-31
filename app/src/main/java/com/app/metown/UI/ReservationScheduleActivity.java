@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +44,9 @@ public class ReservationScheduleActivity extends AppCompatActivity implements Vi
     Context mContext;
     ProgressBar progressBar;
     ImageView imgBack;
+    TextView txtError;
+    LinearLayout ResponseLayout;
+    RelativeLayout NoResponseLayout;
     RecyclerView ReservationScheduleView;
     ArrayList<OrganiseMeetUpModel> reservationScheduleList = new ArrayList<>();
 
@@ -68,6 +74,11 @@ public class ReservationScheduleActivity extends AppCompatActivity implements Vi
         progressBar = findViewById(R.id.progressBar);
 
         imgBack = findViewById(R.id.imgBack);
+
+        txtError = findViewById(R.id.txtError);
+
+        ResponseLayout = findViewById(R.id.ResponseLayout);
+        NoResponseLayout = findViewById(R.id.NoResponseLayout);
 
         ReservationScheduleView = findViewById(R.id.ReservationScheduleView);
     }
@@ -118,6 +129,8 @@ public class ReservationScheduleActivity extends AppCompatActivity implements Vi
                                     reservationScheduleList.add(organiseMeetUpModel);
                                 }
                                 if (reservationScheduleList.size() > 0) {
+                                    NoResponseLayout.setVisibility(View.GONE);
+                                    ResponseLayout.setVisibility(View.VISIBLE);
                                     ReservationScheduleAdapter reservationScheduleAdapter = new ReservationScheduleAdapter(mContext, reservationScheduleList);
                                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
                                     ReservationScheduleView.setLayoutManager(mLayoutManager);
@@ -128,6 +141,9 @@ public class ReservationScheduleActivity extends AppCompatActivity implements Vi
                             } else {
                                 String ErrorMessage = JsonMain.getString("msg");
                                 Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                                ResponseLayout.setVisibility(View.GONE);
+                                NoResponseLayout.setVisibility(View.VISIBLE);
+                                txtError.setText(ErrorMessage);
                             }
                         } catch (Exception exception) {
                             exception.printStackTrace();

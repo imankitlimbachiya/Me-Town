@@ -272,7 +272,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp">
+                android:layout_height="80dp">
 
                 <TextView
                     android:id="@+id/txtBusinessPermits"
@@ -287,12 +287,11 @@
 
                 <ImageView
                     android:id="@+id/imgPhoto"
-                    android:layout_width="33dp"
-                    android:layout_height="27dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_below="@id/txtBusinessPermits"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/photo" />
+                    android:layout_marginTop="5dp" />
 
             </RelativeLayout>
 
@@ -302,7 +301,7 @@
                 android:layout_height="46dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/gradient_ltr"

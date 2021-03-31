@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.metown.Models.CategoryModel;
 import com.app.metown.R;
+import com.app.metown.UI.StoreAndServiceSearchActivity;
 import com.app.metown.UI.UserItemReferenceActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ public class ServiceNearbyCategoryAdapter extends RecyclerView.Adapter<ServiceNe
     Context mContext;
     ArrayList<CategoryModel> arrayList;
 
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtServiceName;
 
@@ -38,7 +39,6 @@ public class ServiceNearbyCategoryAdapter extends RecyclerView.Adapter<ServiceNe
         this.arrayList = arrayList;
     }
 
-
     @NotNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,15 +48,16 @@ public class ServiceNearbyCategoryAdapter extends RecyclerView.Adapter<ServiceNe
 
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        CategoryModel categoryModel = arrayList.get(position);
+        final CategoryModel categoryModel = arrayList.get(position);
 
-        holder.txtServiceName.setText(categoryModel.getCategoryName());
+        holder.txtServiceName.setText(categoryModel.getCategoryTitle());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, UserItemReferenceActivity.class);
-                mContext.startActivity(intent);
+                Intent StoreAndServiceSearch = new Intent(mContext, StoreAndServiceSearchActivity.class);
+                StoreAndServiceSearch.putExtra("Keyword", categoryModel.getCategoryTitle());
+                mContext.startActivity(StoreAndServiceSearch);
             }
         });
     }

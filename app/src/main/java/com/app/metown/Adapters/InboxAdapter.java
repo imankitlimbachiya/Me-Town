@@ -2,13 +2,16 @@ package com.app.metown.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.app.metown.AppConstants.DateUtil;
 import com.app.metown.Models.ConversationModel;
 import com.app.metown.R;
 import com.app.metown.UI.ChatCommercialActivity;
@@ -28,7 +31,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
         CircleImageView imgSender;
-        TextView txtSenderName, txtLastMessage;
+        TextView txtSenderName, txtLastMessageCreatedAt, txtLastMessage;
 
         MyViewHolder(View view) {
             super(view);
@@ -36,6 +39,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
             imgSender = view.findViewById(R.id.imgSender);
 
             txtSenderName = view.findViewById(R.id.txtSenderName);
+            txtLastMessageCreatedAt = view.findViewById(R.id.txtLastMessageCreatedAt);
             txtLastMessage = view.findViewById(R.id.txtLastMessage);
         }
     }
@@ -52,6 +56,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
         return new MyViewHolder(itemView);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
         final ConversationModel conversationModel = arrayList.get(position);
@@ -65,6 +70,14 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
             Glide.with(mContext).load(SenderProfilePicture).into(holder.imgSender);
         }
 
+        String CreatedAt = conversationModel.getLastMessageCreatedAt();
+
+        if (CreatedAt.equals("") || CreatedAt.equals("null") || CreatedAt.equals(null) || CreatedAt == null) {
+
+        } else {
+            holder.txtLastMessageCreatedAt.setText(DateUtil.getDayMonth(conversationModel.getLastMessageCreatedAt()));
+        }
+
         holder.txtSenderName.setText(conversationModel.getSenderName());
         holder.txtLastMessage.setText(conversationModel.getLastMessageBody());
 
@@ -74,6 +87,12 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
                 Intent ChatCommercial = new Intent(mContext, ChatCommercialActivity.class);
                 ChatCommercial.putExtra("ConversationID", conversationModel.getConversationID());
                 ChatCommercial.putExtra("ToUserID", conversationModel.getSenderUserID());
+                ChatCommercial.putExtra("ToUserName", conversationModel.getSenderName());
+                ChatCommercial.putExtra("ToUserProfilePicture", conversationModel.getSenderProfilePicture());
+                ChatCommercial.putExtra("ProductID", conversationModel.getProductID());
+                ChatCommercial.putExtra("ProductName", conversationModel.getProductName());
+                ChatCommercial.putExtra("ProductImages", conversationModel.getProductImages());
+                ChatCommercial.putExtra("ProductPrice", conversationModel.getProductPrice());
                 mContext.startActivity(ChatCommercial);
             }
         });

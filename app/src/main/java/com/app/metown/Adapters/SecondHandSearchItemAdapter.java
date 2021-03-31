@@ -1,5 +1,6 @@
 package com.app.metown.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.ItemMainModel;
 import com.app.metown.Models.ItemModel;
-import com.app.metown.Models.SecondHandSearchItemMainModel;
 import com.app.metown.R;
 import com.bumptech.glide.Glide;
 
@@ -23,6 +22,7 @@ public class SecondHandSearchItemAdapter extends RecyclerView.Adapter<SecondHand
 
     Context mContext;
     ArrayList<ItemModel> arrayList;
+    String rupee;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -42,8 +42,8 @@ public class SecondHandSearchItemAdapter extends RecyclerView.Adapter<SecondHand
     public SecondHandSearchItemAdapter(Context mContext, ArrayList<ItemModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
+        this.rupee = mContext.getString(R.string.rupee);
     }
-
 
     @NotNull
     @Override
@@ -52,6 +52,7 @@ public class SecondHandSearchItemAdapter extends RecyclerView.Adapter<SecondHand
         return new MyViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
         ItemModel itemModel = arrayList.get(position);
@@ -61,7 +62,7 @@ public class SecondHandSearchItemAdapter extends RecyclerView.Adapter<SecondHand
         Glide.with(mContext).load(separated[0]).into(holder.imgItem);
 
         holder.txtItemTitle.setText(itemModel.getItemName());
-        holder.txtItemPrice.setText(itemModel.getItemPrice());
+        holder.txtItemPrice.setText(rupee + itemModel.getItemPrice());
     }
 
     @Override

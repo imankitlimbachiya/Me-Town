@@ -2,7 +2,7 @@ package com.app.metown.Models;
 
 public class JobKeywordModel {
 
-    String JobID, JobKeyword;
+    String JobID, JobKeyword, SearchCount;
 
     public String getJobID() {
         return JobID;
@@ -18,5 +18,13 @@ public class JobKeywordModel {
 
     public void setJobKeyword(String jobKeyword) {
         JobKeyword = jobKeyword;
+    }
+
+    public String getSearchCount() {
+        return SearchCount;
+    }
+
+    public void setSearchCount(String searchCount) {
+        SearchCount = searchCount;
     }
 }

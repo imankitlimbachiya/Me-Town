@@ -1,15 +1,16 @@
 package com.app.metown.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.metown.Models.ItemMainModel;
+import com.app.metown.Models.ItemModel;
 import com.app.metown.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,24 +20,29 @@ import java.util.ArrayList;
 public class SecondHandNewSearchItemAdapter extends RecyclerView.Adapter<SecondHandNewSearchItemAdapter.MyViewHolder> {
 
     Context mContext;
-    ArrayList<ItemMainModel> arrayList;
+    ArrayList<ItemModel> arrayList;
+    String rupee;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView item_name;
+        ImageView imgItem;
+        TextView txtItemName, txtPrice;
 
         MyViewHolder(View view) {
             super(view);
 
-            item_name = view.findViewById(R.id.item_name);
+            imgItem = view.findViewById(R.id.imgItem);
+
+            txtItemName = view.findViewById(R.id.txtItemName);
+            txtPrice = view.findViewById(R.id.txtPrice);
         }
     }
 
-    public SecondHandNewSearchItemAdapter(Context mContext, ArrayList<ItemMainModel> arrayList) {
+    public SecondHandNewSearchItemAdapter(Context mContext, ArrayList<ItemModel> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
+        this.rupee = mContext.getString(R.string.rupee);
     }
-
 
     @NotNull
     @Override
@@ -45,11 +51,13 @@ public class SecondHandNewSearchItemAdapter extends RecyclerView.Adapter<SecondH
         return new MyViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
-        ItemMainModel itemMainModel = arrayList.get(position);
+        ItemModel itemModel = arrayList.get(position);
 
-        holder.item_name.setText("  " + itemMainModel.getItemName());
+        holder.txtItemName.setText(itemModel.getItemName());
+        holder.txtPrice.setText(rupee + itemModel.getItemPrice());
     }
 
     @Override

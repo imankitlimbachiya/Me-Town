@@ -1,6 +1,5 @@
 package com.app.metown.UI;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -64,7 +63,7 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
     ArrayList<ItemModel> myPurchasesList = new ArrayList<>();
     JSONArray arrayData;
     Dialog dialog;
-    String offSet = "0";
+    String offSet = "0", ItemID = "";
     EditText edtAddComment;
 
     @Override
@@ -86,6 +85,8 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
 
         OpenEasyPopup();
 
+        SetAdapter();
+
         MyPurchaseApi(offSet);
 
         RecyclerViewScrollListener(MyPurchasesView);
@@ -102,8 +103,6 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
         txtError = findViewById(R.id.txtError);
 
         MyPurchasesView = findViewById(R.id.MyPurchasesView);
-
-        SetAdapter();
     }
 
     public void SetAdapter() {
@@ -117,6 +116,15 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
 
     public void ViewOnClick() {
         imgBack.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imgBack:
+                finish();
+                break;
+        }
     }
 
     public void OpenEasyPopup() {
@@ -139,7 +147,7 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
                         txtDeletePost.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
+                                MySaleDeleteApi(ItemID);
                             }
                         });
                     }
@@ -152,52 +160,61 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
                 .apply();
     }
 
-    public void RecyclerViewScrollListener(RecyclerView recyclerView) {
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+    private void MySaleDeleteApi(final String ID) {
+        String req = "req";
+        progressBar.setVisibility(View.VISIBLE);
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_SALE_DELETE, new Response.Listener<String>() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                if (myPurchasesList.size() >= 30) {
-                    if (isLastItemDisplaying(recyclerView)) {
-                        offSet = String.valueOf(myPurchasesList.size());
+            public void onResponse(String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    mQQPop.dismiss();
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().MY_SALE_DELETE + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                         MyPurchaseApi(offSet);
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-
-            private boolean isLastItemDisplaying(RecyclerView recyclerView) {
-                // Check if the adapter item count is greater than 0
-                if (recyclerView.getAdapter().getItemCount() != 0) {
-                    //get the last visible item on screen using the layout manager
-                    int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-                    if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-                return false;
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
             }
-        });
-    }
+        }) {
 
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public void onClick(View view) {
-        /*switch (view.getId()) {
-            case R.id.imgBack:
-                finish();
-                break;
-        }*/
-        if (view.getId() == R.id.imgBack) {
-            finish();
-        }
+            // Header data passing
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                String Token = sharedPreferences.getString("Token", "");
+                String Type = sharedPreferences.getString("Type", "");
+                // params.put("Content-Type", "application/json");
+                params.put("Authorization", Type + " " + Token);
+                params.put("Accept", "application/json");
+                Log.e("HEADER", "" + APIConstant.getInstance().MY_SALE_DELETE + params);
+                return params;
+            }
+
+            // Form data passing
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("id", ID);
+                Log.e("PARAMETER", "" + APIConstant.getInstance().MY_SALE_DELETE + params);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().MY_SALE_DELETE);
+        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
     private void MyPurchaseApi(final String offSet) {
@@ -207,48 +224,46 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
         } else {
             progress.setVisibility(View.VISIBLE);
         }
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_PURCHASE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            if (offSet.equals("0")) {
-                                progressBar.setVisibility(View.GONE);
-                            } else {
-                                progress.setVisibility(View.GONE);
-                            }
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_PURCHASE + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equals("false")) {
-                                arrayData = JsonMain.getJSONArray("data");
-                                SetApiAdapter(arrayData);
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                                NoResponseLayout.setVisibility(View.VISIBLE);
-                                txtError.setText(ErrorMessage);
-                            }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
-                        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().MY_PURCHASE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    if (offSet.equals("0")) {
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        progress.setVisibility(View.GONE);
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        if (offSet.equals("0")) {
-                            progressBar.setVisibility(View.GONE);
-                        } else {
-                            progress.setVisibility(View.GONE);
-                        }
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().MY_PURCHASE + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        arrayData = JsonMain.getJSONArray("data");
+                        SetApiAdapter(arrayData);
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+                        NoResponseLayout.setVisibility(View.VISIBLE);
+                        txtError.setText(ErrorMessage);
                     }
-                }) {
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                if (offSet.equals("0")) {
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    progress.setVisibility(View.GONE);
+                }
+            }
+        }) {
 
             // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
                 params.put("Content-Type", "application/json");
@@ -273,7 +288,6 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
         AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 
-    @SuppressLint("SetTextI18n")
     private void SetApiAdapter(JSONArray arrayData) {
         myPurchasesList.clear();
         try {
@@ -361,7 +375,6 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
             return new MyViewHolder(itemView);
         }
 
-        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
             final ItemModel itemModel = arrayList.get(position);
@@ -382,6 +395,8 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
             holder.OptionLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ItemID = "";
+                    ItemID = itemModel.getItemID();
                     OpenEasyPopup();
                     mQQPop.showAtAnchorView(view, YGravity.BELOW, XGravity.LEFT, 0, 0);
                 }
@@ -434,23 +449,8 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onClick(View view) {
                     Intent SecondHandPost = new Intent(mContext, SecondHandPostActivity.class);
-                    SecondHandPost.putExtra("ID",itemModel.getItemID());
-                    SecondHandPost.putExtra("SellerID",itemModel.getItemSellerID());
-                    SecondHandPost.putExtra("BuyerID",itemModel.getItemBuyerID());
-                    SecondHandPost.putExtra("CategoryID",itemModel.getItemCategoryID());
-                    SecondHandPost.putExtra("CategoryTitle",itemModel.getItemCategoryTitle());
-                    SecondHandPost.putExtra("Name",itemModel.getItemName());
-                    SecondHandPost.putExtra("Description",itemModel.getItemDescription());
-                    SecondHandPost.putExtra("Status",itemModel.getItemStatus());
-                    SecondHandPost.putExtra("Type",itemModel.getItemType());
-                    SecondHandPost.putExtra("Price",itemModel.getItemPrice());
-                    SecondHandPost.putExtra("Latitude",itemModel.getItemLatitude());
-                    SecondHandPost.putExtra("Longitude",itemModel.getItemLongitude());
-                    SecondHandPost.putExtra("IsNegotiable",itemModel.getItemIsNegotiable());
-                    SecondHandPost.putExtra("Images",itemModel.getItemImages());
-                    SecondHandPost.putExtra("StatusTitle",itemModel.getItemStatusTitle());
-                    SecondHandPost.putExtra("FavouriteCount",itemModel.getItemFavouriteCount());
-                    SecondHandPost.putExtra("CommentCount",itemModel.getItemCommentCount());
+                    SecondHandPost.putExtra("ID", itemModel.getItemID());
+                    SecondHandPost.putExtra("SellerID", itemModel.getItemSellerID());
                     mContext.startActivity(SecondHandPost);
                 }
             });
@@ -465,38 +465,35 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
     private void AddEditFavoriteApi(final String ProductID) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_FAVORITE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_FAVORITE + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            String Message = JsonMain.getString("msg");
-                            if (HAS_ERROR.equals("false")) {
-                                MyPurchaseApi(offSet);
-                            } else {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
-                        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_FAVORITE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_FAVORITE + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        MyPurchaseApi(offSet);
+                    } else {
+                        Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                        Log.e("ERROR", "" + error.getMessage());
-                    }
-                }) {
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
                 String Token = sharedPreferences.getString("Token", "");
                 String Type = sharedPreferences.getString("Type", "");
                 params.put("Content-Type", "application/json");
@@ -524,33 +521,31 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
     private void AddEditCommentApi(final String ProductID, final String Comment) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_COMMENT,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            dialog.dismiss();
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            String Message = JsonMain.getString("msg");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                dialog.dismiss();
-                                MyPurchaseApi(offSet);
-                            } else {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
-                        }
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_COMMENT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    dialog.dismiss();
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        dialog.dismiss();
+                        MyPurchaseApi(offSet);
+                    } else {
+                        Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
@@ -579,6 +574,41 @@ public class MyPurchaseActivity extends AppCompatActivity implements View.OnClic
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().ADD_EDIT_COMMENT);
         AppController.getInstance().addToRequestQueue(stringRequest, req);
+    }
+
+    public void RecyclerViewScrollListener(RecyclerView recyclerView) {
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (myPurchasesList.size() >= 30) {
+                    if (isLastItemDisplaying(recyclerView)) {
+                        offSet = String.valueOf(myPurchasesList.size());
+                        MyPurchaseApi(offSet);
+                    }
+                }
+            }
+
+            private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+                // Check if the adapter item count is greater than 0
+                if (recyclerView.getAdapter().getItemCount() != 0) {
+                    //get the last visible item on screen using the layout manager
+                    int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                    if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override

@@ -20,7 +20,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
     Context mContext;
     ArrayList<CategoryModel> arrayList;
-    // int pos = -1;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -38,7 +37,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         this.arrayList = arrayList;
     }
 
-
     @NotNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,20 +50,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         CategoryModel categoryModel = arrayList.get(position);
 
         holder.btnSelect.setText("  " + categoryModel.getCategoryTitle());
-
-        /*if (pos == position) {
-            holder.btnSelect.setSelected(true);
-        } else {
-            holder.btnSelect.setSelected(false);
-        }
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pos = position;
-                notifyDataSetChanged();
-            }
-        });*/
     }
 
     @Override

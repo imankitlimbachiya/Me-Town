@@ -2,7 +2,8 @@ package com.app.metown.Models;
 
 public class ConversationModel {
 
-    String ConversationID, SenderUserID, SenderName, SenderProfilePicture, ProductImages, LastMessageBody, LastMessageType;
+    String ConversationID, SenderUserID, SenderName, SenderProfilePicture, ProductImages, LastMessageBody,
+            LastMessageType, LastMessageCreatedAt, ProductID, ProductName, ProductPrice;
 
     public String getConversationID() {
         return ConversationID;
@@ -58,5 +59,37 @@ public class ConversationModel {
 
     public void setLastMessageType(String lastMessageType) {
         LastMessageType = lastMessageType;
+    }
+
+    public String getLastMessageCreatedAt() {
+        return LastMessageCreatedAt;
+    }
+
+    public void setLastMessageCreatedAt(String lastMessageCreatedAt) {
+        LastMessageCreatedAt = lastMessageCreatedAt;
+    }
+
+    public String getProductID() {
+        return ProductID;
+    }
+
+    public void setProductID(String productID) {
+        ProductID = productID;
+    }
+
+    public String getProductName() {
+        return ProductName;
+    }
+
+    public void setProductName(String productName) {
+        ProductName = productName;
+    }
+
+    public String getProductPrice() {
+        return ProductPrice;
+    }
+
+    public void setProductPrice(String productPrice) {
+        ProductPrice = productPrice;
     }
 }

@@ -87,12 +87,45 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/txtRate"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/round_normal_corner_light_blue_bg"
+                android:fontFamily="@font/louis_george_cafe"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="Rate"
+                android:textColor="@color/grey"
+                android:textSize="9sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/txtFollow"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/round_normal_corner_red_pink_bg"
+                android:fontFamily="@font/louis_george_cafe"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="Follow"
+                android:textColor="@color/grey"
+                android:textSize="9sp"
+                android:visibility="invisible" />
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgUser"
-                android:layout_width="64dp"
+                android:layout_width="62dp"
                 android:layout_height="64dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="35dp"
                 android:src="@drawable/profile_default" />
 
             <TextView
@@ -107,6 +140,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/txtUniqueID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -184,22 +218,24 @@
                 android:background="@color/grey" />
 
             <TextView
+                android:id="@+id/txtVerifyTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="18dp"
                 android:fontFamily="@font/louis_george_cafe"
-                android:text="Verified '#'times in 'address', Verified '#'times\nin 'address'"
+                android:text="Verified '#'times in 'address'"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/txtVerifyTimeAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/louis_george_cafe"
-                android:text="Verified '#'times in 'address', Verified '#'times in 'address'"
+                android:text="Verified '#'times in 'address'"
                 android:textColor="@color/black"
                 android:textSize="10sp" />
 
@@ -215,7 +251,7 @@
                 android:layout_height="54dp">
 
                 <TextView
-                    android:id="@+id/txtTime"
+                    android:id="@+id/txtAchievementCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -241,10 +277,12 @@
                 android:background="@color/grey" />
 
             <RelativeLayout
+                android:id="@+id/ItemLayout"
                 android:layout_width="match_parent"
                 android:layout_height="54dp">
 
                 <TextView
+                    android:id="@+id/txtItemCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -324,49 +362,15 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/FeedbackView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:text="1    Feedback"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:text="1    Feedback"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:text="1    Feedback"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/alte_haas_grotesk_regular"
-                android:text="1    Feedback"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="20dp"
                 android:background="@color/grey" />
 
             <RelativeLayout
@@ -375,6 +379,7 @@
                 android:layout_height="54dp">
 
                 <TextView
+                    android:id="@+id/txtReviewCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -394,57 +399,11 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ReviewView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
-
-                <ImageView
-                    android:id="@+id/imgProfile"
-                    android:layout_width="27dp"
-                    android:layout_height="27dp"
-                    android:layout_marginLeft="15dp"
-                    android:background="@drawable/circle_outer_border_bg" />
-
-                <TextView
-                    android:id="@+id/txtNickNameReview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/imgProfile"
-                    android:fontFamily="@font/alte_haas_grotesk_bold"
-                    android:singleLine="true"
-                    android:text="'Nickname'"
-                    android:textColor="@color/black"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:id="@+id/txtAddressAndDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_toRightOf="@id/txtNickNameReview"
-                    android:fontFamily="@font/louis_george_cafe"
-                    android:singleLine="true"
-                    android:text="'Address'  'Date'"
-                    android:textColor="@color/darkGrey"
-                    android:textSize="8sp" />
-
-                <TextView
-                    android:id="@+id/txtGoReview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txtAddressAndDate"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@id/imgProfile"
-                    android:fontFamily="@font/louis_george_cafe"
-                    android:text="'The review goes here'"
-                    android:textColor="@color/black"
-                    android:textSize="10sp" />
-
-            </RelativeLayout>
+                android:visibility="gone" />
 
         </LinearLayout>
 

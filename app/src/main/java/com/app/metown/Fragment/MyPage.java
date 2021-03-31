@@ -1,57 +1,29 @@
 package com.app.metown.Fragment;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.media.ExifInterface;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.app.metown.AppConstants.APIConstant;
-import com.app.metown.AppConstants.ConstantFunction;
-import com.app.metown.AppConstants.Utility;
 import com.app.metown.BuildConfig;
-import com.app.metown.Models.StaticCategoryModel;
 import com.app.metown.R;
 import com.app.metown.UI.AnnouncementActivity;
 import com.app.metown.UI.FavouriteActivity;
@@ -67,23 +39,14 @@ import com.app.metown.UI.MySaleActivity;
 import com.app.metown.UI.ProfileActivity;
 import com.app.metown.UI.ProfileEditActivity;
 import com.app.metown.UI.RegisterMerchantActivity;
-import com.app.metown.UI.RegisterMerchantMenuActivity;
 import com.app.metown.UI.SetRangeActivity;
 import com.app.metown.UI.SettingActivity;
 import com.app.metown.UI.TopicListActivity;
 import com.app.metown.VolleySupport.AppController;
-import com.app.metown.VolleySupport.VolleyMultipartRequest;
 import com.bumptech.glide.Glide;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,13 +62,14 @@ public class MyPage extends Fragment implements View.OnClickListener {
 
     Context mContext;
     ProgressBar progressBar;
-    CircleImageView imgUser;
+    CircleImageView imgUser, imgCamera;
     TextView txtNickName, txtSeeProfile;
     LinearLayout MySaleLayout, MyPurchaseLayout, FavouriteLayout;
     RelativeLayout KeywordAlertLayout, MyCommunityPostCommentLayout, FollowedCommunityKeywordLayout, InviteFriendLayout, ShareMeTownLayout,
             AnnouncementLayout, SettingLayout, MerchantMenuLayout, FollowedUserLayout, SetRangeLayout, HelpCenterLayout,
             VerifyLocationLayout;
-    String Merchant = "";
+    String IsMerchant = "", UserID = "";
+    SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -119,7 +83,7 @@ public class MyPage extends Fragment implements View.OnClickListener {
 
         ViewOnClick();
 
-        GetProfileApi();
+        GetUserDefault();
 
         return view;
     }
@@ -128,6 +92,7 @@ public class MyPage extends Fragment implements View.OnClickListener {
         progressBar = view.findViewById(R.id.progressBar);
 
         imgUser = view.findViewById(R.id.imgUser);
+        imgCamera = view.findViewById(R.id.imgCamera);
 
         txtNickName = view.findViewById(R.id.txtNickName);
         txtSeeProfile = view.findViewById(R.id.txtSeeProfile);
@@ -151,6 +116,7 @@ public class MyPage extends Fragment implements View.OnClickListener {
     }
 
     public void ViewOnClick() {
+        imgCamera.setOnClickListener(this);
         txtSeeProfile.setOnClickListener(this);
         MySaleLayout.setOnClickListener(this);
         MyPurchaseLayout.setOnClickListener(this);
@@ -168,12 +134,26 @@ public class MyPage extends Fragment implements View.OnClickListener {
         ShareMeTownLayout.setOnClickListener(this);
     }
 
-    @SuppressLint("NonConstantResourceId")
+    public void GetUserDefault() {
+        sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
+        IsMerchant = sharedPreferences.getString("IsMerchant", "");
+        UserID = sharedPreferences.getString("UserID", "");
+        String NickName = sharedPreferences.getString("NickName", "");
+        String ProfilePicture = sharedPreferences.getString("ProfilePicture", "");
+        txtNickName.setText(NickName);
+        Glide.with(mContext).load(ProfilePicture).placeholder(R.drawable.profile_default).into(imgUser);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.imgCamera:
+                Intent ProfileEdit = new Intent(mContext, ProfileEditActivity.class);
+                startActivity(ProfileEdit);
+                break;
             case R.id.txtSeeProfile:
                 Intent Profile = new Intent(mContext, ProfileActivity.class);
+                Profile.putExtra("UserID", UserID);
                 startActivity(Profile);
                 break;
             case R.id.MySaleLayout:
@@ -213,7 +193,7 @@ public class MyPage extends Fragment implements View.OnClickListener {
                 startActivity(Setting);
                 break;
             case R.id.MerchantMenuLayout:
-                if (Merchant.equals("0")) {
+                if (IsMerchant.equals("0")) {
                     Intent RegisterMerchant = new Intent(mContext, RegisterMerchantActivity.class);
                     startActivity(RegisterMerchant);
                 } else {
@@ -246,70 +226,5 @@ public class MyPage extends Fragment implements View.OnClickListener {
                 startActivity(LocationVerify);
                 break;
         }
-    }
-
-    private void GetProfileApi() {
-        String req = "req";
-        progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().GET_PROFILE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().GET_PROFILE + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                JSONObject objectData = JsonMain.getJSONObject("data");
-                                String NickName = objectData.getString("nick_name");
-                                txtNickName.setText(NickName);
-                                String ProfilePicture = objectData.getString("profile_pic");
-                                Glide.with(mContext).load(ProfilePicture).placeholder(R.drawable.profile_default).into(imgUser);
-                                Merchant = objectData.getString("merchant");
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
-
-            // Header data passing
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
-                String Token = sharedPreferences.getString("Token", "");
-                String Type = sharedPreferences.getString("Type", "");
-                // params.put("Content-Type", "application/json");
-                params.put("Authorization", Type + " " + Token);
-                params.put("Accept", "application/json");
-                Log.e("HEADER", "" + APIConstant.getInstance().GET_PROFILE + params);
-                return params;
-            }
-
-            // Form data passing
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserData", MODE_PRIVATE);
-                String UserID = sharedPreferences.getString("UserID", "");
-                params.put("user_id", UserID);
-                Log.e("PARAMETER", "" + APIConstant.getInstance().GET_PROFILE + params);
-                return params;
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().getRequestQueue().getCache().remove(APIConstant.getInstance().GET_PROFILE);
-        AppController.getInstance().addToRequestQueue(stringRequest, req);
     }
 }

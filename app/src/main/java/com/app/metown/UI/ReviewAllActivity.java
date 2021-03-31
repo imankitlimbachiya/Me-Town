@@ -46,6 +46,10 @@ public class ReviewAllActivity extends AppCompatActivity implements View.OnClick
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ViewInitialization();
+
+        ViewOnClick();
+
+        AddReviewAllItems();
     }
 
     public void ViewInitialization() {
@@ -53,11 +57,11 @@ public class ReviewAllActivity extends AppCompatActivity implements View.OnClick
 
         imgBack = findViewById(R.id.imgBack);
 
-        imgBack.setOnClickListener(this);
-
         ReviewAllView = findViewById(R.id.ReviewAllView);
+    }
 
-        AddReviewAllItems();
+    public void ViewOnClick() {
+        imgBack.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")

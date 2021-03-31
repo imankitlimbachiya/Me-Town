@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -54,11 +55,19 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
             if (params != null && params.size() > 0) {
                 textParse(dos, params, getParamsEncoding());
             }
+
             // populate data byte payload
             Map<String, DataPart> data = getByteData();
             if (data != null && data.size() > 0) {
                 dataParse(dos, data);
             }
+
+            // populate data byte payload
+            Map<String, ArrayList<DataPart>> dataArray = getByteDataArray();
+            if (dataArray != null && dataArray.size() > 0) {
+                dataArrayParse(dos, dataArray);
+            }
+
             // close multipart form data after text and file data
             dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
             return bos.toByteArray();
@@ -78,12 +87,14 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         return null;
     }
 
+    protected Map<String, ArrayList<DataPart>> getByteDataArray() throws AuthFailureError {
+        return null;
+    }
+
     @Override
     protected Response<NetworkResponse> parseNetworkResponse(NetworkResponse response) {
         try {
-            return Response.success(
-                    response,
-                    HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(response, HttpHeaderParser.parseCacheHeaders(response));
         } catch (Exception e) {
             return Response.error(new ParseError(e));
         }
@@ -121,11 +132,25 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
      * Parse data into data output stream.
      *
      * @param dataOutputStream data output stream handle file attachment
-     * @param data             loop through data
+     * @param data            loop through data
      * @throws IOException
      */
     private void dataParse(DataOutputStream dataOutputStream, Map<String, DataPart> data) throws IOException {
         for (Map.Entry<String, DataPart> entry : data.entrySet()) {
+            buildDataPart(dataOutputStream, entry.getValue(), entry.getKey());
+        }
+    }
+
+    /**
+     * Parse data into data output stream.
+     *
+     * @param dataOutputStream data output stream handle file attachment
+     * @param getByteDataArray             loop through data
+     * @throws IOException
+     */
+
+    private void dataArrayParse(DataOutputStream dataOutputStream, Map<String, ArrayList<DataPart>> getByteDataArray) throws IOException {
+        for (Map.Entry<String, ArrayList<DataPart>> entry : getByteDataArray.entrySet()) {
             buildDataPart(dataOutputStream, entry.getValue(), entry.getKey());
         }
     }
@@ -153,6 +178,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
      * @param inputName        name of data input
      * @throws IOException
      */
+
     private void buildDataPart(DataOutputStream dataOutputStream, DataPart dataFile, String inputName) throws IOException {
         dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
         dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + inputName + "\"; filename=\"" + dataFile.getFileName() + "\"" + lineEnd);
@@ -173,6 +199,46 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
             bytesRead = fileInputStream.read(buffer, 0, bufferSize);
         }
         dataOutputStream.writeBytes(lineEnd);
+    }
+
+    /**
+     * Write data file into header and data output stream.
+     *
+     * @param dataOutputStream data output stream handle data parsing
+     * @param dataFile         data byte as DataPart from collection
+     * @param inputName        name of data input
+     * @throws IOException
+     */
+
+    private void buildDataPart(DataOutputStream dataOutputStream, ArrayList<DataPart> dataFile, String inputName) throws IOException {
+        for (int i = 0; i < dataFile.size(); i++) {
+            dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
+            DataPart dp = dataFile.get(i);
+            dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" +
+                    inputName + "\"; filename=\"" + dp.getFileName() + "\"" + lineEnd);
+            if (dp.getType() != null && !dp.getType().trim().isEmpty()) {
+                dataOutputStream.writeBytes("Content-Type: " + dp.getType() + lineEnd);
+            }
+            dataOutputStream.writeBytes(lineEnd);
+
+            ByteArrayInputStream fileInputStream = new ByteArrayInputStream(dp.getContent());
+            int bytesAvailable = fileInputStream.available();
+
+            int maxBufferSize = 1024 * 1024;
+            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            byte[] buffer = new byte[bufferSize];
+
+            int bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+            while (bytesRead > 0) {
+                dataOutputStream.write(buffer, 0, bufferSize);
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            }
+
+            dataOutputStream.writeBytes(lineEnd);
+        }
     }
 
     public static class DataPart {

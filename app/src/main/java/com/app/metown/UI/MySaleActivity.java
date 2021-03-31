@@ -87,8 +87,6 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
 
         ViewOnClick();
 
-        ViewSetText();
-
         OpenEasyPopup();
 
         MyActiveSaleApi(offSetActive);
@@ -130,15 +128,6 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         ActiveLayout.setOnClickListener(this);
         SoldLayout.setOnClickListener(this);
         HiddenLayout.setOnClickListener(this);
-    }
-
-    public void ViewSetText() {
-        txtActive.setTextColor(getResources().getColor(R.color.black));
-        ActiveView.setBackgroundColor(getResources().getColor(R.color.black));
-        txtSold.setTextColor(getResources().getColor(R.color.grey));
-        SoldView.setBackgroundColor(getResources().getColor(R.color.grey));
-        txtHidden.setTextColor(getResources().getColor(R.color.grey));
-        HiddenView.setBackgroundColor(getResources().getColor(R.color.grey));
     }
 
     public void OpenEasyPopup() {
@@ -268,78 +257,77 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
         String req = "req";
         activeItemList.clear();
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_ACTIVE_SALES + "/" + offSetActive,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().MY_ACTIVE_SALES + "/" + offSetActive + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                arrayData = JsonMain.getJSONArray("data");
-                                for (int i = 0; i < arrayData.length(); i++) {
-                                    ItemModel itemModel = new ItemModel();
-                                    itemModel.setItemID(arrayData.getJSONObject(i).getString("id"));
-                                    itemModel.setItemSellerID(arrayData.getJSONObject(i).getString("seller_id"));
-                                    itemModel.setItemBuyerID(arrayData.getJSONObject(i).getString("buyer_id"));
-                                    itemModel.setItemCategoryID(arrayData.getJSONObject(i).getString("category_id"));
-                                    itemModel.setItemCategoryTitle(arrayData.getJSONObject(i).getString("category_title"));
-                                    itemModel.setItemName(arrayData.getJSONObject(i).getString("name"));
-                                    itemModel.setItemDescription(arrayData.getJSONObject(i).getString("description"));
-                                    itemModel.setItemStatus(arrayData.getJSONObject(i).getString("status"));
-                                    itemModel.setItemType(arrayData.getJSONObject(i).getString("type"));
-                                    itemModel.setItemPrice(arrayData.getJSONObject(i).getString("price"));
-                                    itemModel.setItemLatitude(arrayData.getJSONObject(i).getString("lats"));
-                                    itemModel.setItemLongitude(arrayData.getJSONObject(i).getString("longs"));
-                                    itemModel.setItemUpdatedAt(arrayData.getJSONObject(i).getString("updated_at"));
-                                    itemModel.setItemIsNegotiable(arrayData.getJSONObject(i).getString("is_negotiable"));
-                                    itemModel.setItemImages(arrayData.getJSONObject(i).getString("images"));
-                                    itemModel.setItemStatusTitle(arrayData.getJSONObject(i).getString("status_title"));
-                                    itemModel.setItemTypeTitle(arrayData.getJSONObject(i).getString("type_title"));
-                                    itemModel.setItemFavouriteCount(arrayData.getJSONObject(i).getString("favourite_count"));
-                                    itemModel.setItemCommentCount(arrayData.getJSONObject(i).getString("commnet_count"));
-                                    activeItemList.add(itemModel);
-                                }
-
-                                if (activeItemList.size() > 0) {
-                                    NoResponseLayout.setVisibility(View.GONE);
-
-                                    ActiveResponseLayout.setVisibility(View.VISIBLE);
-                                    SoldResponseLayout.setVisibility(View.GONE);
-                                    HiddenResponseLayout.setVisibility(View.GONE);
-
-                                    ActiveItemAdapter activeItemAdapter = new ActiveItemAdapter(mContext, activeItemList);
-                                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-                                    ActiveItemView.setLayoutManager(mLayoutManager);
-                                    ActiveItemView.setItemAnimator(new DefaultItemAnimator());
-                                    ActiveItemView.setAdapter(activeItemAdapter);
-                                    activeItemAdapter.notifyDataSetChanged();
-                                } else {
-                                    ActiveResponseLayout.setVisibility(View.GONE);
-                                    HiddenResponseLayout.setVisibility(View.GONE);
-                                    SoldResponseLayout.setVisibility(View.GONE);
-
-                                    NoResponseLayout.setVisibility(View.VISIBLE);
-                                    txtError.setText("No Data Available...");
-                                }
-                            } else {
-                                String ErrorMessage = JsonMain.getString("msg");
-                                Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
-
-                                ActiveResponseLayout.setVisibility(View.GONE);
-                                HiddenResponseLayout.setVisibility(View.GONE);
-                                SoldResponseLayout.setVisibility(View.GONE);
-
-                                NoResponseLayout.setVisibility(View.VISIBLE);
-                                txtError.setText(ErrorMessage);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, APIConstant.getInstance().MY_ACTIVE_SALES + "/" + offSetActive, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().MY_ACTIVE_SALES + "/" + offSetActive + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        arrayData = JsonMain.getJSONArray("data");
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            ItemModel itemModel = new ItemModel();
+                            itemModel.setItemID(arrayData.getJSONObject(i).getString("id"));
+                            itemModel.setItemSellerID(arrayData.getJSONObject(i).getString("seller_id"));
+                            itemModel.setItemBuyerID(arrayData.getJSONObject(i).getString("buyer_id"));
+                            itemModel.setItemCategoryID(arrayData.getJSONObject(i).getString("category_id"));
+                            itemModel.setItemCategoryTitle(arrayData.getJSONObject(i).getString("category_title"));
+                            itemModel.setItemName(arrayData.getJSONObject(i).getString("name"));
+                            itemModel.setItemDescription(arrayData.getJSONObject(i).getString("description"));
+                            itemModel.setItemStatus(arrayData.getJSONObject(i).getString("status"));
+                            itemModel.setItemType(arrayData.getJSONObject(i).getString("type"));
+                            itemModel.setItemPrice(arrayData.getJSONObject(i).getString("price"));
+                            itemModel.setItemLatitude(arrayData.getJSONObject(i).getString("lats"));
+                            itemModel.setItemLongitude(arrayData.getJSONObject(i).getString("longs"));
+                            itemModel.setItemUpdatedAt(arrayData.getJSONObject(i).getString("updated_at"));
+                            itemModel.setItemIsNegotiable(arrayData.getJSONObject(i).getString("is_negotiable"));
+                            itemModel.setItemImages(arrayData.getJSONObject(i).getString("images"));
+                            itemModel.setItemStatusTitle(arrayData.getJSONObject(i).getString("status_title"));
+                            itemModel.setItemTypeTitle(arrayData.getJSONObject(i).getString("type_title"));
+                            itemModel.setItemFavouriteCount(arrayData.getJSONObject(i).getString("favourite_count"));
+                            itemModel.setItemCommentCount(arrayData.getJSONObject(i).getString("commnet_count"));
+                            activeItemList.add(itemModel);
                         }
+
+                        if (activeItemList.size() > 0) {
+                            NoResponseLayout.setVisibility(View.GONE);
+
+                            ActiveResponseLayout.setVisibility(View.VISIBLE);
+                            SoldResponseLayout.setVisibility(View.GONE);
+                            HiddenResponseLayout.setVisibility(View.GONE);
+
+                            ActiveItemAdapter activeItemAdapter = new ActiveItemAdapter(mContext, activeItemList);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                            ActiveItemView.setLayoutManager(mLayoutManager);
+                            ActiveItemView.setItemAnimator(new DefaultItemAnimator());
+                            ActiveItemView.setAdapter(activeItemAdapter);
+                            activeItemAdapter.notifyDataSetChanged();
+                        } else {
+                            ActiveResponseLayout.setVisibility(View.GONE);
+                            HiddenResponseLayout.setVisibility(View.GONE);
+                            SoldResponseLayout.setVisibility(View.GONE);
+
+                            NoResponseLayout.setVisibility(View.VISIBLE);
+                            txtError.setText("No Data Available...");
+                        }
+                    } else {
+                        String ErrorMessage = JsonMain.getString("msg");
+                        Toast.makeText(mContext, ErrorMessage, Toast.LENGTH_LONG).show();
+
+                        ActiveResponseLayout.setVisibility(View.GONE);
+                        HiddenResponseLayout.setVisibility(View.GONE);
+                        SoldResponseLayout.setVisibility(View.GONE);
+
+                        NoResponseLayout.setVisibility(View.VISIBLE);
+                        txtError.setText(ErrorMessage);
                     }
-                },
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
@@ -1098,42 +1086,39 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
     private void AddEditFavoriteApi(final String ProductID, final String From) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_FAVORITE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_FAVORITE + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            String Message = JsonMain.getString("msg");
-                            if (HAS_ERROR.equals("false")) {
-                                switch (From) {
-                                    case "Active":
-                                        MyActiveSaleApi(offSetActive);
-                                        break;
-                                    case "Sold":
-                                        MySoldSaleApi(offSetSold);
-                                        break;
-                                    case "Hidden":
-                                        MyHiddenSaleApi(offSetHidden);
-                                        break;
-                                }
-                            } else {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_FAVORITE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_FAVORITE + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        switch (From) {
+                            case "Active":
+                                MyActiveSaleApi(offSetActive);
+                                break;
+                            case "Sold":
+                                MySoldSaleApi(offSetSold);
+                                break;
+                            case "Hidden":
+                                MyHiddenSaleApi(offSetHidden);
+                                break;
                         }
+                    } else {
+                        Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                        // Log.e("ERROR", "" + error.getMessage());
-                    }
-                }) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override
@@ -1167,43 +1152,41 @@ public class MySaleActivity extends AppCompatActivity implements View.OnClickLis
     private void AddEditCommentApi(final String ProductID, final String Comment, final String From) {
         String req = "req";
         progressBar.setVisibility(View.VISIBLE);
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_COMMENT,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        try {
-                            progressBar.setVisibility(View.GONE);
-                            dialog.dismiss();
-                            Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + response);
-                            JSONObject JsonMain = new JSONObject(response);
-                            String HAS_ERROR = JsonMain.getString("has_error");
-                            String Message = JsonMain.getString("msg");
-                            if (HAS_ERROR.equalsIgnoreCase("false")) {
-                                dialog.dismiss();
-                                switch (From) {
-                                    case "Active":
-                                        MyActiveSaleApi(offSetActive);
-                                        break;
-                                    case "Sold":
-                                        MySoldSaleApi(offSetSold);
-                                        break;
-                                    case "Hidden":
-                                        MyHiddenSaleApi(offSetHidden);
-                                        break;
-                                }
-                            } else {
-                                Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, APIConstant.getInstance().ADD_EDIT_COMMENT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(final String response) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                    dialog.dismiss();
+                    Log.e("RESPONSE", "" + APIConstant.getInstance().ADD_EDIT_COMMENT + response);
+                    JSONObject JsonMain = new JSONObject(response);
+                    String HAS_ERROR = JsonMain.getString("has_error");
+                    String Message = JsonMain.getString("msg");
+                    if (HAS_ERROR.equalsIgnoreCase("false")) {
+                        dialog.dismiss();
+                        switch (From) {
+                            case "Active":
+                                MyActiveSaleApi(offSetActive);
+                                break;
+                            case "Sold":
+                                MySoldSaleApi(offSetSold);
+                                break;
+                            case "Hidden":
+                                MyHiddenSaleApi(offSetHidden);
+                                break;
                         }
+                    } else {
+                        Toast.makeText(mContext, Message, Toast.LENGTH_LONG).show();
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }) {
 
             // Header data passing
             @Override

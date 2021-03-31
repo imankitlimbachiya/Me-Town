@@ -2,7 +2,7 @@ package com.app.metown.Models;
 
 public class ManageUserModel {
 
-    String ID, UserID, ToUserID, Type, CreatedAt, NickName;
+    String ID, UserID, ToUserID, Type, CreatedAt, NickName, UniqueID, ProfilePicture, distance;
 
     public String getID() {
         return ID;
@@ -50,5 +50,29 @@ public class ManageUserModel {
 
     public void setNickName(String nickName) {
         NickName = nickName;
+    }
+
+    public String getUniqueID() {
+        return UniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        UniqueID = uniqueID;
+    }
+
+    public String getProfilePicture() {
+        return ProfilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        ProfilePicture = profilePicture;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 }
